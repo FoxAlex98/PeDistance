@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using GTA;
-using GTA.Native;
+using GTA.UI;
 using GTA.Math;
 using System.Collections.Generic;
 
@@ -30,7 +30,7 @@ namespace GtaVModPeDistance
             // Mod info
             if (firstTime)
             {
-                UI.Notify("~o~" + ModName + " " + Version + " by ~o~" + Developer + " Loaded");
+                Notification.Show("~o~" + ModName + " " + Version + " by ~o~" + Developer + " Loaded");
                 firstTime = false;
             }
             // start your script here:
@@ -40,39 +40,42 @@ namespace GtaVModPeDistance
         {
             if (e.KeyCode == Keys.NumPad1)
             {
-                UI.Notify("Player coord ~o~" + Game.Player.Character.Position.ToString());
+                Notification.Show("Player coord ~o~" + Game.Player.Character.Position.ToString());
             }
             if (e.KeyCode == Keys.NumPad2)
             {
                 Game.Player.Character.Position = placesList[0];
-                UI.Notify("Player has been ~b~teleported to ~o~" + placesList[0].ToString());
+                Notification.Show("Player has been ~b~teleported to ~o~" + placesList[0].ToString());
             }
             if (e.KeyCode == Keys.NumPad3)
             {
-                pedList.Add(World.CreateRandomPed(Game.Player.Character.GetOffsetInWorldCoords(new Vector3(0, rand.Next(50), 50))));
-                UI.Notify("Ped has been ~b~spawned!");
+                pedList.Add(World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(0, rand.Next(50), 50))));
+                Notification.Show("Ped has been ~b~spawned!");
             }
             if (e.KeyCode == Keys.NumPad4)
             {
-                Vector3 pos = World.GetWaypointPosition();
+                float X = World.WaypointPosition.X;
+                float Y = World.WaypointPosition.Y;
+                float Z = World.GetGroundHeight(new Vector2(X,Y));
+                Vector3 pos = new Vector3(X, Y, Z);
                 Game.Player.Character.Position = pos;
-                UI.Notify("Player has been ~b~teleported to ~o~" + pos.ToString());
+                Notification.Show("Player has been ~b~teleported to ~o~" + pos.ToString());
             }
             if (e.KeyCode == Keys.NumPad5)
             {
                 Game.Player.WantedLevel = 0;
-                UI.Notify("Player WantedLevel set to 0");
+                Notification.Show("Player WantedLevel set to 0");
             }
             if (e.KeyCode == Keys.NumPad6)
             {
                 pedList.ForEach(ped => ped.Kill());
-                UI.Notify("All spawned ped ~r~killed");
+                Notification.Show("All spawned ped ~r~killed");
             }
             if (e.KeyCode == Keys.NumPad7)
             {
                 pedList.ForEach(ped => ped.Delete());
                 pedList.Clear();
-                UI.Notify("All spawned ped ~r~deleted");
+                Notification.Show("All spawned ped ~r~deleted");
             }
             if (e.KeyCode == Keys.NumPad8)
             {
@@ -81,13 +84,14 @@ namespace GtaVModPeDistance
                 {
                     ped.Delete();
                 }
-                UI.Notify("All ped ~r~deleted (I am legend)");
+                Notification.Show("All ped ~r~deleted (I am legend)");
             }
             if (e.KeyCode == Keys.NumPad9)
             {
-                World.CurrentDayTime = new TimeSpan(12, 0, 0);
-                UI.Notify("It's ~r~High Noon!");
+                World.CurrentTimeOfDay = new TimeSpan(12, 0, 0);
+                Notification.Show("It's ~r~High Noon!");
             }
         }
+
     }
 }
