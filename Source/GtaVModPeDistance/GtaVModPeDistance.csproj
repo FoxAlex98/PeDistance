@@ -31,11 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ScriptHookVDotNet3">
-      <HintPath>..\..\..\..\..\..\..\Download\ScriptHookVDotNet\ScriptHookVDotNet3.dll</HintPath>
+    <Reference Include="NativeUI">
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Others\NativeUI.dll</HintPath>
+    </Reference>
+    <Reference Include="ScriptHookVDotNet3, Version=3.1.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Others\ScriptHookVDotNet\ScriptHookVDotNet3.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MenuItem.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
