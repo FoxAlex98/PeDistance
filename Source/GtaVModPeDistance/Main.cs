@@ -150,32 +150,51 @@ namespace GtaVModPeDistance
         }
 
         public void SaveFile()
-        {
-            if(xlApp == null)
+        {          
+            if (xlApp == null)
             {
                 MessageBox.Show("Excel is not properly installed!!");
                 GTA.UI.Screen.ShowSubtitle("Excel problems");
                 return;
             }
 
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            xlWorkSheet.Cells[1, 1] = "X";
-            xlWorkSheet.Cells[1, 2] = "Y";
-            xlWorkSheet.Cells[1, 3] = "Z";
-            xlWorkSheet.Cells[1, 4] = "Street Name";
-            xlWorkSheet.Cells[1, 5] = "Localized Name";
+            try
+            {
+                xlApp.Workbooks.Open(@"scripts/PeDinstance/Location.xls");               
+            }
+            catch (Exception e)
+            {
+                xlWorkBook = null;
+                xlWorkBook.SaveAs(@"scripts/PeDinstance/Location.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                Notification.Show("File not found!");
+                return;
+            }
+
+            if(xlWorkBook != null)
+            {
+                xlWorkBook = xlApp.Workbooks.Add(misValue);
+                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                index = xlWorkSheet.Cells[1, 6];                
+                xlWorkSheet.Cells[1, 1] = "X";
+                xlWorkSheet.Cells[1, 2] = "Y";
+                xlWorkSheet.Cells[1, 3] = "Z";
+                xlWorkSheet.Cells[1, 4] = "Street Name";
+                xlWorkSheet.Cells[1, 5] = "Localized Name";
+                xlWorkSheet.Cells[1, 6] = index.ToString();
+                xlWorkBook.Save();
+            }          
         }
 
         public void CloseFile()
         {
-            xlWorkBook.SaveAs("./Location.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            xlWorkBook.Save();
             xlWorkBook.Close(true, misValue, misValue);
             xlApp.Quit();
 
             Marshal.ReleaseComObject(xlWorkSheet);
             Marshal.ReleaseComObject(xlWorkBook);
             Marshal.ReleaseComObject(xlApp);
+            Notification.Show("File saved and closed");
         }
 
         public void SaveCoordinates()
@@ -186,7 +205,9 @@ namespace GtaVModPeDistance
             xlWorkSheet.Cells[index, 3] = pos.Z;
             xlWorkSheet.Cells[index, 4] = World.GetStreetName(pos);
             xlWorkSheet.Cells[index, 5] = World.GetZoneLocalizedName(pos);
-            index++;
+            xlWorkSheet.Cells[1, 6] = (++index).ToString();
+            xlWorkBook.Save();
+            Notification.Show("Player coord saved ~o~" + Game.Player.Character.Position.ToString());
         }
 
         public void DisableCamera()
