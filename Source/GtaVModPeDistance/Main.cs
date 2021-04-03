@@ -7,6 +7,8 @@ using GTA.UI;
 using GTA.Math;
 using GTA.Native;
 using NativeUI;
+using Excel = Microsoft.Office.Interop.Excel;
+using System.Runtime.InteropServices;
 
 namespace GtaVModPeDistance
 {
@@ -27,13 +29,21 @@ namespace GtaVModPeDistance
         Ped ped;
         int GameTimeReference = Game.GameTime + 1000;
         Random rand = new Random();
+        Excel.Application xlApp;
+        Excel.Workbook xlWorkBook;
+        Excel.Worksheet xlWorkSheet;
+        object misValue = System.Reflection.Missing.Value;
         //List<string> namesList;
         //List<ActionToDo> actionsList;
-        
+
+        int index = 2;
+
         public Main()
         {
-            MenuSetup();
+            xlApp = new Excel.Application();
 
+            MenuSetup();
+            SaveFile();
             Tick += onTick;
             KeyDown += onKeyDown;
             GameTimeReference = Game.GameTime + 1000;
@@ -50,6 +60,7 @@ namespace GtaVModPeDistance
             }
 
             //if you don't do that, the menu wont show up
+            
             if(modMenuPool != null)
             {
                 modMenuPool.ProcessMenus();
@@ -78,6 +89,9 @@ namespace GtaVModPeDistance
             itemList.Add(new MenuItem("AirportDesertTeleport", AirportDesertTeleport));
             itemList.Add(new MenuItem("DeleteSpawnedPed", DeleteSpawnedPed));
             itemList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
+            itemList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
+            itemList.Add(new MenuItem("CloseFile", CloseFile));
+            itemList.Add(new MenuItem("Never Wanted", ()=> { Game.Player.IgnoredByPolice = true; }));
             itemList.Add(new MenuItem("Shoot Ped", ()=> { World.CreateRandomPed(World.GetCrosshairCoordinates().HitPosition); }));
             itemList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
             itemList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
@@ -89,6 +103,7 @@ namespace GtaVModPeDistance
             */
             mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
             modMenuPool.Add(mainMenu.GetMainMenu());
+
         }
         
         public void HandleMyCamera()
@@ -97,6 +112,46 @@ namespace GtaVModPeDistance
             Vector3 cameraPos = new Vector3(myPos.X, myPos.Y - 40, myPos.Z);
             Camera cameretta = World.CreateCamera(cameraPos, Vector3.Zero, 100);
             cameretta.PointAt(Game.Player.Character);
+        }
+
+        public void SaveFile()
+        {
+            if(xlApp == null)
+            {
+                MessageBox.Show("Excel is not properly installed!!");
+                GTA.UI.Screen.ShowSubtitle("Excel problems");
+                return;
+            }
+
+            xlWorkBook = xlApp.Workbooks.Add(misValue);
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            xlWorkSheet.Cells[1, 1] = "X";
+            xlWorkSheet.Cells[1, 2] = "Y";
+            xlWorkSheet.Cells[1, 3] = "Z";
+            xlWorkSheet.Cells[1, 4] = "Street Name";
+            xlWorkSheet.Cells[1, 5] = "Localized Name";
+        }
+
+        public void CloseFile()
+        {
+            xlWorkBook.SaveAs("./Location.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+            xlWorkBook.Close(true, misValue, misValue);
+            xlApp.Quit();
+
+            Marshal.ReleaseComObject(xlWorkSheet);
+            Marshal.ReleaseComObject(xlWorkBook);
+            Marshal.ReleaseComObject(xlApp);
+        }
+
+        public void SaveCoordinates()
+        {
+            Vector3 pos = Game.Player.Character.Position;
+            xlWorkSheet.Cells[index, 1] = pos.X;
+            xlWorkSheet.Cells[index, 2] = pos.Y;
+            xlWorkSheet.Cells[index, 3] = pos.Z;
+            xlWorkSheet.Cells[index, 4] = World.GetStreetName(pos);
+            xlWorkSheet.Cells[index, 5] = World.GetZoneLocalizedName(pos);
+            index++;
         }
 
         #region methods
