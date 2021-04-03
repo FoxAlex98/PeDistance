@@ -33,7 +33,7 @@ namespace GtaVModPeDistance
         public Main()
         {
             MenuSetup();
-            
+
             Tick += onTick;
             KeyDown += onKeyDown;
             GameTimeReference = Game.GameTime + 1000;
@@ -78,9 +78,25 @@ namespace GtaVModPeDistance
             itemList.Add(new MenuItem("AirportDesertTeleport", AirportDesertTeleport));
             itemList.Add(new MenuItem("DeleteSpawnedPed", DeleteSpawnedPed));
             itemList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
+            itemList.Add(new MenuItem("Shoot Ped", ()=> { World.CreateRandomPed(World.GetCrosshairCoordinates().HitPosition); }));
+            itemList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
+            itemList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
+            itemList.Add(new MenuItem("Handle Camera", HandleMyCamera));
 
+            /*
+            itemList.Add(new MenuItem("Test V", () => { SendKeys.SendWait("H"); }));
+            itemList.Add(new MenuItem("Test F12", () => { SendKeys.SendWait("F12"); }));
+            */
             mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
             modMenuPool.Add(mainMenu.GetMainMenu());
+        }
+        
+        public void HandleMyCamera()
+        {
+            Vector3 myPos = Game.Player.Character.Position;
+            Vector3 cameraPos = new Vector3(myPos.X, myPos.Y - 40, myPos.Z);
+            Camera cameretta = World.CreateCamera(cameraPos, Vector3.Zero, 100);
+            cameretta.PointAt(Game.Player.Character);
         }
 
         #region methods
