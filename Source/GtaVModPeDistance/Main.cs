@@ -18,7 +18,7 @@ namespace GtaVModPeDistance
     public class Main : Script
     {
         bool firstTime = true;
-        bool changeCamera = false;
+        int changeCameraPlayerState = 0;
         string ModName = "Tostino-ML";
         string Developer = "Danilo-AleS-AleC";
         string Version = "1.0";
@@ -74,16 +74,22 @@ namespace GtaVModPeDistance
 
             if(World.RenderingCamera.Equals(cameretta))
             {
-                if (Game.Player.Character.IsInVehicle() && !changeCamera)
+
+                if (Game.Player.Character.IsInVehicle() && changeCameraPlayerState != 1)
                 {
                     cameretta.Detach();
                     cameretta.AttachTo(Game.Player.Character, new Vector3(0, 0, 17));
-                    changeCamera = true;
-                } else if(!Game.Player.Character.IsInVehicle() && changeCamera)
+                    changeCameraPlayerState = 1;
+                } else if (Game.Player.IsTargetingAnything && changeCameraPlayerState != 2)
+                {
+                    cameretta.Detach();
+                    cameretta.AttachTo(Game.Player.Character, new Vector3(0, 0, 5));
+                    changeCameraPlayerState = 2;
+                } else if(Game.Player.Character.IsOnFoot && !Game.Player.IsTargetingAnything && changeCameraPlayerState != 0)
                 {
                     cameretta.Detach();
                     cameretta.AttachTo(Game.Player.Character, new Vector3(0, 0, 10));
-                    changeCamera = false;
+                    changeCameraPlayerState = 0;
                 }
             }
         }
