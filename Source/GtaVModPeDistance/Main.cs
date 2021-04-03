@@ -17,6 +17,7 @@ namespace GtaVModPeDistance
     public class Main : Script
     {
         bool firstTime = true;
+        bool changeCamera = false;
         string ModName = "Tostino-ML";
         string Developer = "Danilo-AleS-AleC";
         string Version = "1.0";
@@ -37,6 +38,10 @@ namespace GtaVModPeDistance
         //List<ActionToDo> actionsList;
 
         int index = 2;
+
+        Camera cameretta;
+        //List<string> namesList;
+        //List<ActionToDo> actionsList;
 
         public Main()
         {
@@ -64,6 +69,21 @@ namespace GtaVModPeDistance
             if(modMenuPool != null)
             {
                 modMenuPool.ProcessMenus();
+            }
+
+            if(World.RenderingCamera.Equals(cameretta))
+            {
+                if (Game.Player.Character.IsInVehicle() && !changeCamera)
+                {
+                    cameretta.Detach();
+                    cameretta.AttachTo(Game.Player.Character, new Vector3(0, 0, 17));
+                    changeCamera = true;
+                } else if(!Game.Player.Character.IsInVehicle() && changeCamera)
+                {
+                    cameretta.Detach();
+                    cameretta.AttachTo(Game.Player.Character, new Vector3(0, 0, 10));
+                    changeCamera = false;
+                }
             }
         }
 
@@ -96,6 +116,8 @@ namespace GtaVModPeDistance
             itemList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
             itemList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
             itemList.Add(new MenuItem("Handle Camera", HandleMyCamera));
+            itemList.Add(new MenuItem("Disable Camera", DisableCamera));
+            itemList.Add(new MenuItem("Street Name", StreetName));
 
             /*
             itemList.Add(new MenuItem("Test V", () => { SendKeys.SendWait("H"); }));
@@ -105,13 +127,26 @@ namespace GtaVModPeDistance
             modMenuPool.Add(mainMenu.GetMainMenu());
 
         }
+
+        public void StreetName()
+        {
+            Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 0, 0));
+            String streetName = World.GetStreetName(new Vector2(pos.X, pos.Y));
+            String zoneDisplayName = World.GetZoneDisplayName(new Vector2(pos.X, pos.Y));
+            String zoneLocalizedName = World.GetZoneLocalizedName(new Vector2(pos.X, pos.Y));
+            Notification.Show("StreetName: " + streetName + "\nZoneDisplayName: " + zoneDisplayName + "\nZoneLocalizedName: " + zoneLocalizedName);
+        }
         
         public void HandleMyCamera()
         {
+            cameretta = null;
             Vector3 myPos = Game.Player.Character.Position;
-            Vector3 cameraPos = new Vector3(myPos.X, myPos.Y - 40, myPos.Z);
-            Camera cameretta = World.CreateCamera(cameraPos, Vector3.Zero, 100);
-            cameretta.PointAt(Game.Player.Character);
+            Vector3 cameraPos = Vector3.Zero;
+            cameretta = World.CreateCamera(cameraPos, Vector3.Zero, 80);
+            cameretta.AttachTo(Game.Player.Character, new Vector3(0, 0, 10));                     
+            cameretta.Rotation = new Vector3(-90, 0, 0);           
+            World.RenderingCamera = cameretta;
+            Notification.Show("" + cameretta.Rotation);
         }
 
         public void SaveFile()
@@ -152,6 +187,16 @@ namespace GtaVModPeDistance
             xlWorkSheet.Cells[index, 4] = World.GetStreetName(pos);
             xlWorkSheet.Cells[index, 5] = World.GetZoneLocalizedName(pos);
             index++;
+        }
+
+        public void DisableCamera()
+        {
+            if (cameretta != null)
+            {
+                cameretta.Detach();
+                cameretta.Delete();
+            }           
+            World.RenderingCamera = null;
         }
 
         #region methods
