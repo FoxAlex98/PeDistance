@@ -9,6 +9,7 @@ using GTA.Native;
 using NativeUI;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace GtaVModPeDistance
 {
@@ -157,44 +158,41 @@ namespace GtaVModPeDistance
                 GTA.UI.Screen.ShowSubtitle("Excel problems");
                 return;
             }
-
+            xlWorkBook = xlApp.Workbooks.Add(misValue);
+            string assemblyFolder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "Location.xls");
             try
             {
-                xlApp.Workbooks.Open(@"scripts/PeDinstance/Location.xls");               
+                xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
+                Notification.Show("File Location.xls opened! You can start saving positions. Close File when you are done.");
             }
             catch (Exception e)
             {
-                xlWorkBook = null;
-                xlWorkBook.SaveAs(@"scripts/PeDinstance/Location.xls", Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                Notification.Show("File not found!");
-                return;
+                xlWorkBook.SaveAs(xmlFileName, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
+                Notification.Show("File Location.xls created! You can start saving positions. Close File when you are done.");
             }
-
-            if(xlWorkBook != null)
-            {
-                xlWorkBook = xlApp.Workbooks.Add(misValue);
-                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                index = xlWorkSheet.Cells[1, 6];                
-                xlWorkSheet.Cells[1, 1] = "X";
-                xlWorkSheet.Cells[1, 2] = "Y";
-                xlWorkSheet.Cells[1, 3] = "Z";
-                xlWorkSheet.Cells[1, 4] = "Street Name";
-                xlWorkSheet.Cells[1, 5] = "Localized Name";
-                xlWorkSheet.Cells[1, 6] = index.ToString();
-                xlWorkBook.Save();
-            }          
+           
+            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+            index = (int) ((xlWorkSheet.Cells[1, 6] as Excel.Range).Value ?? 2);                
+            xlWorkSheet.Cells[1, 1] = "X";
+            xlWorkSheet.Cells[1, 2] = "Y";
+            xlWorkSheet.Cells[1, 3] = "Z";
+            xlWorkSheet.Cells[1, 4] = "Street Name";
+            xlWorkSheet.Cells[1, 5] = "Localized Name";
+            xlWorkSheet.Cells[1, 6] = index.ToString();
+            xlWorkBook.Save();                    
         }
 
         public void CloseFile()
         {
-            xlWorkBook.Save();
             xlWorkBook.Close(true, misValue, misValue);
             xlApp.Quit();
 
             Marshal.ReleaseComObject(xlWorkSheet);
             Marshal.ReleaseComObject(xlWorkBook);
             Marshal.ReleaseComObject(xlApp);
-            Notification.Show("File saved and closed");
+            Notification.Show("File closed.");
         }
 
         public void SaveCoordinates()
