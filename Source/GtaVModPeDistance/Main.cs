@@ -35,8 +35,6 @@ namespace GtaVModPeDistance
         Excel.Workbook xlWorkBook;
         Excel.Worksheet xlWorkSheet;
         object misValue = System.Reflection.Missing.Value;
-        //List<string> namesList;
-        //List<ActionToDo> actionsList;
 
         int index = 2;
 
@@ -46,8 +44,6 @@ namespace GtaVModPeDistance
 
         public Main()
         {
-            xlApp = new Excel.Application();
-
             MenuSetup();
             SaveFile();
             Tick += onTick;
@@ -157,48 +153,60 @@ namespace GtaVModPeDistance
         }
 
         public void SaveFile()
-        {          
+        {
+            xlApp = new Excel.Application();
             if (xlApp == null)
             {
                 MessageBox.Show("Excel is not properly installed!!");
                 GTA.UI.Screen.ShowSubtitle("Excel problems");
                 return;
             }
+            string assemblyFolder = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "scripts","Location.xls");
             xlWorkBook = xlApp.Workbooks.Add(misValue);
-            string assemblyFolder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "Location.xls");
+
             try
             {
                 xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
+                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
                 Notification.Show("File Location.xls opened! You can start saving positions. Close File when you are done.");
             }
             catch (Exception e)
             {
-                xlWorkBook.SaveAs(xmlFileName, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
+                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
+                xlWorkSheet.Cells[1, 1] = "X";
+                xlWorkSheet.Cells[1, 2] = "Y";
+                xlWorkSheet.Cells[1, 3] = "Z";
+                xlWorkSheet.Cells[1, 4] = "Street Name";
+                xlWorkSheet.Cells[1, 5] = "Localized Name";
+                xlWorkSheet.Cells[1, 6] = index.ToString();
+                xlWorkBook.SaveAs(xmlFileName);
                 Notification.Show("File Location.xls created! You can start saving positions. Close File when you are done.");
             }
+            finally
+            {
+                index = (int) ((xlWorkSheet.Cells[1, 6] as Excel.Range).Value);
+                Notification.Show(index - 1 + " location already saved");
+            }
            
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            index = (int) ((xlWorkSheet.Cells[1, 6] as Excel.Range).Value ?? 2);                
-            xlWorkSheet.Cells[1, 1] = "X";
-            xlWorkSheet.Cells[1, 2] = "Y";
-            xlWorkSheet.Cells[1, 3] = "Z";
-            xlWorkSheet.Cells[1, 4] = "Street Name";
-            xlWorkSheet.Cells[1, 5] = "Localized Name";
-            xlWorkSheet.Cells[1, 6] = index.ToString();
-            xlWorkBook.Save();                    
         }
 
         public void CloseFile()
         {
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
+            if(xlApp != null && xlWorkBook != null)
+            {
+                xlWorkBook.Close(true, misValue, misValue);
+                xlApp.Quit();
 
-            Marshal.ReleaseComObject(xlWorkSheet);
-            Marshal.ReleaseComObject(xlWorkBook);
-            Marshal.ReleaseComObject(xlApp);
-            Notification.Show("File closed.");
+                Marshal.ReleaseComObject(xlWorkSheet);
+                Marshal.ReleaseComObject(xlWorkBook);
+                Marshal.ReleaseComObject(xlApp);
+                Notification.Show("File closed.");
+            }
+            else
+            {
+                Notification.Show("File already closed.");
+            }
         }
 
         public void SaveCoordinates()
