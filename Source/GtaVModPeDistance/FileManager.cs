@@ -67,12 +67,11 @@ namespace GtaVModPeDistance
             {
                 xlWorkBook.Close(true, misValue, misValue);
                 xlApp.Quit();
-
-                xlApp = null;
-
+             
                 Marshal.ReleaseComObject(xlWorkSheet);
                 Marshal.ReleaseComObject(xlWorkBook);
                 Marshal.ReleaseComObject(xlApp);
+                xlApp = null;
                 Notification.Show("File closed.");
             }
             else
