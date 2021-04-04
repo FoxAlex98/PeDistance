@@ -7,8 +7,7 @@ using GTA.UI;
 using GTA.Math;
 using GTA.Native;
 using NativeUI;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
+
 using System.Reflection;
 
 namespace GtaVModPeDistance
@@ -25,18 +24,12 @@ namespace GtaVModPeDistance
 
         MenuPool modMenuPool;
         Menu mainMenu;
+        FileManager file;
 
-        List<Vector3> placesList = new List<Vector3>();
         List<Ped> pedList = new List<Ped>();
         Ped ped;
         int GameTimeReference = Game.GameTime + 1000;
         Random rand = new Random();
-        Excel.Application xlApp;
-        Excel.Workbook xlWorkBook;
-        Excel.Worksheet xlWorkSheet;
-        object misValue = System.Reflection.Missing.Value;
-
-        int index = 2;
 
         Camera cameretta;
         //List<string> namesList;
@@ -44,12 +37,11 @@ namespace GtaVModPeDistance
 
         public Main()
         {
+            file = new FileManager();
             MenuSetup();
-            SaveFile();
             Tick += onTick;
             KeyDown += onKeyDown;
             GameTimeReference = Game.GameTime + 1000;
-
         }
 
         private void onTick(object sender, EventArgs e)
@@ -113,7 +105,7 @@ namespace GtaVModPeDistance
             itemList.Add(new MenuItem("DeleteSpawnedPed", DeleteSpawnedPed));
             itemList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
             itemList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
-            itemList.Add(new MenuItem("CloseFile", CloseFile));
+            itemList.Add(new MenuItem("CloseFile", file.CloseLocationFile));
             itemList.Add(new MenuItem("Never Wanted", ()=> { Game.Player.IgnoredByPolice = true; }));
             itemList.Add(new MenuItem("Shoot Ped", ()=> { World.CreateRandomPed(World.GetCrosshairCoordinates().HitPosition); }));
             itemList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
@@ -127,8 +119,16 @@ namespace GtaVModPeDistance
             itemList.Add(new MenuItem("Test F12", () => { SendKeys.SendWait("F12"); }));
             */
             mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
-            modMenuPool.Add(mainMenu.GetMainMenu());
+            modMenuPool.Add(mainMenu.GetMenu());
+        }
 
+        public void SaveCoordinates()
+        {
+            Vector3 pos = Game.Player.Character.Position;
+            Vector3 rot = Game.Player.Character.Rotation;
+            string streetName = World.GetStreetName(pos);
+            string zoneLocalizedName = World.GetZoneLocalizedName(pos);
+            file.SaveCoordinates(pos, rot, streetName, zoneLocalizedName);
         }
 
         public void StreetName()
@@ -150,76 +150,6 @@ namespace GtaVModPeDistance
             cameretta.Rotation = new Vector3(-90, 0, 0);           
             World.RenderingCamera = cameretta;
             Notification.Show("" + cameretta.Rotation);
-        }
-
-        public void SaveFile()
-        {
-            xlApp = new Excel.Application();
-            if (xlApp == null)
-            {
-                MessageBox.Show("Excel is not properly installed!!");
-                GTA.UI.Screen.ShowSubtitle("Excel problems");
-                return;
-            }
-            string assemblyFolder = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
-            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "scripts","Location.xls");
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-
-            try
-            {
-                xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
-                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                Notification.Show("File Location.xls opened! You can start saving positions. Close File when you are done.");
-            }
-            catch (Exception e)
-            {
-                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                xlWorkSheet.Cells[1, 1] = "X";
-                xlWorkSheet.Cells[1, 2] = "Y";
-                xlWorkSheet.Cells[1, 3] = "Z";
-                xlWorkSheet.Cells[1, 4] = "Street Name";
-                xlWorkSheet.Cells[1, 5] = "Localized Name";
-                xlWorkSheet.Cells[1, 6] = index.ToString();
-                xlWorkBook.SaveAs(xmlFileName);
-                Notification.Show("File Location.xls created! You can start saving positions. Close File when you are done.");
-            }
-            finally
-            {
-                index = (int) ((xlWorkSheet.Cells[1, 6] as Excel.Range).Value);
-                Notification.Show(index - 1 + " location already saved");
-            }
-           
-        }
-
-        public void CloseFile()
-        {
-            if(xlApp != null && xlWorkBook != null)
-            {
-                xlWorkBook.Close(true, misValue, misValue);
-                xlApp.Quit();
-
-                Marshal.ReleaseComObject(xlWorkSheet);
-                Marshal.ReleaseComObject(xlWorkBook);
-                Marshal.ReleaseComObject(xlApp);
-                Notification.Show("File closed.");
-            }
-            else
-            {
-                Notification.Show("File already closed.");
-            }
-        }
-
-        public void SaveCoordinates()
-        {
-            Vector3 pos = Game.Player.Character.Position;
-            xlWorkSheet.Cells[index, 1] = pos.X;
-            xlWorkSheet.Cells[index, 2] = pos.Y;
-            xlWorkSheet.Cells[index, 3] = pos.Z;
-            xlWorkSheet.Cells[index, 4] = World.GetStreetName(pos);
-            xlWorkSheet.Cells[index, 5] = World.GetZoneLocalizedName(pos);
-            xlWorkSheet.Cells[1, 6] = (++index).ToString();
-            xlWorkBook.Save();
-            Notification.Show("Player coord saved ~o~" + Game.Player.Character.Position.ToString());
         }
 
         public void DisableCamera()

@@ -28,7 +28,7 @@ namespace GtaVModPeDistance
             itemList.ForEach(x => x.Evaluate(item));
         }
 
-        public UIMenu GetMainMenu()
+        public UIMenu GetMenu()
         {
             return menu;
         }
