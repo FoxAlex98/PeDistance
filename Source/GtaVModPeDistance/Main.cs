@@ -120,6 +120,7 @@ namespace GtaVModPeDistance
             //file menu
             fileList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
             fileList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
+            fileList.Add(new MenuItem("DeleteLastSavedCoord", file.DeleteLastCoordinate));
             fileList.Add(new MenuItem("CloseFile", file.CloseLocationFile));
             fileList.Add(new MenuItem("Street Name", StreetName));
             /*

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using GTA.Math;
 using GTA.UI;
@@ -93,6 +93,21 @@ namespace GtaVModPeDistance
             xlWorkSheet.Cells[1, 9] = (++index).ToString();
             xlWorkBook.Save();
             Notification.Show("Player coord saved ~o~" + pos.ToString());
+        }
+
+        public void DeleteLastCoordinate()
+        {
+            xlWorkSheet.Cells[1, 9] = (--index).ToString();
+            xlWorkSheet.Cells[index, 1] = "";
+            xlWorkSheet.Cells[index, 2] = "";
+            xlWorkSheet.Cells[index, 3] = "";
+            xlWorkSheet.Cells[index, 4] = "";
+            xlWorkSheet.Cells[index, 5] = "";
+            xlWorkSheet.Cells[index, 6] = "";
+            xlWorkSheet.Cells[index, 7] = "";
+            xlWorkSheet.Cells[index, 8] = "";           
+            xlWorkBook.Save();
+            Notification.Show("Last coord deleted");
         }
     }
 }
