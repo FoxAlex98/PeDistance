@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using GTA.Math;
 using GTA.UI;
@@ -29,14 +29,14 @@ namespace GtaVModPeDistance
                 return;
             }
             string assemblyFolder = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
-            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "scripts", "Locations.xls");
+            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "scripts", "Locations.csv");
             xlWorkBook = xlApp.Workbooks.Add(misValue);
 
             try
             {
                 xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
                 xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                Notification.Show("File Locations.xls opened! You can start saving positions. Close File when you are done.");
+                Notification.Show("File Locations.csv opened! You can start saving positions. Close File when you are done.");
             }
             catch (Exception e)
             {
@@ -50,8 +50,8 @@ namespace GtaVModPeDistance
                 xlWorkSheet.Cells[1, 7] = "Street Name";
                 xlWorkSheet.Cells[1, 8] = "Localized Name";
                 xlWorkSheet.Cells[1, 9] = index.ToString();
-                xlWorkBook.SaveAs(xmlFileName);
-                Notification.Show("File Locations.xls created! You can start saving positions. Close File when you are done.");
+                xlWorkBook.SaveAs(xmlFileName, Excel.XlFileFormat.xlCSV);
+                Notification.Show("File Locations.csv created! You can start saving positions. Close File when you are done.");
             }
             finally
             {
