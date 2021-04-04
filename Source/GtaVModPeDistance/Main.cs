@@ -7,8 +7,7 @@ using GTA.UI;
 using GTA.Math;
 using GTA.Native;
 using NativeUI;
-using Excel = Microsoft.Office.Interop.Excel;
-using System.Runtime.InteropServices;
+
 using System.Reflection;
 
 namespace GtaVModPeDistance
@@ -24,21 +23,13 @@ namespace GtaVModPeDistance
         string Version = "1.0";
 
         MenuPool modMenuPool;
-        Menu mainMenu;
+        Menu mainMenu, utilsMenu, mlMenu, fileMenu;
+        FileManager file;
 
-        List<Vector3> placesList = new List<Vector3>();
         List<Ped> pedList = new List<Ped>();
         Ped ped;
         int GameTimeReference = Game.GameTime + 1000;
         Random rand = new Random();
-        Excel.Application xlApp;
-        Excel.Workbook xlWorkBook;
-        Excel.Worksheet xlWorkSheet;
-        object misValue = System.Reflection.Missing.Value;
-        //List<string> namesList;
-        //List<ActionToDo> actionsList;
-
-        int index = 2;
 
         Camera cameretta;
         //List<string> namesList;
@@ -46,14 +37,11 @@ namespace GtaVModPeDistance
 
         public Main()
         {
-            xlApp = new Excel.Application();
-
+            file = new FileManager();
             MenuSetup();
-            SaveFile();
             Tick += onTick;
             KeyDown += onKeyDown;
             GameTimeReference = Game.GameTime + 1000;
-
         }
 
         private void onTick(object sender, EventArgs e)
@@ -107,34 +95,65 @@ namespace GtaVModPeDistance
             modMenuPool = new MenuPool();
 
             List<MenuItem> itemList = new List<MenuItem>();
-            itemList.Add(new MenuItem("SpawnPed", SpawnOnePed));
-            itemList.Add(new MenuItem("DeleteAllNearPed", DeleteAllNearPed));
-            itemList.Add(new MenuItem("KillAllSpawnedPed", KillAllSpawnedPed));
-            itemList.Add(new MenuItem("ResetTimeMidday", ResetTimeMidday));
-            itemList.Add(new MenuItem("ResetWantedLevel", ResetWantedLevel));
-            itemList.Add(new MenuItem("TeleportInWaypoint", TeleportInWaypoint));
-            itemList.Add(new MenuItem("AirportDesertTeleport", AirportDesertTeleport));
-            itemList.Add(new MenuItem("DeleteSpawnedPed", DeleteSpawnedPed));
-            itemList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
-            itemList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
-            itemList.Add(new MenuItem("CloseFile", CloseFile));
-            itemList.Add(new MenuItem("Never Wanted", ()=> { Game.Player.IgnoredByPolice = true; }));
-            itemList.Add(new MenuItem("Shoot Ped", ()=> { World.CreateRandomPed(World.GetCrosshairCoordinates().HitPosition); }));
-            itemList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
-            itemList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
-            itemList.Add(new MenuItem("Handle Camera", HandleMyCamera));
-            itemList.Add(new MenuItem("Disable Camera", DisableCamera));
-            itemList.Add(new MenuItem("Street Name", StreetName));
+            List<MenuItem> utilsList = new List<MenuItem>();
+            List<MenuItem> mlList = new List<MenuItem>();
+            List<MenuItem> fileList = new List<MenuItem>();
             itemList.Add(new MenuItem("SpawnElic", SpawnElicopter));
             itemList.Add(new MenuItem("SpawnBike", SpawnBike));
 
+            //utils menu
+            utilsList.Add(new MenuItem("ResetTimeMidday", ResetTimeMidday));
+            utilsList.Add(new MenuItem("ResetWantedLevel", ResetWantedLevel));
+            utilsList.Add(new MenuItem("Shoot Ped", ()=> { World.CreateRandomPed(World.GetCrosshairCoordinates().HitPosition); }));
+            utilsList.Add(new MenuItem("Never Wanted", ()=> { Game.Player.IgnoredByPolice = true; }));
+            utilsList.Add(new MenuItem("Handle Camera", HandleMyCamera));
+            utilsList.Add(new MenuItem("Disable Camera", DisableCamera));
+
+            //ml menu
+            mlList.Add(new MenuItem("SpawnPed", SpawnOnePed));
+            mlList.Add(new MenuItem("DeleteSpawnedPed", DeleteSpawnedPed));
+            mlList.Add(new MenuItem("AirportDesertTeleport", AirportDesertTeleport));
+            mlList.Add(new MenuItem("DeleteAllNearPed", DeleteAllNearPed));
+            mlList.Add(new MenuItem("KillAllSpawnedPed", KillAllSpawnedPed));
+            mlList.Add(new MenuItem("TeleportInWaypoint", TeleportInWaypoint));
+            mlList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
+            mlList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
+
+            //file menu
+            fileList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
+            fileList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
+            fileList.Add(new MenuItem("CloseFile", file.CloseLocationFile));
+            fileList.Add(new MenuItem("Street Name", StreetName));
             /*
             itemList.Add(new MenuItem("Test V", () => { SendKeys.SendWait("H"); }));
             itemList.Add(new MenuItem("Test F12", () => { SendKeys.SendWait("F12"); }));
             */
-            mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
-            modMenuPool.Add(mainMenu.GetMainMenu());
 
+            mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
+            modMenuPool.Add(mainMenu.ModMenu);
+
+            UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils");
+            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Machine Learning");
+            UIMenu uiFileMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "File");
+
+            utilsMenu = new Menu(uiUtilsMenu, utilsList);
+            mlMenu = new Menu(uiMlMenu, mlList);
+            fileMenu = new Menu(uiFileMenu, fileList);
+
+            /*
+            utilsMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils");
+            mlMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Machine Learning");
+            fileMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "File");
+            */
+        }
+
+        public void SaveCoordinates()
+        {
+            Vector3 pos = Game.Player.Character.Position;
+            Vector3 rot = Game.Player.Character.Rotation;
+            string streetName = World.GetStreetName(pos);
+            string zoneLocalizedName = World.GetZoneLocalizedName(pos);
+            file.SaveCoordinates(pos, rot, streetName, zoneLocalizedName);
         }
 
         public void StreetName()
@@ -156,64 +175,6 @@ namespace GtaVModPeDistance
             cameretta.Rotation = new Vector3(-90, 0, 0);           
             World.RenderingCamera = cameretta;
             Notification.Show("" + cameretta.Rotation);
-        }
-
-        public void SaveFile()
-        {          
-            if (xlApp == null)
-            {
-                MessageBox.Show("Excel is not properly installed!!");
-                GTA.UI.Screen.ShowSubtitle("Excel problems");
-                return;
-            }
-            xlWorkBook = xlApp.Workbooks.Add(misValue);
-            string assemblyFolder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "Location.xls");
-            try
-            {
-                xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
-                Notification.Show("File Location.xls opened! You can start saving positions. Close File when you are done.");
-            }
-            catch (Exception e)
-            {
-                xlWorkBook.SaveAs(xmlFileName, Excel.XlFileFormat.xlWorkbookNormal, misValue, misValue, misValue, misValue, Excel.XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
-                xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
-                Notification.Show("File Location.xls created! You can start saving positions. Close File when you are done.");
-            }
-           
-            xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-            index = (int) ((xlWorkSheet.Cells[1, 6] as Excel.Range).Value ?? 2);                
-            xlWorkSheet.Cells[1, 1] = "X";
-            xlWorkSheet.Cells[1, 2] = "Y";
-            xlWorkSheet.Cells[1, 3] = "Z";
-            xlWorkSheet.Cells[1, 4] = "Street Name";
-            xlWorkSheet.Cells[1, 5] = "Localized Name";
-            xlWorkSheet.Cells[1, 6] = index.ToString();
-            xlWorkBook.Save();                    
-        }
-
-        public void CloseFile()
-        {
-            xlWorkBook.Close(true, misValue, misValue);
-            xlApp.Quit();
-
-            Marshal.ReleaseComObject(xlWorkSheet);
-            Marshal.ReleaseComObject(xlWorkBook);
-            Marshal.ReleaseComObject(xlApp);
-            Notification.Show("File closed.");
-        }
-
-        public void SaveCoordinates()
-        {
-            Vector3 pos = Game.Player.Character.Position;
-            xlWorkSheet.Cells[index, 1] = pos.X;
-            xlWorkSheet.Cells[index, 2] = pos.Y;
-            xlWorkSheet.Cells[index, 3] = pos.Z;
-            xlWorkSheet.Cells[index, 4] = World.GetStreetName(pos);
-            xlWorkSheet.Cells[index, 5] = World.GetZoneLocalizedName(pos);
-            xlWorkSheet.Cells[1, 6] = (++index).ToString();
-            xlWorkBook.Save();
-            Notification.Show("Player coord saved ~o~" + Game.Player.Character.Position.ToString());
         }
 
         public void DisableCamera()
