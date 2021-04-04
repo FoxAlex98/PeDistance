@@ -29,14 +29,14 @@ namespace GtaVModPeDistance
                 return;
             }
             string assemblyFolder = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
-            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "scripts", "Location.xls");
+            string xmlFileName = System.IO.Path.Combine(assemblyFolder, "scripts", "Locations.xls");
             xlWorkBook = xlApp.Workbooks.Add(misValue);
 
             try
             {
                 xlWorkBook = xlApp.Workbooks.Open(xmlFileName);
                 xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.get_Item(1);
-                Notification.Show("File Location.xls opened! You can start saving positions. Close File when you are done.");
+                Notification.Show("File Locations.xls opened! You can start saving positions. Close File when you are done.");
             }
             catch (Exception e)
             {
@@ -51,7 +51,7 @@ namespace GtaVModPeDistance
                 xlWorkSheet.Cells[1, 8] = "Localized Name";
                 xlWorkSheet.Cells[1, 9] = index.ToString();
                 xlWorkBook.SaveAs(xmlFileName);
-                Notification.Show("File Location.xls created! You can start saving positions. Close File when you are done.");
+                Notification.Show("File Locations.xls created! You can start saving positions. Close File when you are done.");
             }
             finally
             {
@@ -86,9 +86,9 @@ namespace GtaVModPeDistance
             xlWorkSheet.Cells[index, 1] = pos.X;
             xlWorkSheet.Cells[index, 2] = pos.Y;
             xlWorkSheet.Cells[index, 3] = pos.Z;
-            xlWorkSheet.Cells[index, 4] = pos.X;
-            xlWorkSheet.Cells[index, 5] = pos.Y;
-            xlWorkSheet.Cells[index, 6] = pos.Z;
+            xlWorkSheet.Cells[index, 4] = rot.X;
+            xlWorkSheet.Cells[index, 5] = rot.Y;
+            xlWorkSheet.Cells[index, 6] = rot.Z;
             xlWorkSheet.Cells[index, 7] = streetName;
             xlWorkSheet.Cells[index, 8] = zoneLocalizedName;
             xlWorkSheet.Cells[1, 9] = (++index).ToString();

@@ -23,7 +23,7 @@ namespace GtaVModPeDistance
         string Version = "1.0";
 
         MenuPool modMenuPool;
-        Menu mainMenu;
+        Menu mainMenu, utilsMenu, mlMenu, fileMenu;
         FileManager file;
 
         List<Ped> pedList = new List<Ped>();
@@ -95,31 +95,54 @@ namespace GtaVModPeDistance
             modMenuPool = new MenuPool();
 
             List<MenuItem> itemList = new List<MenuItem>();
-            itemList.Add(new MenuItem("SpawnPed", SpawnOnePed));
-            itemList.Add(new MenuItem("DeleteAllNearPed", DeleteAllNearPed));
-            itemList.Add(new MenuItem("KillAllSpawnedPed", KillAllSpawnedPed));
-            itemList.Add(new MenuItem("ResetTimeMidday", ResetTimeMidday));
-            itemList.Add(new MenuItem("ResetWantedLevel", ResetWantedLevel));
-            itemList.Add(new MenuItem("TeleportInWaypoint", TeleportInWaypoint));
-            itemList.Add(new MenuItem("AirportDesertTeleport", AirportDesertTeleport));
-            itemList.Add(new MenuItem("DeleteSpawnedPed", DeleteSpawnedPed));
-            itemList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
-            itemList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
-            itemList.Add(new MenuItem("CloseFile", file.CloseLocationFile));
-            itemList.Add(new MenuItem("Never Wanted", ()=> { Game.Player.IgnoredByPolice = true; }));
-            itemList.Add(new MenuItem("Shoot Ped", ()=> { World.CreateRandomPed(World.GetCrosshairCoordinates().HitPosition); }));
-            itemList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
-            itemList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
-            itemList.Add(new MenuItem("Handle Camera", HandleMyCamera));
-            itemList.Add(new MenuItem("Disable Camera", DisableCamera));
-            itemList.Add(new MenuItem("Street Name", StreetName));
+            List<MenuItem> utilsList = new List<MenuItem>();
+            List<MenuItem> mlList = new List<MenuItem>();
+            List<MenuItem> fileList = new List<MenuItem>();
 
+            //utils menu
+            utilsList.Add(new MenuItem("ResetTimeMidday", ResetTimeMidday));
+            utilsList.Add(new MenuItem("ResetWantedLevel", ResetWantedLevel));
+            utilsList.Add(new MenuItem("Shoot Ped", ()=> { World.CreateRandomPed(World.GetCrosshairCoordinates().HitPosition); }));
+            utilsList.Add(new MenuItem("Never Wanted", ()=> { Game.Player.IgnoredByPolice = true; }));
+            utilsList.Add(new MenuItem("Handle Camera", HandleMyCamera));
+            utilsList.Add(new MenuItem("Disable Camera", DisableCamera));
+
+            //ml menu
+            mlList.Add(new MenuItem("SpawnPed", SpawnOnePed));
+            mlList.Add(new MenuItem("DeleteSpawnedPed", DeleteSpawnedPed));
+            mlList.Add(new MenuItem("AirportDesertTeleport", AirportDesertTeleport));
+            mlList.Add(new MenuItem("DeleteAllNearPed", DeleteAllNearPed));
+            mlList.Add(new MenuItem("KillAllSpawnedPed", KillAllSpawnedPed));
+            mlList.Add(new MenuItem("TeleportInWaypoint", TeleportInWaypoint));
+            mlList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
+            mlList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
+
+            //file menu
+            fileList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
+            fileList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
+            fileList.Add(new MenuItem("CloseFile", file.CloseLocationFile));
+            fileList.Add(new MenuItem("Street Name", StreetName));
             /*
             itemList.Add(new MenuItem("Test V", () => { SendKeys.SendWait("H"); }));
             itemList.Add(new MenuItem("Test F12", () => { SendKeys.SendWait("F12"); }));
             */
+
             mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
-            modMenuPool.Add(mainMenu.GetMenu());
+            modMenuPool.Add(mainMenu.ModMenu);
+
+            UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils");
+            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Machine Learning");
+            UIMenu uiFileMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "File");
+
+            utilsMenu = new Menu(uiUtilsMenu, utilsList);
+            mlMenu = new Menu(uiMlMenu, mlList);
+            fileMenu = new Menu(uiFileMenu, fileList);
+
+            /*
+            utilsMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils");
+            mlMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Machine Learning");
+            fileMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "File");
+            */
         }
 
         public void SaveCoordinates()
