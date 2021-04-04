@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Drawing;
@@ -125,6 +125,8 @@ namespace GtaVModPeDistance
             itemList.Add(new MenuItem("Handle Camera", HandleMyCamera));
             itemList.Add(new MenuItem("Disable Camera", DisableCamera));
             itemList.Add(new MenuItem("Street Name", StreetName));
+            itemList.Add(new MenuItem("SpawnElic", SpawnElicopter));
+            itemList.Add(new MenuItem("SpawnBike", SpawnBike));
 
             /*
             itemList.Add(new MenuItem("Test V", () => { SendKeys.SendWait("H"); }));
@@ -223,6 +225,18 @@ namespace GtaVModPeDistance
             }           
             World.RenderingCamera = null;
         }
+
+        public void SpawnElicopter()
+        {
+            World.CreateVehicle(new Model(VehicleHash.Frogger2), Game.Player.Character.GetOffsetPosition(new Vector3(0, 10, 0)));
+        }
+        
+        public void SpawnBike()
+        {
+            World.CreateVehicle(new Model(VehicleHash.Akuma), Game.Player.Character.GetOffsetPosition(new Vector3(0, 5, 0)));
+        }
+
+       
 
         #region methods
 
