@@ -26,25 +26,26 @@ namespace GtaVModPeDistance.File
 
         }
     
-        public void TakeScreenshot(SpawnPoint spawnPoint)
+        public string TakeScreenshot(SpawnPoint spawnPoint, bool notification = false)
         {
             memoryImage = new Bitmap(screenWidth, screenHeight);
             size = new Size(memoryImage.Width, memoryImage.Height);
             memoryGraphics = Graphics.FromImage(memoryImage);
 
             memoryGraphics.CopyFromScreen(0, 0, 0, 0, size);
-
-            fileName = Path.Combine(mainFolder, FileNameFormatter(spawnPoint.StreetName, spawnPoint.ZoneLocalizedName));
+            string finalName = FileNameFormatter(spawnPoint.StreetName, spawnPoint.ZoneLocalizedName);
+            fileName = Path.Combine(mainFolder, finalName);
 
             memoryImage.Save(string.Format(fileName));
-            GTA.UI.Notification.Show("ScreenShot Saved");
+            if(notification) GTA.UI.Notification.Show("ScreenShot Saved");
+            return finalName;
         }
 
         public string FileNameFormatter(string streetName, string zoneName)
         {
             streetName = streetName.Replace(" ", "_");
             zoneName = zoneName.Replace(" ", "_");
-            return streetName + "_" + zoneName + "_" + (index++).ToString() + ".png";
+            return (index++).ToString() + "_" + streetName + "_" + zoneName + ".png";
         }
     
     }

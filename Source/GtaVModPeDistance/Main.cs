@@ -7,6 +7,8 @@ using GTA.Math;
 using GTA.Native;
 using NativeUI;
 using GtaVModPeDistance.Models;
+using GtaVModPeDistance.File;
+using System.Threading;
 
 namespace GtaVModPeDistance
 {
@@ -22,23 +24,40 @@ namespace GtaVModPeDistance
 
         MenuPool modMenuPool;
         Menu mainMenu, utilsMenu, mlMenu, fileMenu;
-        LocationManager file;
+
+        // Managers
+        LocationManager location;
+        ScreenShotManager screenShot;
+        DataMananger dataManager;
+
         UIMenuListItem helicopterList, motorbikeList, boatList, weaponList;
         List<dynamic> listOfHelicopter, listOfMotorbike, listOfBoat;
         VehicleHash[] allVehiclesHash;
 
         List<Ped> pedList = new List<Ped>();
-        Ped ped;
+       
         int GameTimeReference = Game.GameTime + 1000;
         Random rand = new Random();
 
         Camera cameretta;
+        SpawnPoint spawnPoint;
         //List<string> namesList;
         //List<ActionToDo> actionsList;
 
+        // Collecting Data variable
+        bool startCollectingData = false;
+        float start = 0;
+        int collectingStep = 0;
+        int collectedDataCounter = 0;
+        int maxCollectedData = 15;
+        Ped ped;
+
         public Main()
         {
-            file = new LocationManager();
+            location = new LocationManager();
+            screenShot = new ScreenShotManager();
+            dataManager = new DataMananger();
+
             MenuSetup();
             Tick += onTick;
             KeyDown += onKeyDown;
@@ -81,13 +100,105 @@ namespace GtaVModPeDistance
                     changeCameraPlayerState = 0;
                 }
             }
+
+
+            #region Collecting Data region
+
+            if(startCollectingData)
+            {
+                switch(collectingStep)
+                {
+                    case 0:
+                        {
+                            if (Game.GameTime > start + 10000)
+                            {
+                                SpawnRandomPoint();
+                                start = Game.GameTime;
+                                collectingStep++;
+                            }
+                            break;
+                        }                                                  
+                    case 1:
+                        {
+                            if (Game.GameTime > start + 6000)
+                            {
+                                InitCollettingDataOperations();
+                                start = Game.GameTime;
+                                collectingStep++;
+                            }
+                            break;
+                        }
+                    case 2:
+                        {
+                            if (Game.GameTime > start + 1000)
+                            {
+                                SpawnPed();
+                                start = Game.GameTime;
+                                collectingStep++;
+                            }
+                            break;
+                        }
+                    case 3:
+                        {
+                            if (Game.GameTime > start + 3000)
+                            {
+                                CollectingData();
+                                start = Game.GameTime;
+                                collectingStep++;
+                            }
+                            break;
+                        }
+                    case 4:
+                        {
+                            if (Game.GameTime > start + 1000)
+                            {
+                                ClearCollettingDataSettings();
+                                start = Game.GameTime;
+                                collectingStep++;
+                            }
+                            break;
+                        }
+                    case 5:
+                        {
+                            if (Game.GameTime > start)
+                            {
+                                if (collectedDataCounter % 5 == 0) dataManager.WriteDataToFile();
+                                if (collectedDataCounter == maxCollectedData)
+                                {
+                                    EndingCollectingData();
+                                } else
+                                {
+                                    start = Game.GameTime;
+                                    collectingStep = 0;
+                                }                               
+                            }
+                            break;
+                        }
+                    default:
+                        break;
+                }
+                 
+            }
+            //SpawnRandomPoint();
+            //while (GameplayCamera.IsRendering) ;          // sleep for rendering
+            //InitCollettingDataOperations();
+            //Thread.Sleep(1000);
+            //Ped ped = SpawnPed();
+            //Thread.Sleep(3000);              // sleep for waiting ped drop
+            //CollectingData(i, ped);
+            //Thread.Sleep(1000);               // sleep for data cleaning
+            //ClearCollettingDataSettings();
+
+            //if (i % 5 == 0) dataManager.WriteDataToFile();
+
+            #endregion
         }
 
         private void onKeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.F5 && !modMenuPool.IsAnyMenuOpen())
             {
-                mainMenu.ShowHideMenu();
+                mainMenu.ToggleMenu();
             }
         }
 
@@ -129,9 +240,6 @@ namespace GtaVModPeDistance
             utilsList.Add(new MenuItem(helicopterList, () => { SpawnVehicle(helicopterList, listOfHelicopter); }));
             utilsList.Add(new MenuItem(motorbikeList, () => { SpawnVehicle(motorbikeList, listOfMotorbike); }));
             utilsList.Add(new MenuItem(boatList, () => { SpawnVehicle(boatList, listOfBoat); }));
-            //utilsList.Add(new MenuItem("Spawn Elic", SpawnElicopter));
-            //utilsList.Add(new MenuItem("Spawn Bike", SpawnBike));
-
 
             //ml menu
             mlList.Add(new MenuItem("SpawnPed", SpawnOnePed));
@@ -143,14 +251,15 @@ namespace GtaVModPeDistance
             mlList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
             mlList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
             mlList.Add(new MenuItem("SpawnRandomPoint", SpawnRandomPoint));
-
+            mlList.Add(new MenuItem("Take ScreenShot", () => screenShot.TakeScreenshot(spawnPoint)));
+            mlList.Add(new MenuItem("Start Collecting Data", StartCollectingData));
+            
             //file menu
             fileList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
             fileList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
-            fileList.Add(new MenuItem("DeleteLastSavedCoord", file.DeleteLastCoordinate));
-            fileList.Add(new MenuItem("CloseFile", file.CloseLocationFile));
+            fileList.Add(new MenuItem("DeleteLastSavedCoord", location.DeleteLastCoordinate));
+            fileList.Add(new MenuItem("CloseFile", location.CloseLocationFile));
             fileList.Add(new MenuItem("Street Name", StreetName));
-
 
             mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
             modMenuPool.Add(mainMenu.ModMenu);
@@ -164,9 +273,112 @@ namespace GtaVModPeDistance
             fileMenu = new Menu(uiFileMenu, fileList);
         }
 
+        // main automatic dataset creator function
+        public void StartCollectingData()
+        {
+            mainMenu.HideMenu();
+
+            Notification.Show("Starting collecting data...");            
+            Game.Player.Character.IsVisible = false;
+            HideOrShowHud(false);
+
+            start = Game.GameTime;
+            startCollectingData = true;
+            collectingStep = 0;
+            collectedDataCounter = 0;
+        }
+
+        public void EndingCollectingData()
+        {
+            Notification.Show("Stop collecting data...");
+            Game.Player.Character.IsVisible = true;
+            HideOrShowHud(true);
+
+            start = Game.GameTime;
+            startCollectingData = false;
+            collectingStep = 0;
+            collectedDataCounter = 0;
+        }
+
+        private void InitCollettingDataOperations()
+        {
+            DeleteAllNearPed();
+            DeleteAllNearVehicles();                
+        }
+
+        private void ClearCollettingDataSettings()
+        {
+            World.RenderingCamera.Delete();
+            DeleteAllNearPed();
+        }
+
         public void HideOrShowHud(bool hideOrShow) 
         {
             Function.Call(Hash.DISPLAY_RADAR, hideOrShow);
+        }
+
+        private void SpawnRandomPoint()
+        {            
+            spawnPoint = location.GetRandomPoint();
+            Game.Player.Character.Position = spawnPoint.Position;           
+            Camera camera = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, spawnPoint.Position.Z + 0.8f), spawnPoint.Rotation, 80);
+            World.RenderingCamera = camera;
+            // Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
+        }
+
+        private void CollectingData()
+        {
+            
+            string imageName = screenShot.TakeScreenshot(spawnPoint);
+
+            Data data = new Data(
+                    collectedDataCounter++,
+                    GetDistance(ped.Position, World.RenderingCamera.Position),
+                    ped.HeightAboveGround,
+                    ped.Rotation.Z,
+                    World.RenderingCamera.Position.Z,
+                    imageName,
+                    World.CurrentTimeOfDay.ToString()
+                );
+
+            dataManager.addElement(data);
+            // store data to csv
+        }
+
+        private double GetDistance(Vector3 pedPosition, Vector3 cameraPosition)
+        {
+            Notification.Show("PedPosition: " + pedPosition.ToString());
+            Notification.Show("cameraPosition: " + cameraPosition.ToString());
+            Notification.Show("PedPosition: " + pedPosition.ToString());
+            double val = Math.Sqrt(Math.Pow(Math.Abs(pedPosition.X) - Math.Abs(cameraPosition.X), 2) + Math.Pow(Math.Abs(pedPosition.Y) - Math.Abs(cameraPosition.X), 2));
+            return val;
+        }
+
+        private void SpawnPed()
+        {
+            float x, y;
+            do
+            {
+                x = rand.Next(-5, 5);
+                y = rand.Next(2, 15);
+            } while (Math.Abs(x) > y);
+            ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));
+            ped.Heading = rand.Next(360);
+        }
+
+        private void SpawnOnePed()
+        {
+            float x;
+            float y;
+            do
+            {
+                x = rand.Next(-5, 5);
+                y = rand.Next(2, 15);
+            } while (Math.Abs(x) > y);
+            Ped ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));
+            ped.Heading = rand.Next(360);
+            pedList.Add(ped);
+            Notification.Show(ped.Speed.ToString());
         }
 
         public void SpawnVehicle(UIMenuListItem vehicleTypeList, List<dynamic> typeList)
@@ -176,26 +388,14 @@ namespace GtaVModPeDistance
             Vehicle vehicle = World.CreateVehicle(new Model(vehicleHash),pos);
             vehicle.PlaceOnGround();
         }
-
-        private void SpawnRandomPoint()
-        {
-            if (cameretta != null) cameretta.Delete();
-            cameretta = null;
-            SpawnPoint spawnPoint = file.GetRandomPoint();
-            cameretta = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, spawnPoint.Position.Z + 0.8f), spawnPoint.Rotation, 80);
-            World.RenderingCamera = cameretta;
-            Game.Player.Character.Position = spawnPoint.Position;
-            HideOrShowHud(false);
-            Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
-        }
-
+       
         public void SaveCoordinates()
         {
             Vector3 pos = Game.Player.Character.Position;
             Vector3 rot = Game.Player.Character.Rotation;
             string streetName = World.GetStreetName(pos);
             string zoneLocalizedName = World.GetZoneLocalizedName(pos);
-            file.SaveCoordinates(new SpawnPoint(pos, rot, streetName, zoneLocalizedName));
+            location.SaveCoordinates(new SpawnPoint(pos, rot, streetName, zoneLocalizedName));
         }
 
         public void StreetName()
@@ -260,8 +460,16 @@ namespace GtaVModPeDistance
             foreach (Ped ped in pedArray)
             {
                 ped.Delete();
-            }
-            Notification.Show("All ped ~r~deleted (I am legend)");
+            }           
+        }
+
+        private void DeleteAllNearVehicles()
+        {
+            Vehicle[] vehicleArray = World.GetAllVehicles();
+            foreach (Vehicle vc in vehicleArray)
+            {
+                vc.Delete();
+            }           
         }
 
         private void ResetTimeMidday()
@@ -291,21 +499,6 @@ namespace GtaVModPeDistance
                 Game.Player.WantedLevel = 0;
                 Notification.Show("Player WantedLevel set to 0");
             }
-        }
-
-        private void SpawnOnePed()
-        {
-            float x;
-            float y;
-            do
-            {
-                x = rand.Next(-5, 5);
-                y = rand.Next(2, 15);
-            } while (Math.Abs(x) > y);
-            Ped ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));                      
-            ped.Heading = rand.Next(360);
-            pedList.Add(ped);
-            Notification.Show(ped.Speed.ToString());
         }
 
         private void AirportDesertTeleport()

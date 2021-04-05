@@ -46,9 +46,19 @@ namespace GtaVModPeDistance
             itemList.ForEach(x => x.Evaluate(item));
         }
 
-        public void ShowHideMenu()
+        public void ToggleMenu()
         {
             _modMenu.Visible = !_modMenu.Visible;
+        }
+
+        public void ShowMenu()
+        {
+            _modMenu.Visible = true;
+        }
+
+        public void HideMenu()
+        {
+            _modMenu.Visible = false;
         }
 
     }
