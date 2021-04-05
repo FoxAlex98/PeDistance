@@ -38,7 +38,7 @@ namespace GtaVModPeDistance
             _modMenu.OnItemSelect += onMainMenuItemSelected;
             this.itemList = itemList;
             if (itemList.Count > 0)
-                itemList.ForEach(x => modMenu.AddItem(x.GetItem()));
+                itemList.ForEach(x => modMenu.AddItem(x.Item));
         }
 
         void onMainMenuItemSelected(UIMenu sender, UIMenuItem item, int index)
