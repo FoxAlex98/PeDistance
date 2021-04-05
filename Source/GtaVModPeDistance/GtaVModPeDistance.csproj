@@ -53,6 +53,7 @@
     <Compile Include="MenuItem.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Models\SpawnPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

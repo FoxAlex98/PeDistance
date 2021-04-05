@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using GTA.Math;
 using GTA.UI;
+using GtaVModPeDistance.Models;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace GtaVModPeDistance
@@ -12,11 +13,12 @@ namespace GtaVModPeDistance
         Excel.Workbook xlWorkBook;
         Excel.Worksheet xlWorkSheet;
         object misValue = System.Reflection.Missing.Value;
-
+        Random rand;
         int index = 2;
 
         public FileManager() {
             SaveLocationFile();
+            rand = new Random();
         }
 
         public void SaveLocationFile()
@@ -80,19 +82,19 @@ namespace GtaVModPeDistance
             }
         }
 
-        public void SaveCoordinates(Vector3 pos, Vector3 rot, string streetName, string zoneLocalizedName)
+        public void SaveCoordinates(SpawnPoint spawnPlace)
         {
-            xlWorkSheet.Cells[index, 1] = pos.X;
-            xlWorkSheet.Cells[index, 2] = pos.Y;
-            xlWorkSheet.Cells[index, 3] = pos.Z;
-            xlWorkSheet.Cells[index, 4] = rot.X;
-            xlWorkSheet.Cells[index, 5] = rot.Y;
-            xlWorkSheet.Cells[index, 6] = rot.Z;
-            xlWorkSheet.Cells[index, 7] = streetName;
-            xlWorkSheet.Cells[index, 8] = zoneLocalizedName;
+            xlWorkSheet.Cells[index, 1] = spawnPlace.Position.X;
+            xlWorkSheet.Cells[index, 2] = spawnPlace.Position.Y;
+            xlWorkSheet.Cells[index, 3] = spawnPlace.Position.Z;
+            xlWorkSheet.Cells[index, 4] = spawnPlace.Rotation.X;
+            xlWorkSheet.Cells[index, 5] = spawnPlace.Rotation.Y;
+            xlWorkSheet.Cells[index, 6] = spawnPlace.Rotation.Z;
+            xlWorkSheet.Cells[index, 7] = spawnPlace.StreetName;
+            xlWorkSheet.Cells[index, 8] = spawnPlace.ZoneLocalizedName;
             xlWorkSheet.Cells[1, 9] = (++index).ToString();
             xlWorkBook.Save();
-            Notification.Show("Player coord saved ~o~" + pos.ToString());
+            Notification.Show("Player coord saved ~o~" + spawnPlace.Position.ToString());
         }
 
         public void DeleteLastCoordinate()
@@ -108,6 +110,23 @@ namespace GtaVModPeDistance
             xlWorkSheet.Cells[index, 8] = "";           
             xlWorkBook.Save();
             Notification.Show("Last coord deleted");
+        }
+
+        public SpawnPoint getRandomPoint()
+        {
+            int randomIndex = rand.Next(2, index - 1);
+            return new SpawnPoint(
+                new Vector3(
+                    (float) ((xlWorkSheet.Cells[randomIndex, 1] as Excel.Range).Value), 
+                    (float) ((xlWorkSheet.Cells[randomIndex, 2] as Excel.Range).Value),
+                    (float) ((xlWorkSheet.Cells[randomIndex, 3] as Excel.Range).Value)),
+                new Vector3(
+                    (float) ((xlWorkSheet.Cells[randomIndex, 4] as Excel.Range).Value),
+                    (float) ((xlWorkSheet.Cells[randomIndex, 5] as Excel.Range).Value),
+                    (float) ((xlWorkSheet.Cells[randomIndex, 6] as Excel.Range).Value)),
+                ((xlWorkSheet.Cells[randomIndex, 7] as Excel.Range).Value),
+                ((xlWorkSheet.Cells[randomIndex, 8] as Excel.Range).Value)
+                );
         }
     }
 }

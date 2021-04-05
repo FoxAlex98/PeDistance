@@ -9,6 +9,7 @@ using GTA.Native;
 using NativeUI;
 
 using System.Reflection;
+using GtaVModPeDistance.Models;
 
 namespace GtaVModPeDistance
 {
@@ -116,6 +117,7 @@ namespace GtaVModPeDistance
             mlList.Add(new MenuItem("TeleportInWaypoint", TeleportInWaypoint));
             mlList.Add(new MenuItem("Safe Ped SideWalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,true)); }));
             mlList.Add(new MenuItem("Safe Ped No Sidewalk", ()=> { World.CreateRandomPed(World.GetSafeCoordForPed(Game.Player.Character.Position,false)); }));
+            mlList.Add(new MenuItem("SpawnRandomPoint", SpawnRandomPoint));
 
             //file menu
             fileList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
@@ -146,13 +148,25 @@ namespace GtaVModPeDistance
             */
         }
 
+        private void SpawnRandomPoint()
+        {
+            if (cameretta != null) cameretta.Delete();
+            cameretta = null;
+            SpawnPoint spawnPoint = file.getRandomPoint();
+            cameretta = World.CreateCamera(spawnPoint.Position, spawnPoint.Rotation, 80);
+            World.RenderingCamera = cameretta;
+            Game.Player.Character.Position = spawnPoint.Position;
+            Game.Player.Character.IsVisible = false;
+            Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
+        }
+
         public void SaveCoordinates()
         {
             Vector3 pos = Game.Player.Character.Position;
             Vector3 rot = Game.Player.Character.Rotation;
             string streetName = World.GetStreetName(pos);
             string zoneLocalizedName = World.GetZoneLocalizedName(pos);
-            file.SaveCoordinates(pos, rot, streetName, zoneLocalizedName);
+            file.SaveCoordinates(new SpawnPoint(pos, rot, streetName, zoneLocalizedName));
         }
 
         public void StreetName()
@@ -242,8 +256,15 @@ namespace GtaVModPeDistance
 
         private void SpawnOnePed()
         {
-            pedList.Add(World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(0, rand.Next(50), 50))));
-            Notification.Show("Ped has been ~b~spawned!");
+            float x;
+            float y;
+            do
+            {
+                x = rand.Next(-4, 4);
+                y = rand.Next(2, 15);
+            } while (Math.Abs(x) < y);
+            pedList.Add(World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0))));
+            Notification.Show("Ped has been ~b~spawned! " + x + " : " + y);
         }
 
         private void AirportDesertTeleport()
