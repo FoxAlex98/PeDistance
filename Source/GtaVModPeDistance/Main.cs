@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Linq;
 using System.Drawing;
 using GTA;
 using GTA.UI;
@@ -22,9 +23,12 @@ namespace GtaVModPeDistance
         string Developer = "Danilo-AleS-AleC";
         string Version = "1.0";
 
+        FileManager file;
         MenuPool modMenuPool;
         Menu mainMenu, utilsMenu, mlMenu, fileMenu;
-        FileManager file;
+        UIMenuListItem helicopterList, motorbikeList, boatList, weaponList;
+        List<dynamic> listOfHelicopter, listOfMotorbike, listOfBoat;
+        VehicleHash[] allVehiclesHash;
 
         List<Ped> pedList = new List<Ped>();
         Ped ped;
@@ -98,16 +102,39 @@ namespace GtaVModPeDistance
             List<MenuItem> utilsList = new List<MenuItem>();
             List<MenuItem> mlList = new List<MenuItem>();
             List<MenuItem> fileList = new List<MenuItem>();
-            itemList.Add(new MenuItem("SpawnElic", SpawnElicopter));
-            itemList.Add(new MenuItem("SpawnBike", SpawnBike));
+
+            allVehiclesHash = (VehicleHash[])Enum.GetValues(typeof(VehicleHash));
+            listOfHelicopter = new List<dynamic>();
+            listOfMotorbike = new List<dynamic>();
+            listOfBoat = new List<dynamic>();
+
+            for (int i = 0; i < allVehiclesHash.Length; i++)
+            {
+                Model tempModel = new Model(allVehiclesHash[i]);
+
+                if (tempModel.IsHelicopter) listOfHelicopter.Add(allVehiclesHash[i]);
+                else if (tempModel.IsBike) listOfMotorbike.Add(allVehiclesHash[i]);
+                else if (tempModel.IsBoat) listOfBoat.Add(allVehiclesHash[i]);
+            }
+
+            //TODO: find index problem
+            helicopterList = new UIMenuListItem("Helicopters: ", listOfHelicopter, 1);
+            motorbikeList = new UIMenuListItem("Motorbikes: ", listOfMotorbike, 1);
+            boatList = new UIMenuListItem("Boats: ", listOfBoat, 1);
 
             //utils menu
-            utilsList.Add(new MenuItem("ResetTimeMidday", ResetTimeMidday));
-            utilsList.Add(new MenuItem("ResetWantedLevel", ResetWantedLevel));
+            utilsList.Add(new MenuItem("Reset Time Midday", ResetTimeMidday));
+            utilsList.Add(new MenuItem("Reset Wanted Level", ResetWantedLevel));
             utilsList.Add(new MenuItem("Shoot Ped", ()=> { World.CreateRandomPed(World.GetCrosshairCoordinates().HitPosition); }));
             utilsList.Add(new MenuItem("Never Wanted", ()=> { Game.Player.IgnoredByPolice = true; }));
             utilsList.Add(new MenuItem("Handle Camera", HandleMyCamera));
             utilsList.Add(new MenuItem("Disable Camera", DisableCamera));
+            utilsList.Add(new MenuItem(helicopterList, () => { SpawnVehicle(helicopterList, listOfHelicopter); }));
+            utilsList.Add(new MenuItem(motorbikeList, () => { SpawnVehicle(motorbikeList, listOfMotorbike); }));
+            utilsList.Add(new MenuItem(boatList, () => { SpawnVehicle(boatList, listOfBoat); }));
+            //utilsList.Add(new MenuItem("Spawn Elic", SpawnElicopter));
+            //utilsList.Add(new MenuItem("Spawn Bike", SpawnBike));
+
 
             //ml menu
             mlList.Add(new MenuItem("SpawnPed", SpawnOnePed));
@@ -145,6 +172,14 @@ namespace GtaVModPeDistance
             mlMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Machine Learning");
             fileMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "File");
             */
+        }
+
+        public void SpawnVehicle(UIMenuListItem vehicleTypeList, List<dynamic> typeList)
+        {
+            Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 10, 0));
+            VehicleHash vehicleHash = typeList[vehicleTypeList.Index];
+            Vehicle vehicle = World.CreateVehicle(new Model(vehicleHash),pos);
+            vehicle.PlaceOnGround();
         }
 
         public void SaveCoordinates()

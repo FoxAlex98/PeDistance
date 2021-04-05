@@ -1,18 +1,15 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Drawing;
-using GTA;
-using GTA.UI;
-using GTA.Math;
-using GTA.Native;
-using NativeUI;
+﻿using NativeUI;
 
 namespace GtaVModPeDistance
 {
     public class MenuItem
     {
-        private UIMenuItem item;
+        private UIMenuItem _item;
+        public UIMenuItem Item
+        {
+            get => _item;
+            set => _item = value;
+        }
         private string name;
         private ActionToDo action;
         
@@ -21,20 +18,25 @@ namespace GtaVModPeDistance
             this.name = name;
             this.action = action;
 
-            item = new UIMenuItem(name);
+            _item = new UIMenuItem(name);
+        }
+
+        public MenuItem(UIMenuItem item, ActionToDo action = null)
+        {
+            _item = item;
+            this.action = action;
         }
 
         public void Evaluate(UIMenuItem itemToCompare)
         {
-            if(item == itemToCompare)
+            if(_item == itemToCompare)
             {
-                action();
+                if(action != null)
+                {
+                   action();
+                }
             }
         }
 
-        public UIMenuItem GetItem()
-        {
-            return item;
-        }
     }
 }
