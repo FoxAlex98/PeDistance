@@ -148,6 +148,11 @@ namespace GtaVModPeDistance
             */
         }
 
+        public void HideOrShowHud(bool hideOrShow) 
+        {
+            Function.Call(Hash.DISPLAY_RADAR, hideOrShow);
+        }
+
         private void SpawnRandomPoint()
         {
             if (cameretta != null) cameretta.Delete();
@@ -156,7 +161,7 @@ namespace GtaVModPeDistance
             cameretta = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, spawnPoint.Position.Z + 0.8f), spawnPoint.Rotation, 80);
             World.RenderingCamera = cameretta;
             Game.Player.Character.Position = spawnPoint.Position;
-            Game.Player.Character.IsVisible = false;
+            HideOrShowHud(false);
             Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
         }
 
