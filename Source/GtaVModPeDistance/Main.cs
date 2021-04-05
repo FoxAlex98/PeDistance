@@ -153,7 +153,7 @@ namespace GtaVModPeDistance
             if (cameretta != null) cameretta.Delete();
             cameretta = null;
             SpawnPoint spawnPoint = file.getRandomPoint();
-            cameretta = World.CreateCamera(spawnPoint.Position, spawnPoint.Rotation, 80);
+            cameretta = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, spawnPoint.Position.Z + 0.8f), spawnPoint.Rotation, 80);
             World.RenderingCamera = cameretta;
             Game.Player.Character.Position = spawnPoint.Position;
             Game.Player.Character.IsVisible = false;
@@ -260,10 +260,12 @@ namespace GtaVModPeDistance
             float y;
             do
             {
-                x = rand.Next(-4, 4);
+                x = rand.Next(-5, 5);
                 y = rand.Next(2, 15);
-            } while (Math.Abs(x) < y);
-            pedList.Add(World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0))));
+            } while (Math.Abs(x) > y);
+            Ped ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));            
+            ped.Rotation = new Vector3(0, 0, cameretta != null ? cameretta.Rotation.Z : 0);
+            pedList.Add(ped);
             Notification.Show("Ped has been ~b~spawned! " + x + " : " + y);
         }
 
