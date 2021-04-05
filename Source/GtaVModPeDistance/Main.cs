@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Drawing;
@@ -181,7 +181,6 @@ namespace GtaVModPeDistance
         public void HandleMyCamera()
         {
             cameretta = null;
-            Vector3 myPos = Game.Player.Character.Position;
             Vector3 cameraPos = Vector3.Zero;
             cameretta = World.CreateCamera(cameraPos, Vector3.Zero, 80);
             cameretta.AttachTo(Game.Player.Character, new Vector3(0, 0, 10));                     
@@ -263,10 +262,10 @@ namespace GtaVModPeDistance
                 x = rand.Next(-5, 5);
                 y = rand.Next(2, 15);
             } while (Math.Abs(x) > y);
-            Ped ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));            
-            ped.Rotation = new Vector3(0, 0, cameretta != null ? cameretta.Rotation.Z : 0);
+            Ped ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));                      
+            ped.Heading = rand.Next(360);
             pedList.Add(ped);
-            Notification.Show("Ped has been ~b~spawned! " + x + " : " + y);
+            Notification.Show(ped.Speed.ToString());
         }
 
         private void AirportDesertTeleport()
