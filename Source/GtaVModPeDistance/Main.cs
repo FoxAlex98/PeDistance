@@ -45,11 +45,12 @@ namespace GtaVModPeDistance
         //List<ActionToDo> actionsList;
 
         // Collecting Data variable
+        Vector3 initialPosition;
         bool startCollectingData = false;
         float start = 0;
         int collectingStep = 0;
         int collectedDataCounter = 0;
-        int maxCollectedData = 15;
+        int maxCollectedData = 6;
         Ped ped;
 
         public Main()
@@ -110,7 +111,7 @@ namespace GtaVModPeDistance
                 {
                     case 0:
                         {
-                            if (Game.GameTime > start + 10000)
+                            if (Game.GameTime > start + 5000)
                             {
                                 SpawnRandomPoint();
                                 start = Game.GameTime;
@@ -170,6 +171,7 @@ namespace GtaVModPeDistance
                                 {
                                     start = Game.GameTime;
                                     collectingStep = 0;
+                                    Notification.Show("Counter: " + collectedDataCounter + "/" + maxCollectedData);
                                 }                               
                             }
                             break;
@@ -179,17 +181,6 @@ namespace GtaVModPeDistance
                 }
                  
             }
-            //SpawnRandomPoint();
-            //while (GameplayCamera.IsRendering) ;          // sleep for rendering
-            //InitCollettingDataOperations();
-            //Thread.Sleep(1000);
-            //Ped ped = SpawnPed();
-            //Thread.Sleep(3000);              // sleep for waiting ped drop
-            //CollectingData(i, ped);
-            //Thread.Sleep(1000);               // sleep for data cleaning
-            //ClearCollettingDataSettings();
-
-            //if (i % 5 == 0) dataManager.WriteDataToFile();
 
             #endregion
         }
@@ -276,9 +267,8 @@ namespace GtaVModPeDistance
         // main automatic dataset creator function
         public void StartCollectingData()
         {
-            mainMenu.HideMenu();
-
-            Notification.Show("Starting collecting data...");            
+            initialPosition = Game.Player.Character.Position;
+            Notification.Show("Starting collecting data... Remove menu using ESC");           
             Game.Player.Character.IsVisible = false;
             HideOrShowHud(false);
 
@@ -292,8 +282,9 @@ namespace GtaVModPeDistance
         {
             Notification.Show("Stop collecting data...");
             Game.Player.Character.IsVisible = true;
+            Game.Player.Character.Position = initialPosition;
             HideOrShowHud(true);
-
+            World.RenderingCamera = null;
             start = Game.GameTime;
             startCollectingData = false;
             collectingStep = 0;
@@ -321,7 +312,7 @@ namespace GtaVModPeDistance
         {            
             spawnPoint = location.GetRandomPoint();
             Game.Player.Character.Position = spawnPoint.Position;           
-            Camera camera = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, spawnPoint.Position.Z + 0.8f), spawnPoint.Rotation, 80);
+            Camera camera = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, spawnPoint.Position.Z + 0.8f), spawnPoint.Rotation, 60);
             World.RenderingCamera = camera;
             // Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
         }
@@ -334,7 +325,7 @@ namespace GtaVModPeDistance
             Data data = new Data(
                     collectedDataCounter++,
                     GetDistance(ped.Position, World.RenderingCamera.Position),
-                    ped.HeightAboveGround,
+                    getEntityHeight(),
                     ped.Rotation.Z,
                     World.RenderingCamera.Position.Z,
                     imageName,
@@ -345,13 +336,16 @@ namespace GtaVModPeDistance
             // store data to csv
         }
 
+        private float getEntityHeight()
+        {
+            float h = ped.Bones[Bone.FacialForeheadUpper].Position.Z - World.GetGroundHeight(ped.Position);
+            Notification.Show(h.ToString());
+            return h;
+        }
+
         private double GetDistance(Vector3 pedPosition, Vector3 cameraPosition)
         {
-            Notification.Show("PedPosition: " + pedPosition.ToString());
-            Notification.Show("cameraPosition: " + cameraPosition.ToString());
-            Notification.Show("PedPosition: " + pedPosition.ToString());
-            double val = Math.Sqrt(Math.Pow(Math.Abs(pedPosition.X) - Math.Abs(cameraPosition.X), 2) + Math.Pow(Math.Abs(pedPosition.Y) - Math.Abs(cameraPosition.X), 2));
-            return val;
+            return Math.Sqrt(Math.Pow(pedPosition.X - cameraPosition.X, 2) + Math.Pow(pedPosition.Y - cameraPosition.Y, 2));
         }
 
         private void SpawnPed()
@@ -375,10 +369,8 @@ namespace GtaVModPeDistance
                 x = rand.Next(-5, 5);
                 y = rand.Next(2, 15);
             } while (Math.Abs(x) > y);
-            Ped ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));
-            ped.Heading = rand.Next(360);
-            pedList.Add(ped);
-            Notification.Show(ped.Speed.ToString());
+            ped = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x, y, 0)));
+            ped.Heading = rand.Next(360);           
         }
 
         public void SpawnVehicle(UIMenuListItem vehicleTypeList, List<dynamic> typeList)
@@ -405,6 +397,14 @@ namespace GtaVModPeDistance
             string zoneDisplayName = World.GetZoneDisplayName(pos);
             string zoneLocalizedName = World.GetZoneLocalizedName(pos);
             Notification.Show("StreetName: " + streetName + "\nZoneDisplayName: " + zoneDisplayName + "\nZoneLocalizedName: " + zoneLocalizedName);
+            Notification.Show((Game.Player.Character.Bones[Bone.FacialForeheadUpper].Position.Z - World.GetGroundHeight(Game.Player.Character.Position)).ToString());
+            if (ped != null)
+            {
+
+                Notification.Show((ped.Bones[Bone.FacialForeheadUpper].Position.Z - World.GetGroundHeight(ped.Position)).ToString());
+                Notification.Show(ped.Bones[Bone.FacialForeheadUpper].Position.Z.ToString());
+                Notification.Show(World.GetGroundHeight(ped.Position).ToString());
+            }
         }
         
 

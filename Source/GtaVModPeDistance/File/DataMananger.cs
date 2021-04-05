@@ -21,7 +21,7 @@ namespace GtaVModPeDistance.File
             setInstance();                      
         }
 
-        private void setInstance()
+        public void setInstance()
         {
             try
             {
@@ -31,7 +31,6 @@ namespace GtaVModPeDistance.File
             {
                 Console.WriteLine("FileNotFoundException: " + e.ToString());
             }
-
         }
 
         public void addElement(Data element)
@@ -50,7 +49,12 @@ namespace GtaVModPeDistance.File
         {
             FileInfo file = new FileInfo(filePath);
             file.Delete();
-            if(createNew) setInstance();         
+            if(createNew) setInstance();            
+        }
+
+        public void FreeResource()
+        {
+            csvWriter.Dispose();
         }
     }
 }
