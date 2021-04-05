@@ -49,7 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileManager.cs" />
+    <Compile Include="File\LocationManager.cs" />
+    <Compile Include="File\ScreenShotManager.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Main.cs" />
@@ -85,5 +86,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
