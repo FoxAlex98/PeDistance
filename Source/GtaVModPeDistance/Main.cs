@@ -1,14 +1,11 @@
 using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
-using System.Drawing;
 using GTA;
 using GTA.UI;
 using GTA.Math;
 using GTA.Native;
 using NativeUI;
-
-using System.Reflection;
 using GtaVModPeDistance.Models;
 
 namespace GtaVModPeDistance
@@ -25,7 +22,7 @@ namespace GtaVModPeDistance
 
         MenuPool modMenuPool;
         Menu mainMenu, utilsMenu, mlMenu, fileMenu;
-        FileManager file;
+        LocationManager file;
 
         List<Ped> pedList = new List<Ped>();
         Ped ped;
@@ -38,7 +35,7 @@ namespace GtaVModPeDistance
 
         public Main()
         {
-            file = new FileManager();
+            file = new LocationManager();
             MenuSetup();
             Tick += onTick;
             KeyDown += onKeyDown;
@@ -125,10 +122,7 @@ namespace GtaVModPeDistance
             fileList.Add(new MenuItem("DeleteLastSavedCoord", file.DeleteLastCoordinate));
             fileList.Add(new MenuItem("CloseFile", file.CloseLocationFile));
             fileList.Add(new MenuItem("Street Name", StreetName));
-            /*
-            itemList.Add(new MenuItem("Test V", () => { SendKeys.SendWait("H"); }));
-            itemList.Add(new MenuItem("Test F12", () => { SendKeys.SendWait("F12"); }));
-            */
+
 
             mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
             modMenuPool.Add(mainMenu.ModMenu);
@@ -140,12 +134,6 @@ namespace GtaVModPeDistance
             utilsMenu = new Menu(uiUtilsMenu, utilsList);
             mlMenu = new Menu(uiMlMenu, mlList);
             fileMenu = new Menu(uiFileMenu, fileList);
-
-            /*
-            utilsMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils");
-            mlMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Machine Learning");
-            fileMenu.ModMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "File");
-            */
         }
 
         public void HideOrShowHud(bool hideOrShow) 
@@ -157,7 +145,7 @@ namespace GtaVModPeDistance
         {
             if (cameretta != null) cameretta.Delete();
             cameretta = null;
-            SpawnPoint spawnPoint = file.getRandomPoint();
+            SpawnPoint spawnPoint = file.GetRandomPoint();
             cameretta = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, spawnPoint.Position.Z + 0.8f), spawnPoint.Rotation, 80);
             World.RenderingCamera = cameretta;
             Game.Player.Character.Position = spawnPoint.Position;
@@ -177,12 +165,14 @@ namespace GtaVModPeDistance
         public void StreetName()
         {
             Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 0, 0));
-            String streetName = World.GetStreetName(new Vector2(pos.X, pos.Y));
-            String zoneDisplayName = World.GetZoneDisplayName(new Vector2(pos.X, pos.Y));
-            String zoneLocalizedName = World.GetZoneLocalizedName(new Vector2(pos.X, pos.Y));
+            string streetName = World.GetStreetName(pos);
+            string zoneDisplayName = World.GetZoneDisplayName(pos);
+            string zoneLocalizedName = World.GetZoneLocalizedName(pos);
             Notification.Show("StreetName: " + streetName + "\nZoneDisplayName: " + zoneDisplayName + "\nZoneLocalizedName: " + zoneLocalizedName);
         }
         
+
+        #region methods
         public void HandleMyCamera()
         {
             cameretta = null;
@@ -203,8 +193,6 @@ namespace GtaVModPeDistance
             }           
             World.RenderingCamera = null;
         }
-
-        #region methods
 
         private void KillAllSpawnedPed()
         {
