@@ -332,7 +332,7 @@ namespace GtaVModPeDistance
                     GetDistance(ped.Position, World.RenderingCamera.Position),
                     getEntityHeight(),
                     ped.Rotation.Z,
-                    World.RenderingCamera.Position.Z,
+                    World.RenderingCamera.Position.Z - World.GetGroundHeight(Game.Player.Character.Position),
                     imageName,
                     World.CurrentTimeOfDay.ToString()
                 );
