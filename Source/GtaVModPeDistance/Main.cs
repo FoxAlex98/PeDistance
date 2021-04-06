@@ -358,7 +358,7 @@ namespace GtaVModPeDistance
             float x, y;
             do
             {
-                x = rand.Next(-5, 5);
+                x = rand.Next(-4, 4);
                 y = rand.Next(2, 15);
             } while (Math.Abs(x) > y);
             ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));
