@@ -40,9 +40,13 @@ namespace GtaVModPeDistance.File
 
         public void WriteDataToFile()
         {
-            csvWriter.WriteRecords(data);
-            csvWriter.Flush();
-            data = new List<Data>();
+            if (data.Count != 0)
+            {
+                csvWriter.WriteRecords(data);
+                csvWriter.Flush();
+                data = new List<Data>();
+            }
+          
         }
 
         public void CleanFile(bool createNew = false)

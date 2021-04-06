@@ -9,6 +9,7 @@ using NativeUI;
 using GtaVModPeDistance.Models;
 using GtaVModPeDistance.File;
 using System.Threading;
+using System.IO;
 
 namespace GtaVModPeDistance
 {
@@ -244,6 +245,7 @@ namespace GtaVModPeDistance
             mlList.Add(new MenuItem("SpawnRandomPoint", SpawnRandomPoint));
             mlList.Add(new MenuItem("Take ScreenShot", () => screenShot.TakeScreenshot(spawnPoint)));
             mlList.Add(new MenuItem("Start Collecting Data", StartCollectingData));
+            mlList.Add(new MenuItem("Stop Collecting Data", EndingCollectingData));
             
             //file menu
             fileList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
@@ -276,6 +278,7 @@ namespace GtaVModPeDistance
             startCollectingData = true;
             collectingStep = 0;
             collectedDataCounter = 0;
+            ped = null;
         }
 
         public void EndingCollectingData()
@@ -289,6 +292,8 @@ namespace GtaVModPeDistance
             startCollectingData = false;
             collectingStep = 0;
             collectedDataCounter = 0;
+            ped = null;
+            dataManager.WriteDataToFile();
         }
 
         private void InitCollettingDataOperations()
