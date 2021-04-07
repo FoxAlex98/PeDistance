@@ -3,6 +3,8 @@ using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using GtaVModPeDistance.Models;
+using System.Runtime;
+using System.Drawing.Imaging;
 
 namespace GtaVModPeDistance.File
 {
@@ -16,7 +18,6 @@ namespace GtaVModPeDistance.File
 
         int index = 0;
 
-
         public ScreenShotManager()
         {
             mainFolder = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", "images");
@@ -26,7 +27,7 @@ namespace GtaVModPeDistance.File
 
         }
     
-        public string TakeScreenshot(SpawnPoint spawnPoint, bool notification = false)
+        public ScreenShot TakeScreenshot(SpawnPoint spawnPoint, bool notification = false)
         {
             memoryImage = new Bitmap(screenWidth, screenHeight);
             size = new Size(memoryImage.Width, memoryImage.Height);
@@ -36,9 +37,9 @@ namespace GtaVModPeDistance.File
             string finalName = FileNameFormatter(spawnPoint.StreetName, spawnPoint.ZoneLocalizedName);
             fileName = Path.Combine(mainFolder, finalName);
 
-            memoryImage.Save(string.Format(fileName));
+            memoryImage.Save(string.Format(fileName));                     
             if(notification) GTA.UI.Notification.Show("ScreenShot Saved");
-            return finalName;
+            return new ScreenShot(finalName, Utilities.ToBase64String(memoryImage));
         }
 
         public string FileNameFormatter(string streetName, string zoneName)
@@ -46,8 +47,8 @@ namespace GtaVModPeDistance.File
             streetName = streetName.Replace(" ", "_");
             zoneName = zoneName.Replace(" ", "_");
             return (index++).ToString() + "_" + streetName + "_" + zoneName + ".png";
-        }
-    
+        }       
+
     }
 
 

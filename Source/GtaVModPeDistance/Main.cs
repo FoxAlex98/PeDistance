@@ -323,9 +323,8 @@ namespace GtaVModPeDistance
         }
 
         private void CollectingData()
-        {
-            
-            string imageName = screenShot.TakeScreenshot(spawnPoint);
+        {            
+            ScreenShot image = screenShot.TakeScreenshot(spawnPoint);
 
             Data data = new Data(
                     collectedDataCounter++,
@@ -333,12 +332,13 @@ namespace GtaVModPeDistance
                     getEntityHeight(),
                     ped.Rotation.Z,
                     World.RenderingCamera.Position.Z - World.GetGroundHeight(Game.Player.Character.Position),
-                    imageName,
+                    image.Name,
+                    image.b64String,
                     World.CurrentTimeOfDay.ToString()
                 );
 
             dataManager.addElement(data);
-            // store data to csv
+        }
         }
 
         private float getEntityHeight()
