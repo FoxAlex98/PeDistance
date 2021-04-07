@@ -48,6 +48,7 @@ namespace GtaVModPeDistance
         // Collecting Data variable
         Vector3 initialPosition;
         bool startCollectingData = false;
+        bool wannaStop = false;
         float start = 0;
         int collectingStep = 0;
         int collectedDataCounter = 0;
@@ -165,7 +166,7 @@ namespace GtaVModPeDistance
                             if (Game.GameTime > start)
                             {
                                 if (collectedDataCounter % 5 == 0) dataManager.WriteDataToFile();
-                                if (collectedDataCounter == maxCollectedData)
+                                if (collectedDataCounter == maxCollectedData || wannaStop)
                                 {
                                     EndingCollectingData();
                                 } else
@@ -245,7 +246,11 @@ namespace GtaVModPeDistance
             mlList.Add(new MenuItem("SpawnRandomPoint", SpawnRandomPoint));
             mlList.Add(new MenuItem("Take ScreenShot", () => screenShot.TakeScreenshot(spawnPoint)));
             mlList.Add(new MenuItem("Start Collecting Data", StartCollectingData));
-            mlList.Add(new MenuItem("Stop Collecting Data", EndingCollectingData));
+            mlList.Add(new MenuItem("Stop Collecting Data", () =>
+            {
+                Notification.Show("Stop collecting data...");
+                wannaStop = true;
+            }));
             
             //file menu
             fileList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
@@ -276,6 +281,7 @@ namespace GtaVModPeDistance
 
             start = Game.GameTime;
             startCollectingData = true;
+            wannaStop = false;
             collectingStep = 0;
             collectedDataCounter = 0;
             ped = null;
