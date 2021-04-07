@@ -349,9 +349,12 @@ namespace GtaVModPeDistance
 
         private float getEntityHeight()
         {
-            float h = ped.Bones[Bone.FacialForeheadUpper].Position.Z - World.GetGroundHeight(ped.Position);
-            Notification.Show(h.ToString());
-            return h;
+            float max = ped.Bones[0].Position.Z;
+            foreach(PedBone pedBone in ped.Bones)
+            {
+                max = pedBone.Position.Z > max ? pedBone.Position.Z : max;
+            }
+            return max - World.GetGroundHeight(ped.Position);
         }
 
         private double GetDistance(Vector3 pedPosition, Vector3 cameraPosition)
