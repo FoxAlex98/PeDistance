@@ -9,7 +9,6 @@ namespace GtaVModPeDistance.File
 {
     class DataMananger
     {
-
         private List<Data> data;
         private CsvWriter csvWriter;
         private string filePath;
@@ -18,10 +17,10 @@ namespace GtaVModPeDistance.File
             data = new List<Data>();
             filePath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", "Dataset.csv");
             CleanFile();
-            setInstance();                      
+            InitWriter();                      
         }
 
-        private void setInstance()
+        private void InitWriter()
         {
             try
             {
@@ -31,10 +30,9 @@ namespace GtaVModPeDistance.File
             {
                 Console.WriteLine("FileNotFoundException: " + e.ToString());
             }
-
         }
 
-        public void addElement(Data element)
+        public void AddElement(Data element)
         {
             data.Add(element);
         }        
@@ -50,7 +48,7 @@ namespace GtaVModPeDistance.File
         {
             FileInfo file = new FileInfo(filePath);
             file.Delete();
-            if(createNew) setInstance();         
+            if(createNew) InitWriter();         
         }
     }
 }

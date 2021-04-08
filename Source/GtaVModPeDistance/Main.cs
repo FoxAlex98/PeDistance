@@ -257,8 +257,6 @@ namespace GtaVModPeDistance
             //file menu
             fileList.Add(new MenuItem("ShowCoordinates", ShowCoordinates));
             fileList.Add(new MenuItem("SaveCoordinates", SaveCoordinates));
-            fileList.Add(new MenuItem("DeleteLastSavedCoord", location.DeleteLastCoordinate));
-            fileList.Add(new MenuItem("CloseFile", location.CloseLocationFile));
             fileList.Add(new MenuItem("Street Name", StreetName));
 
             mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", itemList);
@@ -320,8 +318,7 @@ namespace GtaVModPeDistance
         private void SpawnRandomPoint()
         {            
             spawnPoint = location.GetRandomPoint();
-            Game.Player.Character.Position = spawnPoint.Position;           
-            Camera camera = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, spawnPoint.Position.Z + 0.8f), spawnPoint.Rotation, 80);
+            Camera camera = World.CreateCamera(new Vector3(spawnPoint.PosX, spawnPoint.PosY, spawnPoint.PosZ + 0.8f), new Vector3(spawnPoint.RotX, spawnPoint.RotY, spawnPoint.RotZ), 80);
             World.RenderingCamera = camera;
             // Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
         }
@@ -341,7 +338,7 @@ namespace GtaVModPeDistance
                     World.CurrentTimeOfDay.ToString()
                 );
 
-            dataManager.addElement(data);
+            dataManager.AddElement(data);
             // store data to csv
         }
 
@@ -395,7 +392,7 @@ namespace GtaVModPeDistance
             Vector3 rot = Game.Player.Character.Rotation;
             string streetName = World.GetStreetName(pos);
             string zoneLocalizedName = World.GetZoneLocalizedName(pos);
-            location.SaveCoordinates(new SpawnPoint(pos, rot, streetName, zoneLocalizedName));
+            location.SaveCoordinates(new SpawnPoint(pos.X, pos.Y, pos.Z, rot.X, rot.Y, rot.Z, streetName, zoneLocalizedName));
         }
 
         public void StreetName()
