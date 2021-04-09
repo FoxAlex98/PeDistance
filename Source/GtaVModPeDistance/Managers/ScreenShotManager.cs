@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using GtaVModPeDistance.Models;
 using System.Runtime;
 using System.Drawing.Imaging;
+using GTA.Math;
+using GTA;
 
 namespace GtaVModPeDistance.File
 {
@@ -27,14 +29,15 @@ namespace GtaVModPeDistance.File
 
         }
     
-        public ScreenShot TakeScreenshot(SpawnPoint spawnPoint, bool notification = false)
+        public ScreenShot TakeScreenshot(bool notification = false)
         {
+            Vector3 actualPlayerPosition = Game.Player.Character.Position;
             memoryImage = new Bitmap(screenWidth, screenHeight);
             size = new Size(memoryImage.Width, memoryImage.Height);
             memoryGraphics = Graphics.FromImage(memoryImage);
 
             memoryGraphics.CopyFromScreen(0, 0, 0, 0, size);
-            string finalName = FileNameFormatter(spawnPoint.StreetName, spawnPoint.ZoneLocalizedName);
+            string finalName = FileNameFormatter(World.GetStreetName(actualPlayerPosition), World.GetZoneLocalizedName(actualPlayerPosition));
             if (Settings.SaveScreenShotLocally.Equals("Yes"))
             {
                 fileName = Path.Combine(mainFolder, finalName);

@@ -33,5 +33,15 @@ namespace GtaVModPeDistance.Models
             StreetName = streetName;
             ZoneLocalizedName = zoneLocalizedName;
         }
+
+        public Vector3 GetPosition()
+        {
+            return new Vector3(PosX, PosY, PosZ);
+        }
+
+        public Vector3 GetRotation()
+        {
+            return new Vector3(RotX, RotY, RotZ);
+        }
     }
 }
