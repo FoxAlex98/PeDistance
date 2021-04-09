@@ -37,10 +37,10 @@ namespace GtaVModPeDistance
         List<dynamic> listOfPlanes, listOfHelicopter, listOfMotorbike, listOfBoat;
 
         // Config
-        UIMenuListItem maxCollectedDataList, pedMinSpawningDistanceList, pedMaxSpawningDistanceList, cameraMinSpawningHeightList, cameraMaxSpawningHeightList;
+        UIMenuListItem maxCollectedDataList, pedMinSpawningDistanceList, pedMaxSpawningDistanceList, cameraMinSpawningHeightList, cameraMaxSpawningHeightList, imageFormatList;
         UIMenuListItem cameraFixedHeightList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList, saveScreenShotLocallyList;
         List<dynamic> listOfMaxCollectedData, listOfPedMinSpawningDistance, listOfPedMaxSpawningDistance, listOfCameraMinSpawningHeight, listOfCameraMaxSpawningHeight, listOfCameraFixedHeight;
-        List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfSaveScreenShotLocally;
+        List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfSaveScreenShotLocally, listOfImageFormat;
 
         // Collecting Data variables
         Vector3 initialPosition;
@@ -61,6 +61,7 @@ namespace GtaVModPeDistance
             dataManager = new DataMananger();
 
             Notification.Show("~o~" + ModName + " " + Version + " by ~o~" + Developer + " Loaded");
+            Notification.Show("Use F5 to open menu");
             MenuSetup();
             Tick += onTick;
             KeyDown += onKeyDown;
@@ -215,6 +216,8 @@ namespace GtaVModPeDistance
                 utilsList.Add(new MenuItem("Spawn Ped", SpawnOnePed));
                 utilsList.Add(new MenuItem("Spawn Random Point", SpawnRandomPoint));
                 utilsList.Add(new MenuItem("Teleport To Waypoint", TeleportToWaypoint));
+                utilsList.Add(new MenuItem("Save Point Coordinates", SaveCoordinates));
+                utilsList.Add(new MenuItem("Reset", Reset));
                 utilsList.Add(new MenuItem(planeList, () => { SpawnVehicle(planeList, listOfPlanes); }));
                 utilsList.Add(new MenuItem(helicopterList, () => { SpawnVehicle(helicopterList, listOfHelicopter); }));
                 utilsList.Add(new MenuItem(motorbikeList, () => { SpawnVehicle(motorbikeList, listOfMotorbike); }));
@@ -237,6 +240,7 @@ namespace GtaVModPeDistance
             listOfCollectingDataDelay = new List<dynamic>();
             listOfClearCollectingDataDelay = new List<dynamic>();
             listOfSaveScreenShotLocally = new List<dynamic>();
+            listOfImageFormat = new List<dynamic>();
 
             for (int i = 0; i <= 15; i++)
             {
@@ -267,6 +271,9 @@ namespace GtaVModPeDistance
             listOfSaveScreenShotLocally.Add("Yes");
             listOfSaveScreenShotLocally.Add("No");
 
+            listOfImageFormat.Add("Jpeg");
+            listOfImageFormat.Add("Png");
+
             maxCollectedDataList = new UIMenuListItem("Max Collected Data: ", listOfMaxCollectedData, listOfMaxCollectedData.IndexOf(GtaVModPeDistance.Settings.MaxCollectedData));
             pedMinSpawningDistanceList = new UIMenuListItem("Ped Min Spawning Distance: ", listOfPedMinSpawningDistance, listOfPedMinSpawningDistance.IndexOf(GtaVModPeDistance.Settings.PedMinSpawningDistance));
             pedMaxSpawningDistanceList = new UIMenuListItem("Ped Max Spawning Distance: ", listOfPedMaxSpawningDistance, listOfPedMaxSpawningDistance.IndexOf(GtaVModPeDistance.Settings.PedMaxSpawningDistance));
@@ -279,6 +286,7 @@ namespace GtaVModPeDistance
             collectingDataDelayList = new UIMenuListItem("Collecting Data Delay: ", listOfCollectingDataDelay, listOfCollectingDataDelay.IndexOf(GtaVModPeDistance.Settings.CollectingDataDelay));
             clearCollectingDataDelayList = new UIMenuListItem("Clear Collecting Data Delay: ", listOfClearCollectingDataDelay, listOfClearCollectingDataDelay.IndexOf(GtaVModPeDistance.Settings.ClearCollectingDataDelay));
             saveScreenShotLocallyList = new UIMenuListItem("Save ScreenShot Locally: ", listOfSaveScreenShotLocally, listOfSaveScreenShotLocally.IndexOf(GtaVModPeDistance.Settings.SaveScreenShotLocally));
+            imageFormatList = new UIMenuListItem("Save ScreenShot Locally: ", listOfImageFormat, listOfImageFormat.IndexOf(GtaVModPeDistance.Settings.ImageFormat));
 
             List<MenuItem> configList = new List<MenuItem>();
             configList.Add(new MenuItem(maxCollectedDataList));
@@ -293,19 +301,11 @@ namespace GtaVModPeDistance
             configList.Add(new MenuItem(collectingDataDelayList));
             configList.Add(new MenuItem(clearCollectingDataDelayList));
             configList.Add(new MenuItem(saveScreenShotLocallyList));
+            configList.Add(new MenuItem(imageFormatList));
             configList.Add(new MenuItem("Save", SaveSettings));
 
             UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Settings Menu");
-            new Menu(uiMlMenu, configList);
-
-            // Spawn Points menu
-            List<MenuItem> spawnPointMenuList = new List<MenuItem>();
-            spawnPointMenuList.Add(new MenuItem("Close File", location.CloseLocationFile));
-            spawnPointMenuList.Add(new MenuItem("Delete Last Saved Coord", location.DeleteLastCoordinate));
-            spawnPointMenuList.Add(new MenuItem("Save Coordinates", SaveCoordinates));
-            
-            UIMenu uiFileMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Spawn Points Menu");
-            new Menu(uiFileMenu, spawnPointMenuList);
+            new Menu(uiMlMenu, configList);           
         }
 
         #region Collecting Data Functions
@@ -315,13 +315,14 @@ namespace GtaVModPeDistance
             Notification.Show("Starting collecting data... Remove menu using ESC");           
             Game.Player.Character.IsVisible = false;
             HideOrShowHud(false);
-
-            start = Game.GameTime;
-            startCollectingData = true;
+            screenShot.DeleteAllScreenShot();
+            dataManager.CleanFile();
+            start = Game.GameTime;            
             wannaStop = false;
             collectingStep = 0;
             collectedDataCounter = 0;            
             ped = null;
+            startCollectingData = true;
         }
 
         public void StopCollectingData()
@@ -333,12 +334,11 @@ namespace GtaVModPeDistance
         public void EndingCollectingData()
         {
             Notification.Show("Stop collecting data...");
+            startCollectingData = false;
             Game.Player.Character.IsVisible = true;
             Game.Player.Character.Position = initialPosition;
             HideOrShowHud(true);
             World.RenderingCamera = null;
-            start = Game.GameTime;
-            startCollectingData = false;
             collectingStep = 0;
             collectedDataCounter = 0;
             ped = null;
@@ -365,17 +365,19 @@ namespace GtaVModPeDistance
         private void SpawnRandomPoint()
         {            
             spawnPoint = location.GetRandomPoint();
-            Game.Player.Character.Position = spawnPoint.Position;
+            Vector3 Position = new Vector3(spawnPoint.PosX, spawnPoint.PosY, spawnPoint.PosZ);
+            Vector3 Rotation = new Vector3(spawnPoint.RotX, spawnPoint.RotY, spawnPoint.RotZ);
+            Game.Player.Character.Position = Position;
             float Z = 0;
             if (GtaVModPeDistance.Settings.CameraFixedHeight == 0)
             {
                 // TODO sistemare l'orientamento della verso il basso della camera
-                Z = (spawnPoint.Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(GtaVModPeDistance.Settings.CameraMinSpawningHeight, GtaVModPeDistance.Settings.CameraMaxSpawningHeight);
+                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(GtaVModPeDistance.Settings.CameraMinSpawningHeight, GtaVModPeDistance.Settings.CameraMaxSpawningHeight);
             } else
             {
-                Z = (spawnPoint.Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + GtaVModPeDistance.Settings.CameraFixedHeight;
+                Z = Position.Z + GtaVModPeDistance.Settings.CameraFixedHeight;
             }
-            Camera camera = World.CreateCamera(new Vector3(spawnPoint.Position.X, spawnPoint.Position.Y, Z), spawnPoint.Rotation, 60);
+            Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, 60);
             World.RenderingCamera = camera;
             // Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
         }
@@ -410,7 +412,7 @@ namespace GtaVModPeDistance
 
         private double GetDistance(Vector3 pedPosition, Vector3 cameraPosition)
         {
-            return Math.Sqrt(Math.Pow(pedPosition.X - cameraPosition.X, 2) + Math.Pow(pedPosition.Y - cameraPosition.Y, 2));
+            return Math.Sqrt(Math.Pow(pedPosition.X - cameraPosition.X, 2) + Math.Pow(pedPosition.Y - cameraPosition.Y, 2) + Math.Pow(pedPosition.Z - cameraPosition.Z, 2));
         }
 
         private void SpawnPed()
@@ -456,6 +458,17 @@ namespace GtaVModPeDistance
             else
                 Notification.Show("Advanced Mode deactivated!");
         }
+
+        public void Reset()
+        {
+            Game.Player.Character.IsVisible = true;
+            HideOrShowHud(true);
+            World.RenderingCamera = null;
+            startCollectingData = false;
+            collectingStep = 0;
+            collectedDataCounter = 0;
+            ped = null;
+        }
         private void SaveSettings()
         {
             GtaVModPeDistance.Settings.MaxCollectedData = listOfMaxCollectedData[maxCollectedDataList.Index];
@@ -470,6 +483,7 @@ namespace GtaVModPeDistance
             GtaVModPeDistance.Settings.CollectingDataDelay = listOfCollectingDataDelay[collectingDataDelayList.Index];
             GtaVModPeDistance.Settings.ClearCollectingDataDelay = listOfClearCollectingDataDelay[clearCollectingDataDelayList.Index];
             GtaVModPeDistance.Settings.SaveScreenShotLocally = listOfSaveScreenShotLocally[saveScreenShotLocallyList.Index];
+            GtaVModPeDistance.Settings.ImageFormat = listOfImageFormat[imageFormatList.Index];
             GtaVModPeDistance.Settings.SaveSettings();
             Notification.Show("Settings saved");
         }

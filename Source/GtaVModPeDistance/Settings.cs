@@ -18,6 +18,7 @@ namespace GtaVModPeDistance
         public static int ClearCollectingDataDelay { get; set; }
         public static bool AdvancedMode { get; set; }
         public static string SaveScreenShotLocally { get; set; }
+        public static string ImageFormat { get; set; }
         public static string DirectoryName { get; set; }
 
         public static void LoadSettings()
@@ -36,6 +37,7 @@ namespace GtaVModPeDistance
             ClearCollectingDataDelay = Properties.Settings.Default.ClearCollectingDataDelay;
             AdvancedMode = Properties.Settings.Default.AdvancedMode;
             SaveScreenShotLocally = Properties.Settings.Default.SaveScreenShotLocally;
+            ImageFormat = Properties.Settings.Default.ImageFormat;
             DirectoryName = Properties.Settings.Default.DirectoryName;
         }
 
@@ -54,6 +56,7 @@ namespace GtaVModPeDistance
             Properties.Settings.Default.ClearCollectingDataDelay = ClearCollectingDataDelay;
             Properties.Settings.Default.AdvancedMode = AdvancedMode;
             Properties.Settings.Default.SaveScreenShotLocally = SaveScreenShotLocally;
+            Properties.Settings.Default.ImageFormat = ImageFormat;
             Properties.Settings.Default.Save();
         }
 

@@ -35,19 +35,31 @@ namespace GtaVModPeDistance.File
 
             memoryGraphics.CopyFromScreen(0, 0, 0, 0, size);
             string finalName = FileNameFormatter(spawnPoint.StreetName, spawnPoint.ZoneLocalizedName);
-            fileName = Path.Combine(mainFolder, finalName);
-
-            memoryImage.Save(string.Format(fileName));                     
+            if (Settings.SaveScreenShotLocally.Equals("Yes"))
+            {
+                fileName = Path.Combine(mainFolder, finalName);
+                memoryImage.Save(string.Format(fileName));
+            }                                             
             if(notification) GTA.UI.Notification.Show("ScreenShot Saved");
-            return new ScreenShot(finalName, Utilities.ToBase64String(memoryImage));
+            return new ScreenShot(finalName, Utilities.ToBase64String(memoryImage, Settings.ImageFormat.Equals("Png")? ImageFormat.Png : ImageFormat.Jpeg));
         }
 
         public string FileNameFormatter(string streetName, string zoneName)
         {
             streetName = streetName.Replace(" ", "_");
             zoneName = zoneName.Replace(" ", "_");
-            return (index++).ToString() + "_" + streetName + "_" + zoneName + ".png";
-        }       
+            return (index++).ToString() + "_" + streetName + "_" + zoneName + "." + (Settings.ImageFormat.Equals("Png") ? "png" : "jpg");
+        }      
+        
+        public void DeleteAllScreenShot()
+        {
+            Array.ForEach(Directory.GetFiles(mainFolder),
+              delegate (string path) {
+                  FileInfo file = new FileInfo(path);
+                  file.Delete();
+              });
+            index = 0;
+        }
 
     }
 

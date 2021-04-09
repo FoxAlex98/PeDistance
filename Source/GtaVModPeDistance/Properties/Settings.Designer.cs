@@ -133,7 +133,7 @@ namespace GtaVModPeDistance.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.8")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.8")]
         public float CameraFixedHeight {
             get {
                 return ((float)(this["CameraFixedHeight"]));
@@ -194,6 +194,18 @@ namespace GtaVModPeDistance.Properties {
         public string DirectoryName {
             get {
                 return ((string)(this["DirectoryName"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Jpeg")]
+        public string ImageFormat {
+            get {
+                return ((string)(this["ImageFormat"]));
+            }
+            set {
+                this["ImageFormat"] = value;
             }
         }
     }
