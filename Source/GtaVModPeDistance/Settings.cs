@@ -52,23 +52,23 @@ namespace GtaVModPeDistance
             {
                 if (!line.Trim().Equals(""))
                 {
-                    string key = line.Split('=')[0];
-                    string value = line.Split('=')[1];
-                    if (key.Equals("MaxCollectedData")) MaxCollectedData = int.Parse(value.Trim());
-                    else if (key.Equals("MaxCollectedSelectionable")) MaxCollectedSelectionable = int.Parse(value.Trim());
-                    else if (key.Equals("PedMinSpawningDistance")) PedMinSpawningDistance = int.Parse(value.Trim());
-                    else if (key.Equals("PedMaxSpawningDistance")) PedMaxSpawningDistance = int.Parse(value.Trim());
-                    else if (key.Equals("CameraMinSpawningHeight")) CameraMinSpawningHeight = int.Parse(value.Trim());
-                    else if (key.Equals("CameraMaxSpawningHeight")) CameraMaxSpawningHeight = int.Parse(value.Trim());
-                    else if (key.Equals("CameraFixedHeight")) CameraFixedHeight = float.Parse(value.Trim());
-                    else if (key.Equals("TeleportingDelay")) TeleportingDelay = int.Parse(value.Trim());
-                    else if (key.Equals("RenderingDelay")) RenderingDelay = int.Parse(value.Trim());
-                    else if (key.Equals("PedSpawningDelay")) PedSpawningDelay = int.Parse(value.Trim());
-                    else if (key.Equals("CollectingDataDelay")) CollectingDataDelay = int.Parse(value.Trim());
-                    else if (key.Equals("ClearCollectingDataDelay")) ClearCollectingDataDelay = int.Parse(value.Trim());
-                    else if (key.Equals("SaveScreenShotLocally")) SaveScreenShotLocally = value.Trim();
-                    else if (key.Equals("ImageFormat")) ImageFormat = value.Trim();
-                    else if (key.Equals("DirectoryName")) DirectoryName = value.Trim();
+                    string key = line.Split('=')[0].Trim();
+                    string value = line.Split('=')[1].Trim();
+                    if (key.Equals("MaxCollectedData")) MaxCollectedData = int.Parse(value);
+                    else if (key.Equals("MaxCollectedSelectionable")) MaxCollectedSelectionable = int.Parse(value);
+                    else if (key.Equals("PedMinSpawningDistance")) PedMinSpawningDistance = int.Parse(value);
+                    else if (key.Equals("PedMaxSpawningDistance")) PedMaxSpawningDistance = int.Parse(value);
+                    else if (key.Equals("CameraMinSpawningHeight")) CameraMinSpawningHeight = int.Parse(value);
+                    else if (key.Equals("CameraMaxSpawningHeight")) CameraMaxSpawningHeight = int.Parse(value);
+                    else if (key.Equals("CameraFixedHeight")) CameraFixedHeight = float.Parse(value);
+                    else if (key.Equals("TeleportingDelay")) TeleportingDelay = int.Parse(value);
+                    else if (key.Equals("RenderingDelay")) RenderingDelay = int.Parse(value);
+                    else if (key.Equals("PedSpawningDelay")) PedSpawningDelay = int.Parse(value);
+                    else if (key.Equals("CollectingDataDelay")) CollectingDataDelay = int.Parse(value);
+                    else if (key.Equals("ClearCollectingDataDelay")) ClearCollectingDataDelay = int.Parse(value);
+                    else if (key.Equals("SaveScreenShotLocally")) SaveScreenShotLocally = value;
+                    else if (key.Equals("ImageFormat")) ImageFormat = value;
+                    else if (key.Equals("DirectoryName")) DirectoryName = value;
                 }                
             }           
         }

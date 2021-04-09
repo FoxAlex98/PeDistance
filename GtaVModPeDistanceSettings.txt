@@ -1,0 +1,15 @@
+MaxCollectedData=30
+MaxCollectedSelectionable=5000
+PedMinSpawningDistance=2
+PedMaxSpawningDistance=15
+CameraMinSpawningHeight=0
+CameraMaxSpawningHeight=15
+CameraFixedHeight=0,8
+TeleportingDelay=5
+RenderingDelay=6
+PedSpawningDelay=1
+CollectingDataDelay=3
+ClearCollectingDataDelay=1
+SaveScreenShotLocally=No
+ImageFormat=Jpeg
+DirectoryName=MachineLearningProject
