@@ -9,7 +9,6 @@ namespace GtaVModPeDistance.File
 {
     class DataMananger
     {
-
         private List<Data> data;
         private CsvWriter csvWriter;
         private string filePath;
@@ -17,14 +16,11 @@ namespace GtaVModPeDistance.File
         {
             data = new List<Data>();
             filePath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", "Dataset.csv");
-            string mainFolder = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", Settings.DirectoryName, "data");
-            if (!Directory.Exists(mainFolder)) Directory.CreateDirectory(mainFolder);
-            filePath = Path.Combine(mainFolder, "Dataset.csv");
             CleanFile();
             InitWriter();                      
         }
 
-        public void InitWriter()
+        private void InitWriter()
         {
             try
             {
@@ -36,32 +32,23 @@ namespace GtaVModPeDistance.File
             }
         }
 
-        public void addElement(Data element)
+        public void AddElement(Data element)
         {
             data.Add(element);
         }        
 
         public void WriteDataToFile()
         {
-            if (data.Count != 0)
-            {
-                csvWriter.WriteRecords(data);
-                csvWriter.Flush();
-                data = new List<Data>();
-            }
-          
+            csvWriter.WriteRecords(data);
+            csvWriter.Flush();
+            data = new List<Data>();
         }
 
         public void CleanFile(bool createNew = false)
         {
             FileInfo file = new FileInfo(filePath);
             file.Delete();
-            if(createNew) InitWriter();            
-        }
-
-        public void FreeResource()
-        {
-            csvWriter.Dispose();
+            if(createNew) InitWriter();         
         }
     }
 }

@@ -502,8 +502,8 @@ namespace GtaVModPeDistance
             Vector3 rot = Game.Player.Character.Rotation;
             string streetName = World.GetStreetName(pos);
             string zoneLocalizedName = World.GetZoneLocalizedName(pos);
-            location.SaveCoordinates(new SpawnPoint(pos, rot, streetName, zoneLocalizedName));
-        }    
+            location.SaveCoordinates(new SpawnPoint(pos.X, pos.Y, pos.Z, rot.X, rot.Y, rot.Z, streetName, zoneLocalizedName));
+        }
       
         private void SetTime(int h, int m, int s)
         {
