@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -74,13 +74,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />
-    <Compile Include="File\DataMananger.cs" />
-    <Compile Include="File\LocationManager.cs" />
-    <Compile Include="File\ScreenShotManager.cs" />
+    <Compile Include="Managers\DataMananger.cs" />
+    <Compile Include="Managers\LocationManager.cs" />
+    <Compile Include="Managers\ScreenShotManager.cs" />
     <Compile Include="MenuItem.cs" />
     <Compile Include="Menu.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="Models\Bones.cs" />
     <Compile Include="Models\ScreenShot.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\SpawnPoint.cs" />
@@ -116,7 +123,12 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
