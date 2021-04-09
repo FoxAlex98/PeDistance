@@ -137,14 +137,14 @@ namespace GtaVModPeDistance
                             if (Game.GameTime > start)
                             {
                                 if (collectedDataCounter % 5 == 0) dataManager.WriteDataToFile();
-                                if (collectedDataCounter >= Properties.Settings.Default.MaxCollectedData || wannaStop)
+                                if (collectedDataCounter >= GtaVModPeDistance.Settings.MaxCollectedData || wannaStop)
                                 {
                                     EndingCollectingData();
                                 } else
                                 {
                                     start = Game.GameTime;
                                     collectingStep = 0;
-                                    Notification.Show("Counter: " + collectedDataCounter + "/" + Properties.Settings.Default.MaxCollectedData);
+                                    Notification.Show("Counter: " + collectedDataCounter + "/" + GtaVModPeDistance.Settings.MaxCollectedData);
                                 }                               
                             }
                             break;
@@ -180,52 +180,48 @@ namespace GtaVModPeDistance
             modMenuPool.Add(mainMenu.ModMenu);
 
             //utils menu
-            // if (GtaVModPeDistance.Settings.AdvancedMode)
-            if(true)
+            List<MenuItem> utilsList = new List<MenuItem>();
+
+            allVehiclesHash = (VehicleHash[])Enum.GetValues(typeof(VehicleHash));
+            listOfPlanes = new List<dynamic>();
+            listOfHelicopter = new List<dynamic>();
+            listOfMotorbike = new List<dynamic>();
+            listOfBoat = new List<dynamic>();
+
+            for (int i = 0; i < allVehiclesHash.Length; i++)
             {
-                List<MenuItem> utilsList = new List<MenuItem>();
+                Model tempModel = new Model(allVehiclesHash[i]);
 
-                allVehiclesHash = (VehicleHash[])Enum.GetValues(typeof(VehicleHash));
-                listOfPlanes = new List<dynamic>();
-                listOfHelicopter = new List<dynamic>();
-                listOfMotorbike = new List<dynamic>();
-                listOfBoat = new List<dynamic>();
-
-                for (int i = 0; i < allVehiclesHash.Length; i++)
-                {
-                    Model tempModel = new Model(allVehiclesHash[i]);
-
-                    if (tempModel.IsPlane) listOfPlanes.Add(allVehiclesHash[i]);
-                    else if (tempModel.IsHelicopter) listOfHelicopter.Add(allVehiclesHash[i]);
-                    else if (tempModel.IsBike) listOfMotorbike.Add(allVehiclesHash[i]);
-                    else if (tempModel.IsBoat) listOfBoat.Add(allVehiclesHash[i]);
-                }
-
-                //TODO: find index problem
-                planeList = new UIMenuListItem("Planes: ", listOfPlanes, 1);
-                helicopterList = new UIMenuListItem("Helicopters: ", listOfHelicopter, 1);
-                motorbikeList = new UIMenuListItem("Motorbikes: ", listOfMotorbike, 1);
-                boatList = new UIMenuListItem("Boats: ", listOfBoat, 1);
-                                     
-                utilsList.Add(new MenuItem("Delete All Near Ped", DeleteAllNearPed));
-                utilsList.Add(new MenuItem("Ignored by everyone", () => { Game.Player.IgnoredByEveryone = true; }));
-                utilsList.Add(new MenuItem("Reset Wanted Level", ResetWantedLevel));
-                utilsList.Add(new MenuItem("Set Time Midday", () => SetTime(12, 0, 0)));
-                utilsList.Add(new MenuItem("Set Time Midnight", () => SetTime(0, 0, 0)));
-                utilsList.Add(new MenuItem("Set Time Afternoon", () => SetTime(17, 0, 0)));
-                utilsList.Add(new MenuItem("Spawn Ped", SpawnOnePed));
-                utilsList.Add(new MenuItem("Spawn Random Point", SpawnRandomPoint));
-                utilsList.Add(new MenuItem("Teleport To Waypoint", TeleportToWaypoint));
-                utilsList.Add(new MenuItem("Save Point Coordinates", SaveCoordinates));
-                utilsList.Add(new MenuItem("Reset", Reset));
-                utilsList.Add(new MenuItem(planeList, () => { SpawnVehicle(planeList, listOfPlanes); }));
-                utilsList.Add(new MenuItem(helicopterList, () => { SpawnVehicle(helicopterList, listOfHelicopter); }));
-                utilsList.Add(new MenuItem(motorbikeList, () => { SpawnVehicle(motorbikeList, listOfMotorbike); }));
-                utilsList.Add(new MenuItem(boatList, () => { SpawnVehicle(boatList, listOfBoat); }));
-
-                UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils Menu");
-                new Menu(uiUtilsMenu, utilsList);
+                if (tempModel.IsPlane) listOfPlanes.Add(allVehiclesHash[i]);
+                else if (tempModel.IsHelicopter) listOfHelicopter.Add(allVehiclesHash[i]);
+                else if (tempModel.IsBike) listOfMotorbike.Add(allVehiclesHash[i]);
+                else if (tempModel.IsBoat) listOfBoat.Add(allVehiclesHash[i]);
             }
+
+            //TODO: find index problem
+            planeList = new UIMenuListItem("Planes: ", listOfPlanes, 1);
+            helicopterList = new UIMenuListItem("Helicopters: ", listOfHelicopter, 1);
+            motorbikeList = new UIMenuListItem("Motorbikes: ", listOfMotorbike, 1);
+            boatList = new UIMenuListItem("Boats: ", listOfBoat, 1);
+                                 
+            utilsList.Add(new MenuItem("Delete All Near Ped", DeleteAllNearPed));
+            utilsList.Add(new MenuItem("Ignored by everyone", () => { Game.Player.IgnoredByEveryone = true; }));
+            utilsList.Add(new MenuItem("Reset Wanted Level", ResetWantedLevel));
+            utilsList.Add(new MenuItem("Set Time Midday", () => SetTime(12, 0, 0)));
+            utilsList.Add(new MenuItem("Set Time Midnight", () => SetTime(0, 0, 0)));
+            utilsList.Add(new MenuItem("Set Time Afternoon", () => SetTime(17, 0, 0)));
+            utilsList.Add(new MenuItem("Spawn Ped", SpawnOnePed));
+            utilsList.Add(new MenuItem("Spawn Random Point", SpawnRandomPoint));
+            utilsList.Add(new MenuItem("Teleport To Waypoint", TeleportToWaypoint));
+            utilsList.Add(new MenuItem("Save Point Coordinates", SaveCoordinates));
+            utilsList.Add(new MenuItem("Reset", Reset));
+            utilsList.Add(new MenuItem(planeList, () => { SpawnVehicle(planeList, listOfPlanes); }));
+            utilsList.Add(new MenuItem(helicopterList, () => { SpawnVehicle(helicopterList, listOfHelicopter); }));
+            utilsList.Add(new MenuItem(motorbikeList, () => { SpawnVehicle(motorbikeList, listOfMotorbike); }));
+            utilsList.Add(new MenuItem(boatList, () => { SpawnVehicle(boatList, listOfBoat); }));
+
+            UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils Menu");
+            new Menu(uiUtilsMenu, utilsList);
 
             // Config menu
             listOfMaxCollectedData = new List<dynamic>();
@@ -454,17 +450,6 @@ namespace GtaVModPeDistance
         #endregion
 
         #region Utils
-        private void ActivateAdvancedMode()
-        {
-            GtaVModPeDistance.Settings.ToggleAdvancedMode();
-            MenuSetup();
-            reloadMenu = true;
-            if (GtaVModPeDistance.Settings.AdvancedMode)
-                Notification.Show("Advanced Mode activated!");
-            else
-                Notification.Show("Advanced Mode deactivated!");
-        }
-
         public void Reset()
         {
             Game.Player.Character.IsVisible = true;
