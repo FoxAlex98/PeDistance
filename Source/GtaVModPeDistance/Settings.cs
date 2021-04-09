@@ -23,6 +23,7 @@ namespace GtaVModPeDistance
 
         public static void LoadSettings()
         {
+            Properties.Settings.Default.Upgrade();
             MaxCollectedSelectionable = Properties.Settings.Default.MaxCollectedSelectionable;
             MaxCollectedData = Properties.Settings.Default.MaxCollectedData;
             PedMinSpawningDistance = Properties.Settings.Default.PedMinSpawningDistance;
@@ -43,6 +44,7 @@ namespace GtaVModPeDistance
 
         public static void SaveSettings()
         {
+            Properties.Settings.Default.Upgrade();
             Properties.Settings.Default.MaxCollectedData = MaxCollectedData;
             Properties.Settings.Default.PedMinSpawningDistance = PedMinSpawningDistance;
             Properties.Settings.Default.PedMaxSpawningDistance = PedMaxSpawningDistance;
@@ -62,9 +64,12 @@ namespace GtaVModPeDistance
 
         public static void ToggleAdvancedMode()
         {
+            Properties.Settings.Default.Upgrade();
             AdvancedMode = !AdvancedMode;
             Properties.Settings.Default.AdvancedMode = AdvancedMode;
             Properties.Settings.Default.Save();
+            
         }
+
     }
 }

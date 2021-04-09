@@ -327,22 +327,28 @@ namespace GtaVModPeDistance
 
         public void StopCollectingData()
         {
-            Notification.Show("Stop collecting data...");
-            wannaStop = true;
+            if(startCollectingData)
+            {
+                Notification.Show("Stop collecting data...");
+                wannaStop = true;
+            }           
         }
 
         public void EndingCollectingData()
         {
-            Notification.Show("Stop collecting data...");
-            startCollectingData = false;
-            Game.Player.Character.IsVisible = true;
-            Game.Player.Character.Position = initialPosition;
-            HideOrShowHud(true);
-            World.RenderingCamera = null;
-            collectingStep = 0;
-            collectedDataCounter = 0;
-            ped = null;
-            dataManager.WriteDataToFile();
+            if (startCollectingData)
+            {
+                Notification.Show("Stop collecting data...");
+                startCollectingData = false;
+                Game.Player.Character.IsVisible = true;
+                Game.Player.Character.Position = initialPosition;
+                HideOrShowHud(true);
+                World.RenderingCamera = null;
+                collectingStep = 0;
+                collectedDataCounter = 0;
+                ped = null;
+                dataManager.WriteDataToFile();
+            }
         }
 
         private void InitCollettingDataOperations()
