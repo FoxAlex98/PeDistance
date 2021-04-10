@@ -85,6 +85,15 @@ namespace GtaVModPeDistance
                 ped.Delete();
             }
         }
+
+        public static void DeleteAllNearVehicles()
+        {
+            Vehicle[] vehicleArray = World.GetAllVehicles();
+            foreach (Vehicle vc in vehicleArray)
+            {
+                vc.Delete();
+            }
+        }
         public static void SpawnAtRandomSavedLocation()
         {
             SpawnPoint spawnPoint = locationManager.GetRandomPoint();

@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.UI;
+using GtaVModPeDistance.CollectingSteps;
 using NativeUI;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace GtaVModPeDistance
             utilsList.Add(new MenuItem("Spawn Random Point", UtilsFunctions.SpawnAtRandomSavedLocation));
             utilsList.Add(new MenuItem("Teleport To Waypoint", UtilsFunctions.TeleportToWaypoint));
             utilsList.Add(new MenuItem("Save Point Coordinates", UtilsFunctions.SaveCoordinates));
-            //utilsList.Add(new MenuItem("Reset", Reset));
+            utilsList.Add(new MenuItem("Reset", Reset));
             utilsList.Add(new MenuItem(planeList, () => { UtilsFunctions.SpawnVehicle(planeList, listOfPlanes); }));
             utilsList.Add(new MenuItem(helicopterList, () => { UtilsFunctions.SpawnVehicle(helicopterList, listOfHelicopter); }));
             utilsList.Add(new MenuItem(motorbikeList, () => { UtilsFunctions.SpawnVehicle(motorbikeList, listOfMotorbike); }));
@@ -149,16 +150,16 @@ namespace GtaVModPeDistance
             return configList;
         }
 
-        /*public void Reset()
+        public void Reset()
         {
             Game.Player.Character.IsVisible = true;
             Globals.ShowHud();
             World.RenderingCamera = null;
-            startCollectingData = false;
-            collectingStep = 0;
-            collectedDataCounter = 0;
-            ped = null;
-        }*/
+            CollectingState.StartCollectingData = false;
+            CollectingState.ActualStep = new TeleportToRandomSavedLocationStep();
+            CollectingState.CollectedDataCounter = 0;
+            CollectingState.Ped = null;
+        }
 
         private void SaveSettings()
         {

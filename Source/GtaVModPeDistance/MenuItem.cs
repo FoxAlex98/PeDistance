@@ -2,6 +2,7 @@
 
 namespace GtaVModPeDistance
 {
+    public delegate void ActionToDo();
     public class MenuItem
     {
         private UIMenuItem _item;

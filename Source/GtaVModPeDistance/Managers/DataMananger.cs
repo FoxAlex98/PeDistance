@@ -35,9 +35,12 @@ namespace GtaVModPeDistance.File
             }
         }
 
-        public void addElement(Data element)
+        public void AddElement(Data element)
         {
             data.Add(element);
+            if (data.Count % 5 == 0)
+                WriteDataToFile();
+                   
         }        
 
         public void WriteDataToFile()
@@ -46,7 +49,7 @@ namespace GtaVModPeDistance.File
             {
                 csvWriter.WriteRecords(data);
                 csvWriter.Flush();
-                data = new List<Data>();
+                data.Clear();
             }
           
         }

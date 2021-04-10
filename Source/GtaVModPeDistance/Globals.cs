@@ -6,9 +6,6 @@ namespace GtaVModPeDistance
 {
     class Globals
     {
-        public static Ped Ped { get; set; }
-        public static SpawnPoint SpawnPoint { get; set; }
-
         public static Vehicle Vehicle { get; set; }
 
         public static void ShowHud()

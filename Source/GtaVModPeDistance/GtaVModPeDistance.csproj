@@ -74,6 +74,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CollectingSteps\CollectingState.cs" />
+    <Compile Include="CollectingSteps\CollectingUtils.cs" />
+    <Compile Include="CollectingSteps\ConcreteSteps\ClearCollectingDataSettingsStep.cs" />
+    <Compile Include="CollectingSteps\ConcreteSteps\ClearNearEntitiesStep.cs" />
+    <Compile Include="CollectingSteps\ConcreteSteps\CollectDataStep.cs" />
+    <Compile Include="CollectingSteps\ConcreteSteps\FinalStep.cs" />
+    <Compile Include="CollectingSteps\ConcreteSteps\SpawnPedStep.cs" />
+    <Compile Include="CollectingSteps\ConcreteSteps\TeleportToRandomSavedLocationStep.cs" />
+    <Compile Include="UtilsFunctions.cs" />
+    <Compile Include="CollectingSteps\CollectingStep.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="MenuHelper.cs" />
     <Compile Include="Settings.cs" />
