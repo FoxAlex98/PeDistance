@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Globals.cs" />
+    <Compile Include="MenuHelper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Managers\DataMananger.cs" />

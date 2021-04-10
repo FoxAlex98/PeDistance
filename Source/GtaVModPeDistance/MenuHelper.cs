@@ -1,7 +1,5 @@
 ﻿using GTA;
-using GTA.Math;
 using GTA.UI;
-using GtaVModPeDistance.Models;
 using NativeUI;
 using System;
 using System.Collections.Generic;
@@ -11,11 +9,8 @@ namespace GtaVModPeDistance
     class MenuHelper
     {
 
-        Random rand = new Random();
-        LocationManager locationManager;
 
         // Utils
-        Vehicle vehicle = null;
         VehicleHash[] allVehiclesHash;
         UIMenuListItem planeList, helicopterList, motorbikeList, boatList;
         List<dynamic> listOfPlanes, listOfHelicopter, listOfMotorbike, listOfBoat;
@@ -25,12 +20,6 @@ namespace GtaVModPeDistance
         UIMenuListItem cameraFixedHeightList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList, saveScreenShotLocallyList;
         List<dynamic> listOfMaxCollectedData, listOfPedMinSpawningDistance, listOfPedMaxSpawningDistance, listOfCameraMinSpawningHeight, listOfCameraMaxSpawningHeight, listOfCameraFixedHeight;
         List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfSaveScreenShotLocally, listOfImageFormat;
-
-        public MenuHelper()
-        {
-            locationManager = new LocationManager();
-
-        }
 
         public List<MenuItem> GetUtilsMenu()
         {
@@ -59,21 +48,21 @@ namespace GtaVModPeDistance
             motorbikeList = new UIMenuListItem("Motorbikes: ", listOfMotorbike, 1);
             boatList = new UIMenuListItem("Boats: ", listOfBoat, 1);
 
-            utilsList.Add(new MenuItem("Delete All Near Ped", DeleteAllNearPed));
+            utilsList.Add(new MenuItem("Delete All Near Ped", UtilsFunctions.DeleteAllNearPed));
             utilsList.Add(new MenuItem("Ignored by everyone", () => { Game.Player.IgnoredByEveryone = true; }));
-            utilsList.Add(new MenuItem("Reset Wanted Level", ResetWantedLevel));
-            utilsList.Add(new MenuItem("Set Time Midday", () => SetTime(12, 0, 0)));
-            utilsList.Add(new MenuItem("Set Time Midnight", () => SetTime(0, 0, 0)));
-            utilsList.Add(new MenuItem("Set Time Afternoon", () => SetTime(17, 0, 0)));
-            utilsList.Add(new MenuItem("Spawn Ped", SpawnOnePed));
-            utilsList.Add(new MenuItem("Spawn Random Point", SpawnAtRandomSavedLocation));
-            utilsList.Add(new MenuItem("Teleport To Waypoint", TeleportToWaypoint));
-            utilsList.Add(new MenuItem("Save Point Coordinates", SaveCoordinates));
+            utilsList.Add(new MenuItem("Reset Wanted Level", UtilsFunctions.ResetWantedLevel));
+            utilsList.Add(new MenuItem("Set Time Midday", () => UtilsFunctions.SetTime(12, 0, 0)));
+            utilsList.Add(new MenuItem("Set Time Midnight", () => UtilsFunctions.SetTime(0, 0, 0)));
+            utilsList.Add(new MenuItem("Set Time Afternoon", () => UtilsFunctions.SetTime(17, 0, 0)));
+            utilsList.Add(new MenuItem("Spawn Ped", UtilsFunctions.SpawnOnePed));
+            utilsList.Add(new MenuItem("Spawn Random Point", UtilsFunctions.SpawnAtRandomSavedLocation));
+            utilsList.Add(new MenuItem("Teleport To Waypoint", UtilsFunctions.TeleportToWaypoint));
+            utilsList.Add(new MenuItem("Save Point Coordinates", UtilsFunctions.SaveCoordinates));
             //utilsList.Add(new MenuItem("Reset", Reset));
-            utilsList.Add(new MenuItem(planeList, () => { SpawnVehicle(planeList, listOfPlanes); }));
-            utilsList.Add(new MenuItem(helicopterList, () => { SpawnVehicle(helicopterList, listOfHelicopter); }));
-            utilsList.Add(new MenuItem(motorbikeList, () => { SpawnVehicle(motorbikeList, listOfMotorbike); }));
-            utilsList.Add(new MenuItem(boatList, () => { SpawnVehicle(boatList, listOfBoat); }));
+            utilsList.Add(new MenuItem(planeList, () => { UtilsFunctions.SpawnVehicle(planeList, listOfPlanes); }));
+            utilsList.Add(new MenuItem(helicopterList, () => { UtilsFunctions.SpawnVehicle(helicopterList, listOfHelicopter); }));
+            utilsList.Add(new MenuItem(motorbikeList, () => { UtilsFunctions.SpawnVehicle(motorbikeList, listOfMotorbike); }));
+            utilsList.Add(new MenuItem(boatList, () => { UtilsFunctions.SpawnVehicle(boatList, listOfBoat); }));
 
             return utilsList;
         }
@@ -159,7 +148,7 @@ namespace GtaVModPeDistance
 
             return configList;
         }
-        #region Utils
+
         /*public void Reset()
         {
             Game.Player.Character.IsVisible = true;
@@ -170,99 +159,6 @@ namespace GtaVModPeDistance
             collectedDataCounter = 0;
             ped = null;
         }*/
-
-        private void SpawnOnePed()
-        {
-            float x;
-            float y;
-            do
-            {
-                x = rand.Next(-5, 5);
-                y = rand.Next(2, 15);
-            } while (Math.Abs(x) > y);
-            Ped ped = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x, y, 0)));
-            ped.Heading = rand.Next(360);
-        }
-
-        public void SpawnVehicle(UIMenuListItem vehicleTypeList, List<dynamic> typeList)
-        {
-            if (vehicle != null) vehicle.Delete();
-            Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 10, 0));
-            VehicleHash vehicleHash = typeList[vehicleTypeList.Index];
-            vehicle = World.CreateVehicle(new Model(vehicleHash), pos);
-            vehicle.PlaceOnGround();
-            vehicle.IsInvincible = true;
-        }
-
-        public void SaveCoordinates()
-        {
-            Vector3 pos = Game.Player.Character.Position;
-            Vector3 rot = Game.Player.Character.Rotation;
-            string streetName = World.GetStreetName(pos);
-            string zoneLocalizedName = World.GetZoneLocalizedName(pos);
-            locationManager.SaveCoordinates(new SpawnPoint(pos.X, pos.Y, pos.Z, rot.X, rot.Y, rot.Z, streetName, zoneLocalizedName));
-        }
-
-        private void SetTime(int h, int m, int s)
-        {
-            World.CurrentTimeOfDay = new TimeSpan(h, m, s);
-            Notification.Show("Time set to: " + h + ":" + m + ":" + s);
-        }
-
-        private void TeleportToWaypoint()
-        {
-            float X = World.WaypointPosition.X;
-            float Y = World.WaypointPosition.Y;
-            float Z = World.GetGroundHeight(new Vector2(X, Y)) + 2;
-            Vector3 pos = new Vector3(X, Y, Z);
-            Game.Player.Character.Position = pos;
-            Notification.Show("Player has been ~b~teleported to  ~g~" + World.GetStreetName(pos) + ", " + World.GetZoneDisplayName(pos) + ": ~o~" + pos.ToString());
-        }
-
-        private void ResetWantedLevel()
-        {
-            if (Game.Player.WantedLevel == 0)
-            {
-                GTA.UI.Screen.ShowSubtitle("you are innocent");
-            }
-            else
-            {
-                Game.Player.WantedLevel = 0;
-                Notification.Show("Player WantedLevel set to 0");
-            }
-        }
-
-        private void DeleteAllNearPed()
-        {
-            Ped[] pedArray = World.GetAllPeds();
-            foreach (Ped ped in pedArray)
-            {
-                ped.Delete();
-            }
-        }
-        private void SpawnAtRandomSavedLocation()
-        {
-            SpawnPoint spawnPoint = locationManager.GetRandomPoint();
-            Game.Player.Character.Position = spawnPoint.GetPosition();
-            SetCameraPosition(spawnPoint.GetPosition(), spawnPoint.GetRotation());
-        }
-
-        private void SetCameraPosition(Vector3 Position, Vector3 Rotation)
-        {
-            float Z = 0;
-            if (GtaVModPeDistance.Settings.CameraFixedHeight == 0)
-            {
-                // TODO sistemare l'orientamento della verso il basso della camera
-                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(GtaVModPeDistance.Settings.CameraMinSpawningHeight, GtaVModPeDistance.Settings.CameraMaxSpawningHeight);
-            }
-            else
-            {
-                Z = Position.Z + GtaVModPeDistance.Settings.CameraFixedHeight;
-            }
-            Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, 60);
-            World.RenderingCamera = camera;
-        }
-        #endregion
 
         private void SaveSettings()
         {
@@ -282,5 +178,6 @@ namespace GtaVModPeDistance
             GtaVModPeDistance.Settings.SaveSettings();
             Notification.Show("Settings saved");
         }
+
     }
 }
