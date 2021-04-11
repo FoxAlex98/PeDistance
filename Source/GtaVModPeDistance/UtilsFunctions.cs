@@ -12,7 +12,7 @@ namespace GtaVModPeDistance
     {
 
         static Random rand = new Random();
-        static LocationManager locationManager = new LocationManager();
+        static LocationManager locationManager = LocationManager.GetInstance();
         
         #region Utils
         public static void SpawnOnePed()

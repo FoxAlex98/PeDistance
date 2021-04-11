@@ -11,8 +11,8 @@ namespace GtaVModPeDistance.CollectingSteps
 {
     class CollectingUtils
     {
-        static ScreenShotManager screenShotManager = new ScreenShotManager();
-        static DataMananger dataManager = new DataMananger();
+        static ScreenShotManager screenShotManager = ScreenShotManager.GetInstance();
+        static DataMananger dataManager = DataMananger.GetInstance();
 
         public static void StartCollectingData()
         {

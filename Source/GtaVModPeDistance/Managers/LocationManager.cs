@@ -20,7 +20,14 @@ namespace GtaVModPeDistance
         public List<SpawnPoint> saveSpawnPoints;
         CsvConfiguration config;
 
-        public LocationManager() {
+        private static LocationManager _instance;
+        public static LocationManager GetInstance() {
+            if (_instance == null)
+                _instance = new LocationManager();
+            return _instance;
+        }
+
+        private LocationManager() {
 
             string mainFolder = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", Settings.DirectoryName, "data");
             if (!Directory.Exists(mainFolder)) Directory.CreateDirectory(mainFolder);

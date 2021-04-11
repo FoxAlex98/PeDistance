@@ -12,8 +12,8 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
     class CollectDataStep : CollectingStep
     {
-        ScreenShotManager screenShot = new ScreenShotManager();
-        DataMananger dataManager = new DataMananger();
+        ScreenShotManager screenShot = ScreenShotManager.GetInstance();
+        DataMananger dataManager = DataMananger.GetInstance();
 
         public override void CallFunction()
         {

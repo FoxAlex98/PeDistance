@@ -7,7 +7,7 @@ namespace GtaVModPeDistance.CollectingSteps
 {
     class TeleportToRandomSavedLocationStep : CollectingStep
     {
-        LocationManager locationManager = new LocationManager();
+        LocationManager locationManager = LocationManager.GetInstance();
         Random rand = new Random();
 
         public override void CallFunction()

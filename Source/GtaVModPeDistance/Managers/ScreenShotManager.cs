@@ -20,7 +20,15 @@ namespace GtaVModPeDistance.File
 
         int index = 0;
 
-        public ScreenShotManager()
+        private static ScreenShotManager _instance;
+        public static ScreenShotManager GetInstance()
+        {
+            if (_instance == null)
+                _instance = new ScreenShotManager();
+            return _instance;
+        }
+
+        private ScreenShotManager()
         {
             mainFolder = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", Settings.DirectoryName, "images");
             if (!Directory.Exists(mainFolder)) Directory.CreateDirectory(mainFolder);

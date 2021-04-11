@@ -13,7 +13,15 @@ namespace GtaVModPeDistance.File
         private List<Data> data;
         private CsvWriter csvWriter = null;
         private string filePath;
-        public DataMananger()
+
+        private static DataMananger _instance;
+        public static DataMananger GetInstance()
+        {
+            if (_instance == null)
+                _instance = new DataMananger();
+            return _instance;
+        }
+        private DataMananger()
         {
             data = new List<Data>();
             filePath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", "Dataset.csv");
