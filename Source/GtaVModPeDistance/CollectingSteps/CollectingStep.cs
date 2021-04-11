@@ -1,27 +1,21 @@
 ﻿using GTA;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GtaVModPeDistance.CollectingSteps
 {
     abstract class CollectingStep
     {
-        private float start;
+        private float _start;
         public CollectingStep()
         {
-            start = Game.GameTime;
+            _start = Game.GameTime;
         }
-        public CollectingStep Process()
+        public void Process()
         {
-            if (Game.GameTime > start + GetDelay())
+            if (Game.GameTime > _start + GetDelay())
             {
                 CallFunction();
                 CollectingState.ActualStep = GetNextStep();
             }
-            return CollectingState.ActualStep;
         }
 
         public abstract int GetDelay();

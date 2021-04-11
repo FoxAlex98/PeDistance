@@ -18,13 +18,10 @@ namespace GtaVModPeDistance
         Menu mainMenu;
         MenuHelper menuHelper;
 
-        CollectingStep collectingStep;
-
         public Main()
         {
             GtaVModPeDistance.Settings.LoadSettings();
 
-            collectingStep = CollectingUtils.GetFirstStep();
             menuHelper = new MenuHelper();
 
             Notification.Show("~o~" + ModName + " " + Version + " by ~o~" + Developer + " Loaded");
@@ -39,8 +36,8 @@ namespace GtaVModPeDistance
             if(modMenuPool != null)
                 modMenuPool.ProcessMenus();
 
-            if(CollectingState.StartCollectingData)
-                collectingStep.Process();
+            if (CollectingState.StartCollectingData)
+                CollectingState.ActualStep.Process();
         }
 
         private void onKeyDown(object sender, KeyEventArgs e)

@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using GTA.UI;
 using GtaVModPeDistance.File;
 using System;
@@ -24,20 +24,20 @@ namespace GtaVModPeDistance.CollectingSteps
             CollectingState.WannaStop = false;
             CollectingState.CollectedDataCounter = 0;
             CollectingState.Ped = null;
-            CollectingState.StartCollectingData = true;
             CollectingState.ActualStep = GetFirstStep();
             Notification.Show("Starting collecting data... Remove menu using ESC");
+            CollectingState.StartCollectingData = true;
 
         }
         public static void EndingCollectingData()
         {
+            CollectingState.StartCollectingData = false;
             Notification.Show("Stop collecting data...");
             Game.Player.Character.IsVisible = true;
             Game.Player.Character.Position = CollectingState.InitialPosition;
             Globals.ShowHud();
             World.RenderingCamera = null;
             CollectingState.Ped = null;
-            CollectingState.StartCollectingData = false;
         }
 
         public static void StopCollectingData()
