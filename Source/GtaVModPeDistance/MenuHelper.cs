@@ -9,8 +9,6 @@ namespace GtaVModPeDistance
 {
     class MenuHelper
     {
-
-
         // Utils
         VehicleHash[] allVehiclesHash;
         UIMenuListItem planeList, helicopterList, motorbikeList, boatList;
@@ -101,7 +99,7 @@ namespace GtaVModPeDistance
                 listOfClearCollectingDataDelay.Add(i);
             }
 
-            for (int i = 0; i <= GtaVModPeDistance.Settings.MaxCollectedSelectionable; i += 30)
+            for (int i = 0; i <= Settings.MaxCollectedSelectionable; i += 30)
             {
                 listOfMaxCollectedData.Add(i);
             }
@@ -117,19 +115,19 @@ namespace GtaVModPeDistance
             listOfImageFormat.Add("Jpeg");
             listOfImageFormat.Add("Png");
 
-            maxCollectedDataList = new UIMenuListItem("Max Collected Data: ", listOfMaxCollectedData, listOfMaxCollectedData.IndexOf(GtaVModPeDistance.Settings.MaxCollectedData));
-            pedMinSpawningDistanceList = new UIMenuListItem("Ped Min Spawning Distance: ", listOfPedMinSpawningDistance, listOfPedMinSpawningDistance.IndexOf(GtaVModPeDistance.Settings.PedMinSpawningDistance));
-            pedMaxSpawningDistanceList = new UIMenuListItem("Ped Max Spawning Distance: ", listOfPedMaxSpawningDistance, listOfPedMaxSpawningDistance.IndexOf(GtaVModPeDistance.Settings.PedMaxSpawningDistance));
-            cameraMinSpawningHeightList = new UIMenuListItem("Camera Min Spawning Height: ", listOfCameraMinSpawningHeight, listOfCameraMinSpawningHeight.IndexOf(GtaVModPeDistance.Settings.CameraMinSpawningHeight));
-            cameraMaxSpawningHeightList = new UIMenuListItem("Camera Max Spawning Height: ", listOfCameraMaxSpawningHeight, listOfCameraMaxSpawningHeight.IndexOf(GtaVModPeDistance.Settings.CameraMaxSpawningHeight));
-            cameraFixedHeightList = new UIMenuListItem("Camera Fixed Height: ", listOfCameraFixedHeight, listOfCameraFixedHeight.IndexOf(GtaVModPeDistance.Settings.CameraFixedHeight));
-            teleportingDelayList = new UIMenuListItem("Teleporting Delay: ", listOfTeleportingDelay, listOfTeleportingDelay.IndexOf(GtaVModPeDistance.Settings.TeleportingDelay));
-            renderingDelayList = new UIMenuListItem("Rendering Delay: ", listOfRenderingDelay, listOfRenderingDelay.IndexOf(GtaVModPeDistance.Settings.RenderingDelay));
-            pedSpawningDelayList = new UIMenuListItem("Ped Spawning Delay: ", listOfPedSpawningDelay, listOfPedSpawningDelay.IndexOf(GtaVModPeDistance.Settings.PedSpawningDelay));
-            collectingDataDelayList = new UIMenuListItem("Collecting Data Delay: ", listOfCollectingDataDelay, listOfCollectingDataDelay.IndexOf(GtaVModPeDistance.Settings.CollectingDataDelay));
-            clearCollectingDataDelayList = new UIMenuListItem("Clear Collecting Data Delay: ", listOfClearCollectingDataDelay, listOfClearCollectingDataDelay.IndexOf(GtaVModPeDistance.Settings.ClearCollectingDataDelay));
-            saveScreenShotLocallyList = new UIMenuListItem("Save ScreenShot Locally: ", listOfSaveScreenShotLocally, listOfSaveScreenShotLocally.IndexOf(GtaVModPeDistance.Settings.SaveScreenShotLocally));
-            imageFormatList = new UIMenuListItem("Save ScreenShot Locally: ", listOfImageFormat, listOfImageFormat.IndexOf(GtaVModPeDistance.Settings.ImageFormat));
+            maxCollectedDataList = new UIMenuListItem("Max Collected Data: ", listOfMaxCollectedData, listOfMaxCollectedData.IndexOf(Settings.MaxCollectedData));
+            pedMinSpawningDistanceList = new UIMenuListItem("Ped Min Spawning Distance: ", listOfPedMinSpawningDistance, listOfPedMinSpawningDistance.IndexOf(Settings.PedMinSpawningDistance));
+            pedMaxSpawningDistanceList = new UIMenuListItem("Ped Max Spawning Distance: ", listOfPedMaxSpawningDistance, listOfPedMaxSpawningDistance.IndexOf(Settings.PedMaxSpawningDistance));
+            cameraMinSpawningHeightList = new UIMenuListItem("Camera Min Spawning Height: ", listOfCameraMinSpawningHeight, listOfCameraMinSpawningHeight.IndexOf(Settings.CameraMinSpawningHeight));
+            cameraMaxSpawningHeightList = new UIMenuListItem("Camera Max Spawning Height: ", listOfCameraMaxSpawningHeight, listOfCameraMaxSpawningHeight.IndexOf(Settings.CameraMaxSpawningHeight));
+            cameraFixedHeightList = new UIMenuListItem("Camera Fixed Height: ", listOfCameraFixedHeight, listOfCameraFixedHeight.IndexOf(Settings.CameraFixedHeight));
+            teleportingDelayList = new UIMenuListItem("Teleporting Delay: ", listOfTeleportingDelay, listOfTeleportingDelay.IndexOf(Settings.TeleportingDelay));
+            renderingDelayList = new UIMenuListItem("Rendering Delay: ", listOfRenderingDelay, listOfRenderingDelay.IndexOf(Settings.RenderingDelay));
+            pedSpawningDelayList = new UIMenuListItem("Ped Spawning Delay: ", listOfPedSpawningDelay, listOfPedSpawningDelay.IndexOf(Settings.PedSpawningDelay));
+            collectingDataDelayList = new UIMenuListItem("Collecting Data Delay: ", listOfCollectingDataDelay, listOfCollectingDataDelay.IndexOf(Settings.CollectingDataDelay));
+            clearCollectingDataDelayList = new UIMenuListItem("Clear Collecting Data Delay: ", listOfClearCollectingDataDelay, listOfClearCollectingDataDelay.IndexOf(Settings.ClearCollectingDataDelay));
+            saveScreenShotLocallyList = new UIMenuListItem("Save ScreenShot Locally: ", listOfSaveScreenShotLocally, listOfSaveScreenShotLocally.IndexOf(Settings.SaveScreenShotLocally));
+            imageFormatList = new UIMenuListItem("Save ScreenShot Locally: ", listOfImageFormat, listOfImageFormat.IndexOf(Settings.ImageFormat));
 
             List<MenuItem> configList = new List<MenuItem>();
             configList.Add(new MenuItem(maxCollectedDataList));
@@ -163,20 +161,20 @@ namespace GtaVModPeDistance
 
         private void SaveSettings()
         {
-            GtaVModPeDistance.Settings.MaxCollectedData = listOfMaxCollectedData[maxCollectedDataList.Index];
-            GtaVModPeDistance.Settings.PedMinSpawningDistance = listOfPedMinSpawningDistance[pedMinSpawningDistanceList.Index];
-            GtaVModPeDistance.Settings.PedMaxSpawningDistance = listOfPedMaxSpawningDistance[pedMaxSpawningDistanceList.Index];
-            GtaVModPeDistance.Settings.CameraMinSpawningHeight = listOfCameraMinSpawningHeight[cameraMinSpawningHeightList.Index];
-            GtaVModPeDistance.Settings.CameraMaxSpawningHeight = listOfCameraMaxSpawningHeight[cameraMaxSpawningHeightList.Index];
-            GtaVModPeDistance.Settings.CameraFixedHeight = listOfCameraFixedHeight[cameraFixedHeightList.Index];
-            GtaVModPeDistance.Settings.TeleportingDelay = listOfTeleportingDelay[teleportingDelayList.Index];
-            GtaVModPeDistance.Settings.RenderingDelay = listOfRenderingDelay[renderingDelayList.Index];
-            GtaVModPeDistance.Settings.PedSpawningDelay = listOfPedSpawningDelay[pedSpawningDelayList.Index];
-            GtaVModPeDistance.Settings.CollectingDataDelay = listOfCollectingDataDelay[collectingDataDelayList.Index];
-            GtaVModPeDistance.Settings.ClearCollectingDataDelay = listOfClearCollectingDataDelay[clearCollectingDataDelayList.Index];
-            GtaVModPeDistance.Settings.SaveScreenShotLocally = listOfSaveScreenShotLocally[saveScreenShotLocallyList.Index];
-            GtaVModPeDistance.Settings.ImageFormat = listOfImageFormat[imageFormatList.Index];
-            GtaVModPeDistance.Settings.SaveSettings();
+            Settings.MaxCollectedData = listOfMaxCollectedData[maxCollectedDataList.Index];
+            Settings.PedMinSpawningDistance = listOfPedMinSpawningDistance[pedMinSpawningDistanceList.Index];
+            Settings.PedMaxSpawningDistance = listOfPedMaxSpawningDistance[pedMaxSpawningDistanceList.Index];
+            Settings.CameraMinSpawningHeight = listOfCameraMinSpawningHeight[cameraMinSpawningHeightList.Index];
+            Settings.CameraMaxSpawningHeight = listOfCameraMaxSpawningHeight[cameraMaxSpawningHeightList.Index];
+            Settings.CameraFixedHeight = listOfCameraFixedHeight[cameraFixedHeightList.Index];
+            Settings.TeleportingDelay = listOfTeleportingDelay[teleportingDelayList.Index];
+            Settings.RenderingDelay = listOfRenderingDelay[renderingDelayList.Index];
+            Settings.PedSpawningDelay = listOfPedSpawningDelay[pedSpawningDelayList.Index];
+            Settings.CollectingDataDelay = listOfCollectingDataDelay[collectingDataDelayList.Index];
+            Settings.ClearCollectingDataDelay = listOfClearCollectingDataDelay[clearCollectingDataDelayList.Index];
+            Settings.SaveScreenShotLocally = listOfSaveScreenShotLocally[saveScreenShotLocallyList.Index];
+            Settings.ImageFormat = listOfImageFormat[imageFormatList.Index];
+            Settings.SaveSettings();
             Notification.Show("Settings saved");
         }
 

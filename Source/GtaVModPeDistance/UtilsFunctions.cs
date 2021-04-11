@@ -68,7 +68,7 @@ namespace GtaVModPeDistance
         {
             if (Game.Player.WantedLevel == 0)
             {
-                GTA.UI.Screen.ShowSubtitle("you are innocent");
+                Screen.ShowSubtitle("you are innocent");
             }
             else
             {
@@ -104,14 +104,14 @@ namespace GtaVModPeDistance
         public static void SetCameraPosition(Vector3 Position, Vector3 Rotation)
         {
             float Z = 0;
-            if (GtaVModPeDistance.Settings.CameraFixedHeight == 0)
+            if (Settings.CameraFixedHeight == 0)
             {
                 // TODO sistemare l'orientamento della verso il basso della camera
-                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(GtaVModPeDistance.Settings.CameraMinSpawningHeight, GtaVModPeDistance.Settings.CameraMaxSpawningHeight);
+                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(Settings.CameraMinSpawningHeight, Settings.CameraMaxSpawningHeight);
             }
             else
             {
-                Z = Position.Z + GtaVModPeDistance.Settings.CameraFixedHeight;
+                Z = Position.Z + Settings.CameraFixedHeight;
             }
             Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, 60);
             World.RenderingCamera = camera;

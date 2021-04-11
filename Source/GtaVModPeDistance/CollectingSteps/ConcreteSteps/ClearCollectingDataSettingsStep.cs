@@ -1,9 +1,4 @@
 ﻿using GTA;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
@@ -17,7 +12,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 
         public override int GetDelay()
         {
-            return GtaVModPeDistance.Settings.ClearCollectingDataDelay * 1000;
+            return Settings.ClearCollectingDataDelay * 1000;
         }
 
         public override CollectingStep GetNextStep()

@@ -1,10 +1,5 @@
 ﻿using GTA;
 using GTA.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
@@ -12,8 +7,8 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
     {
         public override void CallFunction()
         {
-            Notification.Show("Counter: " + CollectingState.CollectedDataCounter + "/" + GtaVModPeDistance.Settings.MaxCollectedData);
-            if (CollectingState.CollectedDataCounter >= GtaVModPeDistance.Settings.MaxCollectedData || CollectingState.WannaStop)
+            Notification.Show("Counter: " + CollectingState.CollectedDataCounter + "/" + Settings.MaxCollectedData);
+            if (CollectingState.CollectedDataCounter >= Settings.MaxCollectedData || CollectingState.WannaStop)
             {
                 Notification.Show("Stop collecting data...");
                 Game.Player.Character.IsVisible = true;

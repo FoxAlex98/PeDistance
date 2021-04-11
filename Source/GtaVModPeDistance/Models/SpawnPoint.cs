@@ -1,25 +1,16 @@
 ﻿using GTA.Math;
-using CsvHelper.Configuration.Attributes;
 
 namespace GtaVModPeDistance.Models
 {
     class SpawnPoint
     {
-        //[Name("posX")]
         public float PosX { get; set; }
-        //[Name("posY")]
         public float PosY { get; set; }
-        //[Name("posZ")]
         public float PosZ { get; set; }
-        //[Name("rotX")]
         public float RotX { get; set; }
-        //[Name("rotY")]
         public float RotY { get; set; }
-        //[Name("rotZ")]
         public float RotZ { get; set; }
-        //[Name("streetName")]
         public string StreetName { get; set; }
-        //[Name("zoneLocalizedName")]
         public string ZoneLocalizedName { get; set; }
 
         public SpawnPoint(float posX, float posY, float posZ, float rotX, float rotY, float rotZ, string streetName, string zoneLocalizedName)

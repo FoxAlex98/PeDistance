@@ -7,8 +7,8 @@ namespace GtaVModPeDistance.CollectingSteps
 {
     class TeleportToRandomSavedLocationStep : CollectingStep
     {
-        LocationManager locationManager = LocationManager.GetInstance();
-        Random rand = new Random();
+        private LocationManager locationManager = LocationManager.GetInstance();
+        private Random rand = new Random();
 
         public override void CallFunction()
         {
@@ -17,14 +17,14 @@ namespace GtaVModPeDistance.CollectingSteps
             Vector3 Rotation = CollectingState.SpawnPoint.GetRotation();
             Game.Player.Character.Position = Position;
             float Z;
-            if (GtaVModPeDistance.Settings.CameraFixedHeight == 0)
+            if (Settings.CameraFixedHeight == 0)
             {
                 // TODO sistemare l'orientamento della verso il basso della camera
-                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(GtaVModPeDistance.Settings.CameraMinSpawningHeight, GtaVModPeDistance.Settings.CameraMaxSpawningHeight);
+                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(Settings.CameraMinSpawningHeight, Settings.CameraMaxSpawningHeight);
             }
             else
             {
-                Z = Position.Z + GtaVModPeDistance.Settings.CameraFixedHeight;
+                Z = Position.Z + Settings.CameraFixedHeight;
             }
             Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, 60);
             World.RenderingCamera = camera;
@@ -34,7 +34,7 @@ namespace GtaVModPeDistance.CollectingSteps
 
         public override int GetDelay()
         {
-            return GtaVModPeDistance.Settings.TeleportingDelay * 1000;
+            return Settings.TeleportingDelay * 1000;
         }
 
         public override CollectingStep GetNextStep()

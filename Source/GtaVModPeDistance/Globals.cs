@@ -1,6 +1,5 @@
 ﻿using GTA;
 using GTA.Native;
-using GtaVModPeDistance.Models;
 
 namespace GtaVModPeDistance
 {

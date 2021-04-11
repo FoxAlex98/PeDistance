@@ -1,11 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Drawing;
-using GTA;
-using GTA.UI;
-using GTA.Math;
-using GTA.Native;
+﻿using System.Collections.Generic;
 using NativeUI;
 
 namespace GtaVModPeDistance

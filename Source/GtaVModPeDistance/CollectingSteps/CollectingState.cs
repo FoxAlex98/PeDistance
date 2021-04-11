@@ -1,11 +1,6 @@
 ﻿using GTA;
 using GTA.Math;
 using GtaVModPeDistance.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GtaVModPeDistance.CollectingSteps
 {
