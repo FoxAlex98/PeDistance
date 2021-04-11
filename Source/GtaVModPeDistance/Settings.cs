@@ -9,8 +9,9 @@ namespace GtaVModPeDistance
         private static string FilePath;
         public static int MaxCollectedData { get; set; }
         public static int MaxCollectedSelectionable { get; set; }
-        public static int PedMinSpawningDistance { get; set; }
-        public static int PedMaxSpawningDistance { get; set; }
+        public static float PedSpawningDistanceRatio { get; set; }
+        public static int PedMinSpawningDistanceY { get; set; }
+        public static int PedMaxSpawningDistanceY { get; set; }
         public static int CameraMinSpawningHeight { get; set; }
         public static int CameraMaxSpawningHeight { get; set; }
         public static float CameraFixedHeight { get; set; }
@@ -53,8 +54,9 @@ namespace GtaVModPeDistance
                     string value = line.Split('=')[1].Trim();
                     if (key.Equals("MaxCollectedData")) MaxCollectedData = int.Parse(value);
                     else if (key.Equals("MaxCollectedSelectionable")) MaxCollectedSelectionable = int.Parse(value);
-                    else if (key.Equals("PedMinSpawningDistance")) PedMinSpawningDistance = int.Parse(value);
-                    else if (key.Equals("PedMaxSpawningDistance")) PedMaxSpawningDistance = int.Parse(value);
+                    else if (key.Equals("PedSpawningDistanceRatio")) PedSpawningDistanceRatio = float.Parse(value);
+                    else if (key.Equals("PedMinSpawningDistanceY")) PedMinSpawningDistanceY = int.Parse(value);
+                    else if (key.Equals("PedMaxSpawningDistanceY")) PedMaxSpawningDistanceY = int.Parse(value);
                     else if (key.Equals("CameraMinSpawningHeight")) CameraMinSpawningHeight = int.Parse(value);
                     else if (key.Equals("CameraMaxSpawningHeight")) CameraMaxSpawningHeight = int.Parse(value);
                     else if (key.Equals("CameraFixedHeight")) CameraFixedHeight = float.Parse(value);
@@ -67,7 +69,7 @@ namespace GtaVModPeDistance
                     else if (key.Equals("ImageFormat")) ImageFormat = value;
                     else if (key.Equals("DirectoryName")) DirectoryName = value;
                 }                
-            }           
+            }
         }
 
         public static void SaveSettings()
@@ -76,8 +78,9 @@ namespace GtaVModPeDistance
             {
                 "MaxCollectedData=" + MaxCollectedData.ToString().Trim(),
                 "MaxCollectedSelectionable=" + MaxCollectedSelectionable.ToString().Trim(),
-                "PedMinSpawningDistance=" + PedMinSpawningDistance.ToString().Trim(),
-                "PedMaxSpawningDistance=" + PedMaxSpawningDistance.ToString().Trim(),
+                "PedMinSpawningDistanceY=" + PedMinSpawningDistanceY.ToString().Trim(),
+                "PedMaxSpawningDistanceY=" + PedMaxSpawningDistanceY.ToString().Trim(),
+                "PedSpawningDistanceRatio=" + PedSpawningDistanceRatio.ToString().Trim(),
                 "CameraMinSpawningHeight=" + CameraMinSpawningHeight.ToString().Trim(),
                 "CameraMaxSpawningHeight=" + CameraMaxSpawningHeight.ToString().Trim(),
                 "CameraFixedHeight=" + CameraFixedHeight.ToString().Trim(),
@@ -93,6 +96,5 @@ namespace GtaVModPeDistance
 
             System.IO.File.WriteAllLines(FilePath, lines);
         }
-
     }
 }

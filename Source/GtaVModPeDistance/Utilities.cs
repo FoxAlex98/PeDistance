@@ -7,6 +7,7 @@ namespace GtaVModPeDistance
 {
     static class Utilities
     {
+        static Random random = new Random();
 
         public static string ToBase64String(Image image, ImageFormat imageFormat)
         {
@@ -20,6 +21,17 @@ namespace GtaVModPeDistance
                 image.Save(ms, format);
                 return ms.ToArray();
             }
+        }
+
+        public static float NextFloat(float min, float max)
+        {
+            return (float)(random.NextDouble() * (max - min) + min);
+        }
+
+        public static float GetPosXByPosY(float y)
+        {
+            float range = Settings.PedSpawningDistanceRatio * y;
+            return NextFloat(-range, range);
         }
     }
 }

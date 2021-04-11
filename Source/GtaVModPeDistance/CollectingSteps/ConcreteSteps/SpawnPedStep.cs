@@ -6,18 +6,12 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
     class SpawnPedStep : CollectingStep
     {
-        Random rand = new Random();
-
         public override void CallFunction()
         {
-            float x, y;
-            do
-            {
-                x = rand.Next(-4, 4);
-                y = rand.Next(Settings.PedMinSpawningDistance, Settings.PedMaxSpawningDistance);
-            } while (Math.Abs(x) > y);
+            float y = Utilities.NextFloat(Settings.PedMinSpawningDistanceY, Settings.PedMaxSpawningDistanceY);
+            float x = Utilities.GetPosXByPosY(y);
             CollectingState.Ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));
-            CollectingState.Ped.Heading = rand.Next(360);
+            CollectingState.Ped.Heading = Utilities.NextFloat(1, 360);
         }
 
         public override int GetDelay()

@@ -11,21 +11,15 @@ namespace GtaVModPeDistance
     class UtilsFunctions
     {
 
-        static Random rand = new Random();
         static LocationManager locationManager = LocationManager.GetInstance();
         
         #region Utils
         public static void SpawnOnePed()
         {
-            float x;
-            float y;
-            do
-            {
-                x = rand.Next(-5, 5);
-                y = rand.Next(2, 15);
-            } while (Math.Abs(x) > y);
+            float y = Utilities.NextFloat(Settings.PedMinSpawningDistanceY, Settings.PedMaxSpawningDistanceY);           
+            float x = Utilities.GetPosXByPosY(y);
             Ped ped = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x, y, 0)));
-            ped.Heading = rand.Next(360);
+            ped.Heading = Utilities.NextFloat(1, 360);
         }
 
         public static void SpawnVehicle(UIMenuListItem vehicleTypeList, List<dynamic> typeList)
@@ -107,7 +101,7 @@ namespace GtaVModPeDistance
             if (Settings.CameraFixedHeight == 0)
             {
                 // TODO sistemare l'orientamento della verso il basso della camera
-                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(Settings.CameraMinSpawningHeight, Settings.CameraMaxSpawningHeight);
+                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + Utilities.NextFloat(Settings.CameraMinSpawningHeight, Settings.CameraMaxSpawningHeight);
             }
             else
             {
