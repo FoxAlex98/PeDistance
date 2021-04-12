@@ -116,16 +116,16 @@ namespace GtaVModPeDistance
             listOfImageFormat.Add("Png");
 
             maxCollectedDataList = new UIMenuListItem("Max Collected Data: ", listOfMaxCollectedData, listOfMaxCollectedData.IndexOf(Settings.MaxCollectedData));
-            pedMinSpawningDistanceYList = new UIMenuListItem("Ped Min Spawning Distance Y: ", listOfPedMinSpawningDistanceY, listOfPedMinSpawningDistanceY.IndexOf(Settings.PedMinSpawningDistanceY));
-            pedMaxSpawningDistanceYList = new UIMenuListItem("Ped Max Spawning Distance Y: ", listOfPedMaxSpawningDistanceY, listOfPedMaxSpawningDistanceY.IndexOf(Settings.PedMaxSpawningDistanceY));
-            cameraMinSpawningHeightList = new UIMenuListItem("Camera Min Spawning Height: ", listOfCameraMinSpawningHeight, listOfCameraMinSpawningHeight.IndexOf(Settings.CameraMinSpawningHeight));
-            cameraMaxSpawningHeightList = new UIMenuListItem("Camera Max Spawning Height: ", listOfCameraMaxSpawningHeight, listOfCameraMaxSpawningHeight.IndexOf(Settings.CameraMaxSpawningHeight));
-            cameraFixedHeightList = new UIMenuListItem("Camera Fixed Height: ", listOfCameraFixedHeight, listOfCameraFixedHeight.IndexOf(Settings.CameraFixedHeight));
-            teleportingDelayList = new UIMenuListItem("Teleporting Delay: ", listOfTeleportingDelay, listOfTeleportingDelay.IndexOf(Settings.TeleportingDelay));
-            renderingDelayList = new UIMenuListItem("Rendering Delay: ", listOfRenderingDelay, listOfRenderingDelay.IndexOf(Settings.RenderingDelay));
-            pedSpawningDelayList = new UIMenuListItem("Ped Spawning Delay: ", listOfPedSpawningDelay, listOfPedSpawningDelay.IndexOf(Settings.PedSpawningDelay));
-            collectingDataDelayList = new UIMenuListItem("Collecting Data Delay: ", listOfCollectingDataDelay, listOfCollectingDataDelay.IndexOf(Settings.CollectingDataDelay));
-            clearCollectingDataDelayList = new UIMenuListItem("Clear Collecting Data Delay: ", listOfClearCollectingDataDelay, listOfClearCollectingDataDelay.IndexOf(Settings.ClearCollectingDataDelay));
+            pedMinSpawningDistanceYList = new UIMenuListItem("Ped Min Spawning Distance (m): ", listOfPedMinSpawningDistanceY, listOfPedMinSpawningDistanceY.IndexOf(Settings.PedMinSpawningDistanceY));
+            pedMaxSpawningDistanceYList = new UIMenuListItem("Ped Max Spawning Distance (m): ", listOfPedMaxSpawningDistanceY, listOfPedMaxSpawningDistanceY.IndexOf(Settings.PedMaxSpawningDistanceY));
+            cameraMinSpawningHeightList = new UIMenuListItem("Camera Min Spawning Height (m): ", listOfCameraMinSpawningHeight, listOfCameraMinSpawningHeight.IndexOf(Settings.CameraMinSpawningHeight));
+            cameraMaxSpawningHeightList = new UIMenuListItem("Camera Max Spawning Height (m): ", listOfCameraMaxSpawningHeight, listOfCameraMaxSpawningHeight.IndexOf(Settings.CameraMaxSpawningHeight));
+            cameraFixedHeightList = new UIMenuListItem("Camera Fixed Height (m): ", listOfCameraFixedHeight, listOfCameraFixedHeight.IndexOf(Settings.CameraFixedHeight));
+            teleportingDelayList = new UIMenuListItem("Teleporting Delay (s): ", listOfTeleportingDelay, listOfTeleportingDelay.IndexOf(Settings.TeleportingDelay));
+            renderingDelayList = new UIMenuListItem("Rendering Delay (s): ", listOfRenderingDelay, listOfRenderingDelay.IndexOf(Settings.RenderingDelay));
+            pedSpawningDelayList = new UIMenuListItem("Ped Spawning Delay (s): ", listOfPedSpawningDelay, listOfPedSpawningDelay.IndexOf(Settings.PedSpawningDelay));
+            collectingDataDelayList = new UIMenuListItem("Collecting Data Delay (s): ", listOfCollectingDataDelay, listOfCollectingDataDelay.IndexOf(Settings.CollectingDataDelay));
+            clearCollectingDataDelayList = new UIMenuListItem("Clear Collecting Data Delay (s): ", listOfClearCollectingDataDelay, listOfClearCollectingDataDelay.IndexOf(Settings.ClearCollectingDataDelay));
             saveScreenShotLocallyList = new UIMenuListItem("Save ScreenShot Locally: ", listOfSaveScreenShotLocally, listOfSaveScreenShotLocally.IndexOf(Settings.SaveScreenShotLocally));
             imageFormatList = new UIMenuListItem("Save ScreenShot Locally: ", listOfImageFormat, listOfImageFormat.IndexOf(Settings.ImageFormat));
 

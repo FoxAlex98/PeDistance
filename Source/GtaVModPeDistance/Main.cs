@@ -10,7 +10,7 @@ namespace GtaVModPeDistance
 {
     public class Main : Script
     {
-        string ModName = "Tostino-ML";
+        string ModName = "PeDistance-ML";
         string Developer = "Danilo-AleS-AleC";
         string Version = "1.0";
 
@@ -24,7 +24,7 @@ namespace GtaVModPeDistance
 
             menuHelper = new MenuHelper();
 
-            Notification.Show("~o~" + ModName + " " + Version + " by ~o~" + Developer + " Loaded");
+            Notification.Show("~o~" + ModName + " " + Version + "~n~~w~by ~b~" + Developer + " ~w~Loaded");
             Notification.Show("Use F5 to open menu");
             MenuSetup();
             Tick += onTick;
@@ -55,13 +55,13 @@ namespace GtaVModPeDistance
             mainMenuItem.Add(new MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
             mainMenuItem.Add(new MenuItem("Stop Collecting Data", CollectingUtils.StopCollectingData));
 
-            mainMenu = new Menu("Tostino Menu", "SELECT AN OPTION", mainMenuItem);
+            mainMenu = new Menu("PeDistance Menu", "SELECT AN OPTION", mainMenuItem);
             modMenuPool.Add(mainMenu.ModMenu);
 
-            UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils Menu");
+            UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils Menu >");
             new Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
 
-            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Settings Menu");
+            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Settings Menu >", "Show up a menu to let you set your own preferred settings. ~r~Do not forget ~w~to use ~g~Save ~w~to save modified settings.");
             new Menu(uiMlMenu, menuHelper.GetConfigMenu());           
         }
     }
