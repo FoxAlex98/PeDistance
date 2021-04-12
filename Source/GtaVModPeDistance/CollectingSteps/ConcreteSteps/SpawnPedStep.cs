@@ -1,6 +1,5 @@
 ﻿using GTA;
 using GTA.Math;
-using System;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
