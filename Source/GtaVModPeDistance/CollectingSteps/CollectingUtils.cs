@@ -44,6 +44,11 @@ namespace GtaVModPeDistance.CollectingSteps
             }
         }
 
+        public static void ForceWritingData()
+        {
+            dataManager.WriteDataToFile();
+        }
+
         public static CollectingStep GetFirstStep()
         {
             return new TeleportToRandomSavedLocationStep();

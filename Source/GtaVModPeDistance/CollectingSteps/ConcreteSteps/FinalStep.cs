@@ -18,6 +18,10 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
                 CollectingState.Ped = null;
                 CollectingState.StartCollectingData = false;
             }
+            if (CollectingState.WannaStop)
+            {
+                CollectingUtils.ForceWritingData();
+            }
         }
 
         public override int GetDelay()
