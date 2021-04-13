@@ -20,7 +20,7 @@ namespace GtaVModPeDistance
         public static int PedSpawningDelay { get; set; }
         public static int CollectingDataDelay { get; set; }
         public static int ClearCollectingDataDelay { get; set; }
-        public static string SaveScreenShotLocally { get; set; }
+        public static bool SaveScreenShotLocally { get; set; }
         public static string ImageFormat { get; set; }
         public static string DirectoryName { get; set; }
 
@@ -65,7 +65,7 @@ namespace GtaVModPeDistance
                     else if (key.Equals("PedSpawningDelay")) PedSpawningDelay = int.Parse(value);
                     else if (key.Equals("CollectingDataDelay")) CollectingDataDelay = int.Parse(value);
                     else if (key.Equals("ClearCollectingDataDelay")) ClearCollectingDataDelay = int.Parse(value);
-                    else if (key.Equals("SaveScreenShotLocally")) SaveScreenShotLocally = value;
+                    else if (key.Equals("SaveScreenShotLocally")) SaveScreenShotLocally = bool.Parse(value);
                     else if (key.Equals("ImageFormat")) ImageFormat = value;
                     else if (key.Equals("DirectoryName")) DirectoryName = value;
                 }                

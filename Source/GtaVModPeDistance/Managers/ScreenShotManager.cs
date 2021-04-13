@@ -45,7 +45,7 @@ namespace GtaVModPeDistance.File
 
             memoryGraphics.CopyFromScreen(0, 0, 0, 0, size);
             string finalName = FileNameFormatter(World.GetStreetName(actualPlayerPosition), World.GetZoneLocalizedName(actualPlayerPosition));
-            if (Settings.SaveScreenShotLocally.Equals("Yes"))
+            if (Settings.SaveScreenShotLocally)
             {
                 fileName = Path.Combine(mainFolder, finalName);
                 memoryImage.Save(string.Format(fileName));

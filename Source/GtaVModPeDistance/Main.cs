@@ -58,10 +58,10 @@ namespace GtaVModPeDistance
             mainMenu = new Menu("PeDistance Menu", "SELECT AN OPTION", mainMenuItem);
             modMenuPool.Add(mainMenu.ModMenu);
 
-            UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Utils Menu >");
+            UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Utils Menu");
             new Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
 
-            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "Settings Menu >", "Show up a menu to let you set your own preferred settings. ~r~Do not forget ~w~to use ~g~Save ~w~to save modified settings.");
+            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Settings Menu", "Show up a menu to let you set your own preferred settings. ~r~Do not forget ~w~to use ~g~Save ~w~to save modified settings.");
             new Menu(uiMlMenu, menuHelper.GetConfigMenu());           
         }
     }
