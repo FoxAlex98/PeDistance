@@ -2,6 +2,7 @@
 
 namespace GtaVModPeDistance.CollectingSteps
 {
+    //TODO: fare refactor dei concretestep usando i delegate
     abstract class CollectingStep
     {
         private float _start;
