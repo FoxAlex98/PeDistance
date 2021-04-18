@@ -124,6 +124,7 @@ namespace GtaVModPeDistance
         {
             SpawnPoint spawnPoint = locationManager.GetRandomPoint();
             Game.Player.Character.Position = spawnPoint.GetPosition();
+            Game.Player.Character.Rotation = spawnPoint.GetRotation();
             SetCameraPosition(spawnPoint.GetPosition(), spawnPoint.GetRotation());
         }
 
