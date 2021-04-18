@@ -14,13 +14,13 @@ namespace GtaVModPeDistance.CollectingSteps
         {
             if (Game.GameTime > _start + GetDelay())
             {
-                CallFunction();
+                ExecuteStep();
                 CollectingState.ActualStep = GetNextStep();
             }
         }
 
         public abstract int GetDelay();
         public abstract CollectingStep GetNextStep();
-        public abstract void CallFunction();
+        public abstract void ExecuteStep();
     }
 }

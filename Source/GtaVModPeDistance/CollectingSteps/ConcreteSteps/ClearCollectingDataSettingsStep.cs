@@ -4,7 +4,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
     class ClearCollectingDataSettingsStep : CollectingStep
     {
-        public override void CallFunction()
+        public override void ExecuteStep()
         {
             World.RenderingCamera.Delete();
             UtilsFunctions.DeleteAllNearPed();

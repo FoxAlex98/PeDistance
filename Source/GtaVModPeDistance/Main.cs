@@ -38,6 +38,11 @@ namespace GtaVModPeDistance
 
             if (CollectingState.StartCollectingData)
                 CollectingState.ActualStep.Process();
+
+            /*
+            if (CollectingState.WannaDraw)
+                UtilsFunctions.DrawLine(CollectingState.Ped);
+            */
         }
 
         private void onKeyDown(object sender, KeyEventArgs e)

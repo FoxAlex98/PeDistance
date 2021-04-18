@@ -5,7 +5,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
     class FinalStep : CollectingStep
     {
-        public override void CallFunction()
+        public override void ExecuteStep()
         {
             Notification.Show("Counter: " + CollectingState.CollectedDataCounter + "/" + Settings.MaxCollectedData);
             if (CollectingState.CollectedDataCounter >= Settings.MaxCollectedData || CollectingState.WannaStop)
@@ -22,6 +22,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             {
                 CollectingUtils.ForceWritingData();
             }
+            CollectingState.WannaDraw = false;
         }
 
         public override int GetDelay()

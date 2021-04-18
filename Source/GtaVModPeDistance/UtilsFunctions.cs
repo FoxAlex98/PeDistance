@@ -1,10 +1,12 @@
 ﻿using GTA;
 using GTA.Math;
+using GTA.Native;
 using GTA.UI;
 using GtaVModPeDistance.Models;
 using NativeUI;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace GtaVModPeDistance
 {
@@ -14,12 +16,42 @@ namespace GtaVModPeDistance
         static LocationManager locationManager = LocationManager.GetInstance();
         
         #region Utils
+
+        public static void DrawLine(Ped ped)
+        {
+            Vector3 startLine = ped.Position;
+            Vector3 endLine = new Vector3(ped.Position.X + 10, ped.Position.Y, ped.Position.Z);
+            World.DrawLine(startLine, endLine, Color.Green);
+            DrawBox(ped);
+        }
+
+        public static void DrawBox(Ped ped)
+        {
+            if (ped == null) return;
+
+            Ped2DBoundingBox ped2DBoundingBox = CoordinatesUtils.GetPedBoundingBox(ped);
+            Vector3 start = new Vector3(ped2DBoundingBox.PedTopLeftX, ped.Position.Y ,ped2DBoundingBox.PedTopLeftY);
+            Vector3 end = new Vector3(ped2DBoundingBox.PedBottomRightX, ped.Position.Y ,ped2DBoundingBox.PedBottomRightY);
+            DrawBox(start, end, Color.Green);
+        }
+
+        private static void DrawBox(Vector3 start, Vector3 end, Color color)
+        {
+            Function.Call(Hash.DRAW_BOX, start.X, start.Y, start.Z, end.X, end.Y, end.Z, color.R, color.G, color.B, color.A);
+        }
+
         public static void SpawnOnePed()
         {
             float y = Utilities.NextFloat(Settings.PedMinSpawningDistanceY, Settings.PedMaxSpawningDistanceY);           
             float x = Utilities.GetPosXByPosY(y);
             Ped ped = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x, y, 0)));
             ped.Heading = Utilities.NextFloat(1, 360);
+            //DrawBox(ped);
+        }
+
+        public static void ChangeWeather(UIMenuListItem weatherList, List<dynamic> weathers)
+        {
+            World.TransitionToWeather(weathers[weatherList.Index], 0f);
         }
 
         public static void SpawnVehicle(UIMenuListItem vehicleTypeList, List<dynamic> typeList)

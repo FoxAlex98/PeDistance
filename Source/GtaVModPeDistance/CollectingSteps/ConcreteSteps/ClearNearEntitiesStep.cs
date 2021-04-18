@@ -2,7 +2,7 @@
 {
     class ClearNearEntitiesStep : CollectingStep
     {
-        public override void CallFunction()
+        public override void ExecuteStep()
         {
             UtilsFunctions.DeleteAllNearPed();
             UtilsFunctions.DeleteAllNearVehicles();

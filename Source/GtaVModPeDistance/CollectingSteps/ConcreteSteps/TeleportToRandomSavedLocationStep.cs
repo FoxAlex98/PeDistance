@@ -10,8 +10,9 @@ namespace GtaVModPeDistance.CollectingSteps
         private LocationManager locationManager = LocationManager.GetInstance();
         private Random rand = new Random();
 
-        public override void CallFunction()
+        public override void ExecuteStep()
         {
+            CollectingState.WannaDraw = false;
             CollectingState.SpawnPoint = locationManager.GetRandomPoint();
             Vector3 Position = CollectingState.SpawnPoint.GetPosition();
             Vector3 Rotation = CollectingState.SpawnPoint.GetRotation();
