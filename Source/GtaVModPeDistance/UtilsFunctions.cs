@@ -36,7 +36,7 @@ namespace GtaVModPeDistance
         }
 
         private static void DrawBox(Vector3 start, Vector3 end, Color color)
-        {
+        {            
             Function.Call(Hash.DRAW_BOX, start.X, start.Y, start.Z, end.X, end.Y, end.Z, color.R, color.G, color.B, color.A);
         }
 

@@ -3,6 +3,7 @@ using GTA.Math;
 using GtaVModPeDistance.File;
 using GtaVModPeDistance.Models;
 using System;
+using System.Windows.Forms;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
@@ -26,7 +27,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
                     image.b64String,
                     World.CurrentTimeOfDay.ToString()
                 );
-
+         
             dataManager.AddElement(data);
         }
         private double GetDistance(Vector3 pedPosition, Vector3 cameraPosition)
