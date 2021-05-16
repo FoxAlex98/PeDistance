@@ -1,4 +1,5 @@
 using GTA;
+using GTA.Math;
 using GTA.UI;
 using GtaVModPeDistance.CollectingSteps;
 using NativeUI;
@@ -38,6 +39,17 @@ namespace GtaVModPeDistance
 
             if (CollectingState.StartCollectingData)
                 CollectingState.ActualStep.Process();
+
+            //if (UtilsFunctions.ped != null)
+            //{
+            //    Vector3 front = UtilsFunctions.ped.Model.Dimensions.frontTopRight;              
+            //    Vector3 FUL = UtilsFunctions.ped.GetOffsetPosition(front);               
+
+            //    Vector3 bot = UtilsFunctions.ped.Model.Dimensions.rearBottomLeft;
+            //    Vector3 BLR = UtilsFunctions.ped.GetOffsetPosition(bot);             
+            //    Utilities.DrawBox(BLR, FUL, System.Drawing.Color.Red);
+            //}
+                
 
             /*
             if (CollectingState.WannaDraw)

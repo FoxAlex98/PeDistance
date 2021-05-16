@@ -31,8 +31,8 @@ namespace GtaVModPeDistance.File
         {
             mainFolder = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", Settings.DirectoryName, "images");
             if (!Directory.Exists(mainFolder)) Directory.CreateDirectory(mainFolder);
-            screenWidth = Screen.PrimaryScreen.WorkingArea.Width;
-            screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            screenWidth = Screen.PrimaryScreen.Bounds.Width;
+            screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
         }
     
@@ -52,6 +52,65 @@ namespace GtaVModPeDistance.File
             }                                             
             if(notification) GTA.UI.Notification.Show("ScreenShot Saved");
             return new ScreenShot(finalName, Utilities.ToBase64String(memoryImage, Settings.ImageFormat.Equals("Png")? ImageFormat.Png : ImageFormat.Jpeg));
+        }
+
+        public ScreenShot TakeScreenshot(Vector2 BottomLeft, Vector2 TopRight, bool notification = false)
+        {
+            Vector3 actualPlayerPosition = Game.Player.Character.Position;
+            memoryImage = new Bitmap(screenWidth, screenHeight);
+            size = new Size(memoryImage.Width, memoryImage.Height);
+            memoryGraphics = Graphics.FromImage(memoryImage);
+
+            memoryGraphics.CopyFromScreen(0, 0, 0, 0, size);
+            string finalName = FileNameFormatter(World.GetStreetName(actualPlayerPosition), World.GetZoneLocalizedName(actualPlayerPosition));
+
+            memoryImage.SetPixel(0, 0, Color.Red);
+
+            // TODO da pulire
+            int maxX, minX, maxY, minY;
+            if(BottomLeft.X > TopRight.X)
+            {
+                maxX = (int) BottomLeft.X;
+                minX = (int) TopRight.X;
+            } else
+            {
+                maxX = (int)TopRight.X;
+                minX = (int)BottomLeft.X;
+            }
+            if (BottomLeft.Y > TopRight.Y)
+            {
+                maxY = (int)BottomLeft.Y;
+                minY = (int)TopRight.Y;
+            }
+            else
+            {
+                maxY = (int)TopRight.Y;
+                minY = (int)BottomLeft.Y;
+            }
+
+            for (int x = minX; x < maxX; x++)
+            {
+                memoryImage.SetPixel(x, maxY, Color.Red);
+                memoryImage.SetPixel(x, minY, Color.Red);
+            }
+
+            for (int y = minY; y < maxY; y++)
+            {
+                memoryImage.SetPixel(minX, y, Color.Red);
+                memoryImage.SetPixel(maxX, y, Color.Red);
+            }
+
+            if (Settings.SaveScreenShotLocally)
+            {
+                fileName = Path.Combine(mainFolder, finalName);
+                memoryImage.Save(string.Format(fileName));
+            }
+
+            GTA.UI.Notification.Show("TopRight: " + TopRight.ToString());
+            GTA.UI.Notification.Show("BottomLeft: " + BottomLeft.ToString());
+
+            if (notification) GTA.UI.Notification.Show("ScreenShot Saved");
+            return new ScreenShot(finalName, Utilities.ToBase64String(memoryImage, Settings.ImageFormat.Equals("Png") ? ImageFormat.Png : ImageFormat.Jpeg));
         }
 
         public string FileNameFormatter(string streetName, string zoneName)

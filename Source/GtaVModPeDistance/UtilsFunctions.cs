@@ -14,6 +14,8 @@ namespace GtaVModPeDistance
     {
 
         static LocationManager locationManager = LocationManager.GetInstance();
+
+        public static Ped ped;
         
         #region Utils
 
@@ -44,7 +46,8 @@ namespace GtaVModPeDistance
         {
             float y = Utilities.NextFloat(Settings.PedMinSpawningDistanceY, Settings.PedMaxSpawningDistanceY);           
             float x = Utilities.GetPosXByPosY(y);
-            Ped ped = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x, y, 0)));
+            if (ped != null) ped.Delete();
+            ped = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x, y, 0)));
             ped.Heading = Utilities.NextFloat(1, 360);
             //DrawBox(ped);
         }

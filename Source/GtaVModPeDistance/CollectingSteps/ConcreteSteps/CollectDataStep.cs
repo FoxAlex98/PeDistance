@@ -14,7 +14,10 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 
         public override void ExecuteStep()
         {
-            ScreenShot image = screenShot.TakeScreenshot();
+            Vector2 topRight = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.rearBottomLeft));
+            Vector2 botLeft = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.frontTopRight));
+
+            ScreenShot image = screenShot.TakeScreenshot(new Vector2(botLeft.X.ParseToScreenWidth(), botLeft.Y.ParseToScreenHeight()), new Vector2(topRight.X.ParseToScreenWidth(), topRight.Y.ParseToScreenHeight()));
 
             Data data = new Data(
                     CollectingState.CollectedDataCounter++,

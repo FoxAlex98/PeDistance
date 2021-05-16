@@ -48,12 +48,24 @@ namespace GtaVModPeDistance
 
         public static float ParseToScreenWidth(this float value)
         {
-            return value * Screen.PrimaryScreen.WorkingArea.Width;
+            return value * Screen.PrimaryScreen.Bounds.Width;
         }
 
         public static float ParseToScreenHeight(this float value)
         {
-            return value * Screen.PrimaryScreen.WorkingArea.Height;
+            return value * Screen.PrimaryScreen.Bounds.Height;
+        }
+        //public static void TestBoundingBoxOnEntity(GTA.Entity entity)
+        //{
+        //    int val = Function.Call<int>(Hash.START_SHAPE_TEST_BOUNDING_BOX, entity, 10000, 0);
+        //    GTA.UI.Notification.Show(val.ToString());
+
+        //    int val1 = Function.Call<int>(Hash.START_SHAPE_TEST_BOUND, entity, 0, 0);
+        //    GTA.UI.Notification.Show(val1.ToString());
+        //}
+        public static void DrawBox(Vector3 a, Vector3 b, Color col)
+        {         
+            Function.Call(Hash.DRAW_BOX, a.X, a.Y, a.Z, b.X, b.Y, b.Z, col.R, col.G, col.B, col.A);
         }
     }
 }

@@ -13,9 +13,12 @@ namespace GtaVModPeDistance
             float pedFurthestRightBodyPart = GetPedFurthestRightBodyPart(ped);
             float pedFurthestLeftBodyPart = GetPedFurthestLeftBodyPart(ped);
 
+            Vector2 BLR = Utilities.World3DToScreen2d(ped.GetOffsetPosition(ped.Model.Dimensions.rearBottomLeft));
+            Vector2 FUL = Utilities.World3DToScreen2d(ped.GetOffsetPosition(ped.Model.Dimensions.frontTopRight));
+
             Vector2 BoundingBoxTopLeft = new Vector2(pedFurthestLeftBodyPart.ParseToScreenWidth(), pedHeighestBodyPart.ParseToScreenHeight());
-            Vector2 BoundingBoxTopRight = new Vector2(pedFurthestRightBodyPart.ParseToScreenWidth(), pedHeighestBodyPart.ParseToScreenHeight());
-            Vector2 BoundingBoxBottomLeft = new Vector2(pedFurthestLeftBodyPart.ParseToScreenWidth(), pedLowestBodyPart.ParseToScreenHeight());
+            Vector2 BoundingBoxTopRight = new Vector2(FUL.X.ParseToScreenWidth(), FUL.Y.ParseToScreenHeight());
+            Vector2 BoundingBoxBottomLeft = new Vector2(BLR.X.ParseToScreenWidth(), BLR.Y.ParseToScreenHeight());
             Vector2 BoundingBoxBottomRight = new Vector2(pedFurthestRightBodyPart.ParseToScreenWidth(), pedLowestBodyPart.ParseToScreenHeight());
 
             /*
@@ -24,8 +27,8 @@ namespace GtaVModPeDistance
             GTA.UI.Notification.Show(BoundingBoxTopRight.ToString());
             GTA.UI.Notification.Show(BoundingBoxBottomLeft.ToString());
             GTA.UI.Notification.Show(BoundingBoxBottomRight.ToString());
-            */
-
+            */       
+       
             return new Ped2DBoundingBox(BoundingBoxTopLeft, BoundingBoxTopRight, BoundingBoxBottomLeft, BoundingBoxBottomRight);
         }
 
