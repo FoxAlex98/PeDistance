@@ -6,6 +6,11 @@ namespace GtaVModPeDistance
 {
     class CoordinatesUtils
     {
+        private static float paddingTop = 0.12f;
+        private static float paddingLeft = 0.1f;
+        private static float paddingRight = 0.1f;
+        private static float paddingBottom = 0.05f;
+
         public static Ped2DBoundingBox GetPedBoundingBox(Ped ped)
         {
             float pedHeighestBodyPart = GetPedHighestBodyPart(ped);
@@ -13,12 +18,9 @@ namespace GtaVModPeDistance
             float pedFurthestRightBodyPart = GetPedFurthestRightBodyPart(ped);
             float pedFurthestLeftBodyPart = GetPedFurthestLeftBodyPart(ped);
 
-            Vector2 BLR = Utilities.World3DToScreen2d(ped.GetOffsetPosition(ped.Model.Dimensions.rearBottomLeft));
-            Vector2 FUL = Utilities.World3DToScreen2d(ped.GetOffsetPosition(ped.Model.Dimensions.frontTopRight));
-
             Vector2 BoundingBoxTopLeft = new Vector2(pedFurthestLeftBodyPart.ParseToScreenWidth(), pedHeighestBodyPart.ParseToScreenHeight());
-            Vector2 BoundingBoxTopRight = new Vector2(FUL.X.ParseToScreenWidth(), FUL.Y.ParseToScreenHeight());
-            Vector2 BoundingBoxBottomLeft = new Vector2(BLR.X.ParseToScreenWidth(), BLR.Y.ParseToScreenHeight());
+            Vector2 BoundingBoxTopRight = new Vector2(pedFurthestRightBodyPart.ParseToScreenWidth(), pedHeighestBodyPart.ParseToScreenHeight());
+            Vector2 BoundingBoxBottomLeft = new Vector2(pedFurthestLeftBodyPart.ParseToScreenWidth(), pedLowestBodyPart.ParseToScreenHeight());
             Vector2 BoundingBoxBottomRight = new Vector2(pedFurthestRightBodyPart.ParseToScreenWidth(), pedLowestBodyPart.ParseToScreenHeight());
 
             /*
@@ -27,8 +29,8 @@ namespace GtaVModPeDistance
             GTA.UI.Notification.Show(BoundingBoxTopRight.ToString());
             GTA.UI.Notification.Show(BoundingBoxBottomLeft.ToString());
             GTA.UI.Notification.Show(BoundingBoxBottomRight.ToString());
-            */       
-       
+            */
+
             return new Ped2DBoundingBox(BoundingBoxTopLeft, BoundingBoxTopRight, BoundingBoxBottomLeft, BoundingBoxBottomRight);
         }
 
@@ -44,37 +46,53 @@ namespace GtaVModPeDistance
 
         private static float GetPedLowestBodyPart(Ped ped)
         {
-            float max = Utilities.World3DToScreen2d(ped.Bones[0].Position).Y;
+            Vector3 pos = ped.Bones[0].Position;
+            pos.Z -= paddingBottom;
+            float max = Utilities.World3DToScreen2d(pos).Y;
             foreach (PedBone pedBone in ped.Bones)
             {
-                max = Utilities.World3DToScreen2d(pedBone.Position).Y > max ? Utilities.World3DToScreen2d(pedBone.Position).Y : max;
+                Vector3 posMax = pedBone.Position;
+                posMax.Z -= paddingBottom;
+                max = Utilities.World3DToScreen2d(posMax).Y > max ? Utilities.World3DToScreen2d(posMax).Y : max;
             }
             return max;
         }
         private static float GetPedHighestBodyPart(Ped ped)
         {
-            float min = Utilities.World3DToScreen2d(ped.Bones[0].Position).Y;
+            Vector3 pos = ped.Bones[0].Position;
+            pos.Z += paddingTop;
+            float min = Utilities.World3DToScreen2d(pos).Y;
             foreach (PedBone pedBone in ped.Bones)
             {
-                min = Utilities.World3DToScreen2d(pedBone.Position).Y < min ? Utilities.World3DToScreen2d(pedBone.Position).Y : min;
+                Vector3 posMin = pedBone.Position;
+                posMin.Z += paddingTop;
+                min = Utilities.World3DToScreen2d(posMin).Y < min ? Utilities.World3DToScreen2d(posMin).Y : min;
             }
             return min;
         }
         private static float GetPedFurthestRightBodyPart(Ped ped)
         {
+            Vector3 pos = ped.Bones[0].Position;
+            pos.X += paddingRight;
             float max = Utilities.World3DToScreen2d(ped.Bones[0].Position).X;
             foreach (PedBone pedBone in ped.Bones)
             {
-                max = Utilities.World3DToScreen2d(pedBone.Position).X > max ? Utilities.World3DToScreen2d(pedBone.Position).X : max;
+                Vector3 posMax = pedBone.Position;
+                posMax.X += paddingRight;
+                max = Utilities.World3DToScreen2d(posMax).X > max ? Utilities.World3DToScreen2d(posMax).X : max;
             }
             return max;
         }
         private static float GetPedFurthestLeftBodyPart(Ped ped)
         {
+            Vector3 pos = ped.Bones[0].Position;
+            pos.X -= paddingLeft;
             float min = Utilities.World3DToScreen2d(ped.Bones[0].Position).X;
             foreach (PedBone pedBone in ped.Bones)
             {
-                min = Utilities.World3DToScreen2d(pedBone.Position).X < min ? Utilities.World3DToScreen2d(pedBone.Position).X : min;
+                Vector3 posMin = pedBone.Position;
+                posMin.X -= paddingLeft;
+                min = Utilities.World3DToScreen2d(posMin).X < min ? Utilities.World3DToScreen2d(posMin).X : min;
             }
             return min;
         }
