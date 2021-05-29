@@ -77,40 +77,52 @@ namespace GtaVModPeDistance.File
             return new ScreenShot(finalName, Utilities.ToBase64String(memoryImage, Settings.ImageFormat.Equals("Png") ? ImageFormat.Png : ImageFormat.Jpeg));
         }
 
-        public void DrawBoundingBox(Vector2 BottomLeft, Vector2 TopRight, Color color)
+        //TODO parametrizzare la dimensione del border
+        public void DrawBoundingBox(Vector2 bottomLeft, Vector2 topRight, Color color)
         {
-            int maxX, minX, maxY, minY;
-            if (BottomLeft.X > TopRight.X)
+            //GTA.UI.Notification.Show("bottomLeft " + bottomLeft.ToString());
+            //GTA.UI.Notification.Show("topRight " + topRight.ToString());
+
+            int xFix = topRight.X == Screen.PrimaryScreen.Bounds.Width ? -1 : 0;
+            int yFix = bottomLeft.Y == Screen.PrimaryScreen.Bounds.Height ? -1 : 0;
+
+            int border = 5; //meglio se dispari
+
+            //fill Horizontal line
+            for (int x = (int) bottomLeft.X; x < topRight.X; x++)
             {
-                maxX = (int)BottomLeft.X;
-                minX = (int)TopRight.X;
-            }
-            else
-            {
-                maxX = (int)TopRight.X;
-                minX = (int)BottomLeft.X;
-            }
-            if (BottomLeft.Y > TopRight.Y)
-            {
-                maxY = (int)BottomLeft.Y;
-                minY = (int)TopRight.Y;
-            }
-            else
-            {
-                maxY = (int)TopRight.Y;
-                minY = (int)BottomLeft.Y;
+                memoryImage.SetPixel(x, (int) bottomLeft.Y + yFix, color);
+                memoryImage.SetPixel(x, (int) topRight.Y, color);
+                BorderFillerHorizontalLine(new Vector2(x, bottomLeft.Y + yFix), border, color);
+                BorderFillerHorizontalLine(new Vector2(x, topRight.Y), border, color);
+
             }
 
-            for (int x = minX; x < maxX; x++)
+            //fill Vertical line
+            for (int y = (int) topRight.Y; y < bottomLeft.Y; y++)
             {
-                memoryImage.SetPixel(x, maxY, color);
-                memoryImage.SetPixel(x, minY, color);
+                memoryImage.SetPixel((int) bottomLeft.X, y, color);
+                memoryImage.SetPixel((int) topRight.X + xFix, y, color);
+                BorderFillerVerticalLine(new Vector2(bottomLeft.X, y), border, color);
+                BorderFillerVerticalLine(new Vector2(topRight.X + xFix, y), border, color);
             }
+        }
 
-            for (int y = minY; y < maxY; y++)
+        public void BorderFillerVerticalLine(Vector2 median, int border, Color color)
+        {
+            for(int i = (int) median.X - border/2; i < median.X + border/2; i++)
             {
-                memoryImage.SetPixel(minX, y, color);
-                memoryImage.SetPixel(maxX, y, color);
+                if (i < Screen.PrimaryScreen.Bounds.Width)
+                    memoryImage.SetPixel(i, (int) median.Y, color);
+            }
+        }
+        
+        public void BorderFillerHorizontalLine(Vector2 median, int border, Color color)
+        {
+            for(int i = (int) median.Y - border/2; i < median.Y + border/2; i++)
+            {
+                if(i < Screen.PrimaryScreen.Bounds.Height)
+                    memoryImage.SetPixel((int) median.X, i, color);
             }
         }
 

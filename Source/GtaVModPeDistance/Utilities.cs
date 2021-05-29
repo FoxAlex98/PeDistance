@@ -41,11 +41,32 @@ namespace GtaVModPeDistance
         {
             var x2dp = new OutputArgument();
             var y2dp = new OutputArgument();
-
             Function.Call<bool>(Hash.GET_SCREEN_COORD_FROM_WORLD_COORD, pos.X, pos.Y, pos.Z, x2dp, y2dp);
-            return new Vector2(x2dp.GetResult<float>(), y2dp.GetResult<float>());
+
+            return new Vector2(x2dp.GetResult<float>().ParseToScreenWidth(), y2dp.GetResult<float>().ParseToScreenHeight());
+            
+            //PointF screenCoords = GTA.UI.Screen.WorldToScreen(pos);
+            //return new Vector2(screenCoords.X, screenCoords.Y);
         }
 
+        public static Vector2 World3DToScreen2d(Vector3 pos, Vector3 support)
+        {
+            Vector2 pos2D = World3DToScreen2d(pos);
+            float x = pos2D.X;
+            float y = pos2D.Y;
+
+            if (y < 0)
+            {
+                //GTA.UI.Notification.Show("Testone " + pos2D.ToString());
+                x = World3DToScreen2d(support).X;
+                y = -y;
+                //GTA.UI.Notification.Show("Testone MOD" + x + " " + y);
+            }
+
+            return new Vector2(x, y);
+        }
+
+        #region ToCheck
         //public static void getMaxBotLeft(Vector3 dbl)
         //{
         //    Vector3 dbr = new Vector3(TFR.X, DBL.Y, DBL.Z);
@@ -115,6 +136,22 @@ namespace GtaVModPeDistance
         //    height = yMax - yMin;
 
         //}
+        //public static Vector3 RotateOnZ(Vector3 point, Matrix matrix)
+        //{
+        //    return matrix.TransformPoint(point);
+        //}
+
+        //public static Matrix GetRotationMatrix(float angle)
+        //{
+        //    double rad = Deg2rad(angle);
+        //    return Matrix.RotationZ((float) rad);
+        //}
+
+        //public static double Deg2rad(double angle)
+        //{
+        //    return (Math.PI / 180) * angle;
+        //}
+        #endregion
 
         public static void Draw3DPedBoundingBox(this GTA.Ped ped, Color color)
         {
@@ -151,21 +188,6 @@ namespace GtaVModPeDistance
                 color);
         }
 
-        //public static Vector3 RotateOnZ(Vector3 point, Matrix matrix)
-        //{
-        //    return matrix.TransformPoint(point);
-        //}
-
-        //public static Matrix GetRotationMatrix(float angle)
-        //{
-        //    double rad = Deg2rad(angle);
-        //    return Matrix.RotationZ((float) rad);
-        //}
-
-        //public static double Deg2rad(double angle)
-        //{
-        //    return (Math.PI / 180) * angle;
-        //}
 
         public static void Draw3DBoundingBox(Vector3 DownBehindLeft, Vector3 DownBehindRight, Vector3 DownForwardLeft, Vector3 DownForwardRight,
                 Vector3 TopBehindLeft, Vector3 TopBehindRight, Vector3 TopForwardLeft, Vector3 TopForwardRight, Color color)
@@ -188,7 +210,7 @@ namespace GtaVModPeDistance
 
         }
 
-        public static void printPedAxis(this GTA.Ped ped)
+        public static void PrintPedAxis(this GTA.Ped ped)
         {
             Vector3 origin = Vector3.Zero;
             Vector3 pedOrigin = ped.GetOffsetPosition(origin);

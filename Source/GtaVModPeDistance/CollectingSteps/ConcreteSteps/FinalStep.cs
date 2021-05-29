@@ -13,7 +13,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
                 Notification.Show("Stop collecting data...");
                 Game.Player.Character.IsVisible = true;
                 Game.Player.Character.Position = CollectingState.InitialPosition;
-                Globals.ShowHud();
+                Globals.ShowHud(); //TODO: check bug hud
                 World.RenderingCamera = null;
                 CollectingState.Ped = null;
                 CollectingState.StartCollectingData = false;

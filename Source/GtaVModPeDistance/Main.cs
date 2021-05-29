@@ -42,7 +42,7 @@ namespace GtaVModPeDistance
 
             if (UtilsFunctions.ped != null)
             {
-                //Game.Player.Character.printPedAxis();
+                //Game.Player.Character.PrintPedAxis();
                 Game.Player.Character.Draw3DPedBoundingBox(System.Drawing.Color.Red);
             }
 

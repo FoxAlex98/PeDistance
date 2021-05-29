@@ -19,23 +19,23 @@ namespace GtaVModPeDistance
         
         #region Utils
 
-        public static void DrawLine(Ped ped)
-        {
-            Vector3 startLine = ped.Position;
-            Vector3 endLine = new Vector3(ped.Position.X + 10, ped.Position.Y, ped.Position.Z);
-            World.DrawLine(startLine, endLine, Color.Green);
-            DrawBox(ped);
-        }
+        //public static void DrawLine(Ped ped)
+        //{
+        //    Vector3 startLine = ped.Position;
+        //    Vector3 endLine = new Vector3(ped.Position.X + 10, ped.Position.Y, ped.Position.Z);
+        //    World.DrawLine(startLine, endLine, Color.Green);
+        //    DrawBox(ped);
+        //}
 
-        public static void DrawBox(Ped ped)
-        {
-            if (ped == null) return;
+        //public static void DrawBox(Ped ped)
+        //{
+        //    if (ped == null) return;
 
-            Ped2DBoundingBox ped2DBoundingBox = CoordinatesUtils.GetPedBoundingBox(ped);
-            Vector3 start = new Vector3(ped2DBoundingBox.PedTopLeftX, ped.Position.Y ,ped2DBoundingBox.PedTopLeftY);
-            Vector3 end = new Vector3(ped2DBoundingBox.PedBottomRightX, ped.Position.Y ,ped2DBoundingBox.PedBottomRightY);
-            DrawBox(start, end, Color.Green);
-        }
+        //    Ped2DBoundingBox ped2DBoundingBox = CoordinatesUtils.GetPedBoundingBoxInScreen(ped);
+        //    Vector3 start = new Vector3(ped2DBoundingBox.PedTopLeftX, ped.Position.Y ,ped2DBoundingBox.PedTopLeftY);
+        //    Vector3 end = new Vector3(ped2DBoundingBox.PedBottomRightX, ped.Position.Y ,ped2DBoundingBox.PedBottomRightY);
+        //    DrawBox(start, end, Color.Green);
+        //}
 
         private static void DrawBox(Vector3 start, Vector3 end, Color color)
         {            

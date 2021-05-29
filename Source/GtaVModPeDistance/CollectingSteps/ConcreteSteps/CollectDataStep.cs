@@ -18,13 +18,19 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 
             screenShot.TakeScreenshot();
 
-            Vector2 topRight = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.rearBottomLeft));
-            Vector2 botLeft = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.frontTopRight));
-            screenShot.DrawBoundingBox(new Vector2(botLeft.X.ParseToScreenWidth(), botLeft.Y.ParseToScreenHeight()), new Vector2(topRight.X.ParseToScreenWidth(), topRight.Y.ParseToScreenHeight()), Color.Red);
+            //Vector2 topRight = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.rearBottomLeft));
+            //Vector2 botLeft = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.frontTopRight));
+            //screenShot.DrawBoundingBox(new Vector2(botLeft.X, botLeft.Y), new Vector2(topRight.X, topRight.Y), Color.Red);
 
-            Ped2DBoundingBox box = CoordinatesUtils.GetPedBoundingBox(CollectingState.Ped);
+            Ped2DBoundingBox box = CoordinatesUtils.GetPedBoundingBoxInScreen(CollectingState.Ped);
             screenShot.DrawBoundingBox(new Vector2(box.PedBottomLeftX, box.PedBottomLeftY), new Vector2(box.PedTopRightX, box.PedTopRightY), Color.Blue);
-
+            //screenShot.DrawBoundingBox(new Vector2(box.PedBottomLeftX, box.PedBottomLeftY), new Vector2(box.PedTopRightX, box.PedTopRightY), Color.Blue);
+            /*
+            GTA.UI.Notification.Show("TopLeft " + box.PedTopLeftX + " " + box.PedTopLeftY);
+            GTA.UI.Notification.Show("TopRight " + box.PedTopRightX + " " + box.PedTopRightY);
+            GTA.UI.Notification.Show("BottomLeft " + box.PedBottomLeftX + " " + box.PedBottomLeftY);
+            GTA.UI.Notification.Show("BottomRight " + box.PedBottomRightX + " " + box.PedBottomRightY);
+            */
             ScreenShot image = screenShot.SaveScreenShot();
 
             Data data = new Data(
