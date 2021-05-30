@@ -42,14 +42,22 @@ namespace GtaVModPeDistance
 
             if (UtilsFunctions.ped != null)
             {
-                //Game.Player.Character.PrintPedAxis();
-                Game.Player.Character.Draw3DPedBoundingBox(System.Drawing.Color.Red);
+                UtilsFunctions.ped.Draw3DPedBoundingBoxUsingVertex(System.Drawing.Color.Red);
+                UtilsFunctions.ped.PrintPedAxis();
+
             }
+
+            #region DrawBoundingBoxNearbyEntities
+            if(UtilsFunctions.ActiveNearbyEntitiesBoundingBox)
+                Utilities.DrawBoundingBoxNearbyEntities(75);
+            #endregion
+
 
             if (CollectingState.Ped != null)
             {
-                CollectingState.Ped.Draw3DPedBoundingBox(System.Drawing.Color.Red);
+                CollectingState.Ped.Draw3DPedBoundingBoxUsingVertex(System.Drawing.Color.Red);
             }
+                        
 
             /*
             if (CollectingState.WannaDraw)

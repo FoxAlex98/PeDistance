@@ -1,4 +1,5 @@
-﻿using GTA.Math;
+﻿using GTA;
+using GTA.Math;
 using GTA.Native;
 using System;
 using System.Drawing;
@@ -153,17 +154,17 @@ namespace GtaVModPeDistance
         //}
         #endregion
 
-        public static void Draw3DPedBoundingBox(this GTA.Ped ped, Color color)
+        public static void Draw3DPedBoundingBoxUsingVertex(this GTA.Entity entity, Color color)
         {
-            float Z = ped.Rotation.Z;
-            ped.Rotation = Vector3.Zero;
+            float Z = entity.Rotation.Z;
+            entity.Rotation = Vector3.Zero;
 
-            Vector3 DBL = ped.Model.Dimensions.rearBottomLeft;     // Down Behind left
-            Vector3 TFR = ped.Model.Dimensions.frontTopRight;      // Top front right
+            Vector3 DBL = entity.Model.Dimensions.rearBottomLeft;     // Down Behind left
+            Vector3 TFR = entity.Model.Dimensions.frontTopRight;      // Top front right
 
             // aggiustamenti dei margini
-            DBL.X += 0.2f;
-            TFR.X -= 0.2f;
+            DBL.X += 0.25f;
+            TFR.X -= 0.25f;
             //TFR.Z -= 0.12f;   
 
             Vector3 DBR = new Vector3(TFR.X, DBL.Y, DBL.Z);        // Down Behind right
@@ -174,39 +175,104 @@ namespace GtaVModPeDistance
             Vector3 TBR = new Vector3(TFR.X, DBL.Y, TFR.Z);        // Top Behind right
             Vector3 TFL = new Vector3(DBL.X, TFR.Y, TFR.Z);        // Top front left
 
-            ped.Rotation = new Vector3(0, 0, Z);
+            entity.Rotation = new Vector3(0, 0, Z);
 
             Draw3DBoundingBox(
-                ped.GetOffsetPosition(DBL),
-                ped.GetOffsetPosition(DBR),
-                ped.GetOffsetPosition(DFL),
-                ped.GetOffsetPosition(DFR),
-                ped.GetOffsetPosition(TBL),
-                ped.GetOffsetPosition(TBR),
-                ped.GetOffsetPosition(TFL),
-                ped.GetOffsetPosition(TFR), 
+                entity.GetOffsetPosition(DBL),
+                entity.GetOffsetPosition(DBR),
+                entity.GetOffsetPosition(DFL),
+                entity.GetOffsetPosition(DFR),
+                entity.GetOffsetPosition(TBL),
+                entity.GetOffsetPosition(TBR),
+                entity.GetOffsetPosition(TFL),
+                entity.GetOffsetPosition(TFR),
+                color);
+
+            //Draw3DBoundingBox(
+            //  DBL,
+            //  DBR,
+            //  DFL,
+            //  DFR,
+            //  TBL,
+            //  TBR,
+            //  TFL,
+            //  TFR,
+            //  color);
+
+        }
+
+        public static void Draw3BBoundingBoxUsingEntityPosition(this GTA.Entity entity, Color color)
+        {
+            float Z = entity.Rotation.Z;
+            entity.Rotation = Vector3.Zero;
+
+            Vector3 LRA = new Vector3(entity.LeftPosition.X, entity.RearPosition.Y, entity.AbovePosition.Z);       // Left Rear Above
+            Vector3 LFA = new Vector3(entity.LeftPosition.X, entity.FrontPosition.Y, entity.AbovePosition.Z);      // Left Front Above
+            Vector3 RRA = new Vector3(entity.RightPosition.X, entity.RearPosition.Y, entity.AbovePosition.Z);      // Right Rear Above
+            Vector3 RFA = new Vector3(entity.RightPosition.X, entity.FrontPosition.Y, entity.AbovePosition.Z);     // Right Front Above
+
+            Vector3 LRB = new Vector3(entity.LeftPosition.X, entity.RearPosition.Y, entity.BelowPosition.Z);       // Left Rear Below
+            Vector3 LFB = new Vector3(entity.LeftPosition.X, entity.FrontPosition.Y, entity.BelowPosition.Z);      // Left Front Below
+            Vector3 RRB = new Vector3(entity.RightPosition.X, entity.RearPosition.Y, entity.BelowPosition.Z);      // Right Rear Below
+            Vector3 RFB = new Vector3(entity.RightPosition.X, entity.FrontPosition.Y, entity.BelowPosition.Z);     // Right Front Below
+
+            //DBL.X += 0.2f;
+            //TFR.X -= 0.2f;
+
+            entity.Rotation = new Vector3(0, 0, Z);
+
+            //Draw3DBoundingBox(LRB, RRB, LFB, RFB, LRA, RRA, LFA, RFA, color);
+
+            Draw3DBoundingBox(
+                entity.GetOffsetPosition(LRB),
+                entity.GetOffsetPosition(RRB),
+                entity.GetOffsetPosition(LFB),
+                entity.GetOffsetPosition(RFB),
+                entity.GetOffsetPosition(LRA),
+                entity.GetOffsetPosition(RRA),
+                entity.GetOffsetPosition(LFA),
+                entity.GetOffsetPosition(RFA),
                 color);
         }
 
-
-        public static void Draw3DBoundingBox(Vector3 DownBehindLeft, Vector3 DownBehindRight, Vector3 DownForwardLeft, Vector3 DownForwardRight,
-                Vector3 TopBehindLeft, Vector3 TopBehindRight, Vector3 TopForwardLeft, Vector3 TopForwardRight, Color color)
+        public static void DrawBoundingBoxNearbyEntities(float radius)
         {
-            DrawLine(DownBehindLeft, DownBehindRight, color);
-            DrawLine(DownBehindLeft, DownForwardLeft, color);
-            DrawLine(DownBehindLeft, TopBehindLeft, color);
+            Entity[] entity = World.GetNearbyEntities(Game.Player.Character.Position, radius);
+            foreach (Entity ent in entity)
+            {
+                if(ent.IsOnScreen)
+                {
+                    if (ent is Vehicle)
+                        ent.Draw3DPedBoundingBoxUsingVertex(Color.Magenta);
+                    else if (ent is Ped)
+                        ent.Draw3DPedBoundingBoxUsingVertex(Color.Red);
+                    else if(ent is Weapon)
+                        ent.Draw3DPedBoundingBoxUsingVertex(Color.Blue);
+                    else
+                        ent.Draw3DPedBoundingBoxUsingVertex(Color.Aqua);
+                }
+              
+            }
+        }
 
-            DrawLine(DownForwardRight, DownBehindRight, color);
-            DrawLine(DownForwardRight, DownForwardLeft, color);
-            DrawLine(DownForwardRight, TopForwardRight, color);
+        public static void Draw3DBoundingBox(Vector3 LeftRearBelow, Vector3 RightRearBelow, Vector3 LeftFrontBelow, Vector3 RightFrontBelow,
+                Vector3 LeftRearAbove, Vector3 RightRearAbove, Vector3 LeftFrontAbove, Vector3 RightFrontAbove, Color color)
+        {
+            DrawLine(LeftRearBelow, RightRearBelow, color);
+            DrawLine(LeftRearBelow, LeftFrontBelow, color);
+            DrawLine(LeftRearBelow, LeftRearAbove, color);
 
-            DrawLine(TopForwardLeft, TopForwardRight, color);
-            DrawLine(TopForwardLeft, TopBehindLeft, color);
-            DrawLine(TopForwardLeft, DownForwardLeft, color);
+            DrawLine(RightFrontBelow, RightRearBelow, color);
+            DrawLine(RightFrontBelow, LeftFrontBelow, color);
+            DrawLine(RightFrontBelow, RightFrontAbove, color);
 
-            DrawLine(TopBehindRight, TopForwardRight, color);
-            DrawLine(TopBehindRight, TopBehindLeft, color);
-            DrawLine(TopBehindRight, DownBehindRight, color);
+            DrawLine(LeftFrontAbove, RightFrontAbove, color);
+            DrawLine(LeftFrontAbove, LeftRearAbove, color);
+            DrawLine(LeftFrontAbove, LeftFrontBelow, color);
+
+            DrawLine(RightRearAbove, RightFrontAbove, color);
+            DrawLine(RightRearAbove, LeftRearAbove, color);
+            DrawLine(RightRearAbove, RightRearBelow, color);
 
         }
 
@@ -245,5 +311,10 @@ namespace GtaVModPeDistance
         {
             Function.Call(Hash.DRAW_LINE, a.X, a.Y, a.Z, b.X, b.Y, b.Z, col.R, col.G, col.B, col.A);
         }
+
+        public static void FacePosition(this Ped ped, Vector3 pos) {
+            ped.Heading = Function.Call<float>(Hash.GET_HEADING_FROM_VECTOR_2D, pos.X - ped.Position.X, pos.Y - ped.Position.Y); 
+        }
+
     }
 }

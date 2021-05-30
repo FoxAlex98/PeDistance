@@ -16,7 +16,12 @@ namespace GtaVModPeDistance
         static LocationManager locationManager = LocationManager.GetInstance();
 
         public static Ped ped;
-        
+        public static Ped ped1;
+        public static Ped ped2;
+        public static Ped ped3;
+
+        public static bool ActiveNearbyEntitiesBoundingBox = false;
+
         #region Utils
 
         //public static void DrawLine(Ped ped)
@@ -48,8 +53,26 @@ namespace GtaVModPeDistance
             float x = Utilities.GetPosXByPosY(y);
             if (ped != null) ped.Delete();
             ped = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x, y, 0)));
-            ped.Heading = Utilities.NextFloat(1, 360);
+            ped.FacePosition(Game.Player.Character.Position);
+            float angle = Utilities.NextFloat(1, 360);
+            Notification.Show(angle.ToString());
+            ped.Heading += angle;
+
+
+            //ped1 = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x + 1, y, 0)));
+            //ped1.Heading = 90;
+            //// Notification.Show(ped1.Rotation.ToString());
+
+            //ped2 = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x + 2, y, 0)));
+            //ped2.Heading = 180;
+            //// Notification.Show(ped2.Rotation.ToString());
+
+            //ped3 = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x + 3, y, 0)));
+            //ped3.Heading = 270;
+            //// Notification.Show(ped3.Rotation.ToString());
+            //ped.Heading = Utilities.NextFloat(1, 360);
             //DrawBox(ped);
+
         }
 
         public static void ChangeWeather(UIMenuListItem weatherList, List<dynamic> weathers)
@@ -146,6 +169,8 @@ namespace GtaVModPeDistance
             Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, 60);
             World.RenderingCamera = camera;
         }
+
+        public static void ToggleNearbyEntityBoundingBox() => ActiveNearbyEntitiesBoundingBox = !ActiveNearbyEntitiesBoundingBox;
         #endregion
 
     }

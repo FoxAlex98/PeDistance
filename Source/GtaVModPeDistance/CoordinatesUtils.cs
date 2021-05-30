@@ -46,7 +46,7 @@ namespace GtaVModPeDistance
 
             // aggiustamenti dei margini
             DBL.X += 0.25f;
-            DBL.Z += 0.4f;
+            DBL.Z += 0.2f;
             TFR.X -= 0.25f;
             //TFR.Z -= 0.12f;   
 

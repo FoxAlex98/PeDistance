@@ -89,10 +89,8 @@ namespace GtaVModPeDistance.File
             int border = 5; //meglio se dispari
 
             //fill Horizontal line
-            for (int x = (int) bottomLeft.X; x < topRight.X; x++)
+            for (int x = (int) bottomLeft.X - border/2; x < topRight.X + border / 2; x++)
             {
-                memoryImage.SetPixel(x, (int) bottomLeft.Y + yFix, color);
-                memoryImage.SetPixel(x, (int) topRight.Y, color);
                 BorderFillerHorizontalLine(new Vector2(x, bottomLeft.Y + yFix), border, color);
                 BorderFillerHorizontalLine(new Vector2(x, topRight.Y), border, color);
 
@@ -101,8 +99,6 @@ namespace GtaVModPeDistance.File
             //fill Vertical line
             for (int y = (int) topRight.Y; y < bottomLeft.Y; y++)
             {
-                memoryImage.SetPixel((int) bottomLeft.X, y, color);
-                memoryImage.SetPixel((int) topRight.X + xFix, y, color);
                 BorderFillerVerticalLine(new Vector2(bottomLeft.X, y), border, color);
                 BorderFillerVerticalLine(new Vector2(topRight.X + xFix, y), border, color);
             }

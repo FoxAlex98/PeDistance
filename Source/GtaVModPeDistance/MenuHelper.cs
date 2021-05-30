@@ -70,6 +70,7 @@ namespace GtaVModPeDistance
             utilsList.Add(new MenuItem("Spawn Ped", UtilsFunctions.SpawnOnePed));
             utilsList.Add(new MenuItem("Spawn Random Point", UtilsFunctions.SpawnAtRandomSavedLocation));
             utilsList.Add(new MenuItem("Teleport To Waypoint", UtilsFunctions.TeleportToWaypoint));
+            utilsList.Add(new MenuItem("Toggle nearby entity box", UtilsFunctions.ToggleNearbyEntityBoundingBox));
             utilsList.Add(new MenuItem("Save Point Coordinates", UtilsFunctions.SaveCoordinates));
             utilsList.Add(new MenuItem("Reset", Reset));
             utilsList.Add(new MenuItem(planeList, () => { UtilsFunctions.SpawnVehicle(planeList, listOfPlanes); }));

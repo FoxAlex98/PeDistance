@@ -10,7 +10,8 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             float y = Utilities.NextFloat(Settings.PedMinSpawningDistanceY, Settings.PedMaxSpawningDistanceY);
             float x = Utilities.GetPosXByPosY(y);
             CollectingState.Ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));
-            CollectingState.Ped.Heading = Utilities.NextFloat(1, 360);
+            CollectingState.Ped.Heading += GetRotationUsingCameraAxis();
+            //CollectingState.Ped.Heading += GetRotationUsingCameraPosition();
             CollectingState.WannaDraw = true;
         }
 
@@ -22,6 +23,22 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
         public override CollectingStep GetNextStep()
         {
             return new CollectDataStep();
+        }
+
+        private int GetRotationUsingCameraAxis()
+        {
+            return (int) World.RenderingCamera.Rotation.Z + 180 + GetRandomHeadingAngle();
+        }
+
+        private int GetRotationUsingCameraPosition()
+        {
+            CollectingState.Ped.FacePosition(World.RenderingCamera.Position);
+            return GetRandomHeadingAngle();
+        }
+
+        private int GetRandomHeadingAngle()
+        {
+           return (int) Utilities.NextFloat(0, 359);
         }
     }
 }
