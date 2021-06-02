@@ -16,9 +16,9 @@ namespace GtaVModPeDistance
         List<dynamic> listOfPlanes, listOfHelicopter, listOfMotorbike, listOfBoat, listOfWeather;
         
         // Config
-        UIMenuListItem maxCollectedDataList, pedMinSpawningDistanceYList, pedMaxSpawningDistanceYList, cameraMinSpawningHeightList, cameraMaxSpawningHeightList, imageFormatList;
+        UIMenuListItem maxCollectedDataList, cameraMinSpawningHeightList, cameraMaxSpawningHeightList, imageFormatList;
         UIMenuListItem cameraFixedHeightList, cameraFovList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList;
-        List<dynamic> listOfMaxCollectedData, listOfPedMinSpawningDistanceY, listOfPedMaxSpawningDistanceY, listOfCameraMinSpawningHeight, listOfCameraMaxSpawningHeight, listOfCameraFixedHeight, listOfCameraFov;
+        List<dynamic> listOfMaxCollectedData, listOfCameraMinSpawningHeight, listOfCameraMaxSpawningHeight, listOfCameraFixedHeight, listOfCameraFov;
         List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfImageFormat;
         UIMenuCheckboxItem saveScreenShotLocally;
 
@@ -86,8 +86,6 @@ namespace GtaVModPeDistance
         {
             // Config menu
             listOfMaxCollectedData = new List<dynamic>();
-            listOfPedMinSpawningDistanceY = new List<dynamic>();
-            listOfPedMaxSpawningDistanceY = new List<dynamic>();
             listOfCameraMinSpawningHeight = new List<dynamic>();
             listOfCameraMaxSpawningHeight = new List<dynamic>();
             listOfCameraFixedHeight = new List<dynamic>();
@@ -102,11 +100,6 @@ namespace GtaVModPeDistance
 
             for (int i = 0; i <= 100; i++)
             {
-                if (i >= 2)
-                {
-                    listOfPedMinSpawningDistanceY.Add(i);
-                    listOfPedMaxSpawningDistanceY.Add(i);
-                }
                 listOfCameraMinSpawningHeight.Add(i);
                 listOfCameraMaxSpawningHeight.Add(i);
                 listOfTeleportingDelay.Add(i);
@@ -136,8 +129,6 @@ namespace GtaVModPeDistance
             listOfImageFormat.Add("Png");
 
             maxCollectedDataList = new UIMenuListItem("Max Collected Data: ", listOfMaxCollectedData, listOfMaxCollectedData.IndexOf(Settings.MaxCollectedData));
-            pedMinSpawningDistanceYList = new UIMenuListItem("Ped Min Spawning Distance (m): ", listOfPedMinSpawningDistanceY, listOfPedMinSpawningDistanceY.IndexOf(Settings.PedMinSpawningDistanceY));
-            pedMaxSpawningDistanceYList = new UIMenuListItem("Ped Max Spawning Distance (m): ", listOfPedMaxSpawningDistanceY, listOfPedMaxSpawningDistanceY.IndexOf(Settings.PedMaxSpawningDistanceY));
             cameraMinSpawningHeightList = new UIMenuListItem("Camera Min Spawning Height (m): ", listOfCameraMinSpawningHeight, listOfCameraMinSpawningHeight.IndexOf(Settings.CameraMinSpawningHeight));
             cameraMaxSpawningHeightList = new UIMenuListItem("Camera Max Spawning Height (m): ", listOfCameraMaxSpawningHeight, listOfCameraMaxSpawningHeight.IndexOf(Settings.CameraMaxSpawningHeight));
             cameraFixedHeightList = new UIMenuListItem("Camera Fixed Height (m): ", listOfCameraFixedHeight, listOfCameraFixedHeight.IndexOf(Settings.CameraFixedHeight));
@@ -152,8 +143,6 @@ namespace GtaVModPeDistance
 
             List<MenuItem> configList = new List<MenuItem>();
             configList.Add(new MenuItem(maxCollectedDataList));
-            configList.Add(new MenuItem(pedMinSpawningDistanceYList));
-            configList.Add(new MenuItem(pedMaxSpawningDistanceYList));
             configList.Add(new MenuItem(cameraMinSpawningHeightList));
             configList.Add(new MenuItem(cameraMaxSpawningHeightList));
             configList.Add(new MenuItem(cameraFixedHeightList));
@@ -184,8 +173,6 @@ namespace GtaVModPeDistance
         private void SaveSettings()
         {
             Settings.MaxCollectedData = listOfMaxCollectedData[maxCollectedDataList.Index];
-            Settings.PedMinSpawningDistanceY = listOfPedMinSpawningDistanceY[pedMinSpawningDistanceYList.Index];
-            Settings.PedMaxSpawningDistanceY = listOfPedMaxSpawningDistanceY[pedMaxSpawningDistanceYList.Index];
             Settings.CameraMinSpawningHeight = listOfCameraMinSpawningHeight[cameraMinSpawningHeightList.Index];
             Settings.CameraMaxSpawningHeight = listOfCameraMaxSpawningHeight[cameraMaxSpawningHeightList.Index];
             Settings.CameraFixedHeight = listOfCameraFixedHeight[cameraFixedHeightList.Index];

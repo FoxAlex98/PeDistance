@@ -49,7 +49,7 @@ namespace GtaVModPeDistance
 
         public static void SpawnOnePed()
         {
-            float y = Utilities.NextFloat(Settings.PedMinSpawningDistanceY, Settings.PedMaxSpawningDistanceY);           
+            float y = Utilities.GetYByFov();           
             float x = Utilities.GetPosXByPosY(y);
             if (ped != null) ped.Delete();
             ped = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x, y, 0)));
