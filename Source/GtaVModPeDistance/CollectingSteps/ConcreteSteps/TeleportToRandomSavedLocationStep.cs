@@ -27,7 +27,7 @@ namespace GtaVModPeDistance.CollectingSteps
             {
                 Z = Position.Z + Settings.CameraFixedHeight;
             }
-            Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, 60);
+            Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, Settings.CameraFov);
             World.RenderingCamera = camera;
             // Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
 

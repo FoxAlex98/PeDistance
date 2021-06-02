@@ -15,6 +15,7 @@ namespace GtaVModPeDistance
         public static int CameraMinSpawningHeight { get; set; }
         public static int CameraMaxSpawningHeight { get; set; }
         public static float CameraFixedHeight { get; set; }
+        public static int CameraFov { get; set; }
         public static int TeleportingDelay { get; set; }
         public static int RenderingDelay { get; set; }
         public static int PedSpawningDelay { get; set; }
@@ -60,6 +61,7 @@ namespace GtaVModPeDistance
                     else if (key.Equals("CameraMinSpawningHeight")) CameraMinSpawningHeight = int.Parse(value);
                     else if (key.Equals("CameraMaxSpawningHeight")) CameraMaxSpawningHeight = int.Parse(value);
                     else if (key.Equals("CameraFixedHeight")) CameraFixedHeight = float.Parse(value);
+                    else if (key.Equals("CameraFov")) CameraFov = int.Parse(value);
                     else if (key.Equals("TeleportingDelay")) TeleportingDelay = int.Parse(value);
                     else if (key.Equals("RenderingDelay")) RenderingDelay = int.Parse(value);
                     else if (key.Equals("PedSpawningDelay")) PedSpawningDelay = int.Parse(value);
@@ -84,6 +86,7 @@ namespace GtaVModPeDistance
                 "CameraMinSpawningHeight=" + CameraMinSpawningHeight.ToString().Trim(),
                 "CameraMaxSpawningHeight=" + CameraMaxSpawningHeight.ToString().Trim(),
                 "CameraFixedHeight=" + CameraFixedHeight.ToString().Trim(),
+                "CameraFov=" + CameraFov.ToString().Trim(),
                 "TeleportingDelay=" + TeleportingDelay.ToString().Trim(),
                 "RenderingDelay=" + RenderingDelay.ToString().Trim(),
                 "PedSpawningDelay=" + PedSpawningDelay.ToString().Trim(),

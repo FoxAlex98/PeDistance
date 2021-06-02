@@ -34,7 +34,7 @@ namespace GtaVModPeDistance
 
         public static float GetPosXByPosY(float y)
         {
-            float range = Settings.PedSpawningDistanceRatio * y;
+            float range = (Settings.CameraFov / 100f) * y;
             return NextFloat(-range, range);
         }
 

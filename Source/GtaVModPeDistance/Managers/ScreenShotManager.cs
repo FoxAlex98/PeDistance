@@ -108,7 +108,7 @@ namespace GtaVModPeDistance.File
         {
             for(int i = (int) median.X - border/2; i < median.X + border/2; i++)
             {
-                if (i < Screen.PrimaryScreen.Bounds.Width)
+                if (i >= 0 && i < Screen.PrimaryScreen.Bounds.Width)
                     memoryImage.SetPixel(i, (int) median.Y, color);
             }
         }

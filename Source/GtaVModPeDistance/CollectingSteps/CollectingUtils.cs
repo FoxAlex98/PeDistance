@@ -13,6 +13,7 @@ namespace GtaVModPeDistance.CollectingSteps
         {
             CollectingState.InitialPosition = Game.Player.Character.Position;
             Game.Player.Character.IsVisible = false;
+            UtilsFunctions.ResetWantedLevel();//sembra che non funzioni
             Globals.HideHud();
             screenShotManager.DeleteAllScreenShot();
             dataManager.CleanFile();
