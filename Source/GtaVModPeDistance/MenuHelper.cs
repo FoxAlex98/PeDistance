@@ -20,7 +20,7 @@ namespace GtaVModPeDistance
         UIMenuListItem cameraFixedHeightList, cameraFovList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList;
         List<dynamic> listOfMaxCollectedData, listOfCameraMinSpawningHeight, listOfCameraMaxSpawningHeight, listOfCameraFixedHeight, listOfCameraFov;
         List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfImageFormat;
-        UIMenuCheckboxItem saveScreenShotLocally;
+        UIMenuCheckboxItem saveScreenShotLocally, printBox;
 
 
         public List<MenuItem> GetUtilsMenu()
@@ -95,6 +95,7 @@ namespace GtaVModPeDistance
             listOfCollectingDataDelay = new List<dynamic>();
             listOfClearCollectingDataDelay = new List<dynamic>();
             saveScreenShotLocally = new UIMenuCheckboxItem("Save ScreenShot Locally", true);
+            printBox = new UIMenuCheckboxItem("Print Box", true);
             listOfImageFormat = new List<dynamic>();
             listOfCameraFov = new List<dynamic>();
 
@@ -114,8 +115,8 @@ namespace GtaVModPeDistance
                 listOfCameraFov.Add(i);
             }
 
-
-            for (int i = 0; i <= Settings.MaxCollectedSelectionable; i += 30)
+            listOfMaxCollectedData.Add(5);
+            for (int i = 30; i <= Settings.MaxCollectedSelectionable; i += 30)
             {
                 listOfMaxCollectedData.Add(i);
             }
@@ -153,6 +154,7 @@ namespace GtaVModPeDistance
             configList.Add(new MenuItem(collectingDataDelayList));
             configList.Add(new MenuItem(clearCollectingDataDelayList));
             configList.Add(new MenuItem(saveScreenShotLocally));
+            configList.Add(new MenuItem(printBox));
             configList.Add(new MenuItem(imageFormatList));
             configList.Add(new MenuItem("Save", SaveSettings));
 
@@ -183,6 +185,7 @@ namespace GtaVModPeDistance
             Settings.CollectingDataDelay = listOfCollectingDataDelay[collectingDataDelayList.Index];
             Settings.ClearCollectingDataDelay = listOfClearCollectingDataDelay[clearCollectingDataDelayList.Index];
             Settings.SaveScreenShotLocally = saveScreenShotLocally.Checked;
+            Settings.PrintBox = printBox.Checked;
             Settings.ImageFormat = listOfImageFormat[imageFormatList.Index];
             Settings.SaveSettings();
             Notification.Show("Settings saved");

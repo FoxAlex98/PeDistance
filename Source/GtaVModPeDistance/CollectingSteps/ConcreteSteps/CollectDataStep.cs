@@ -15,15 +15,14 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 
         public override void ExecuteStep()
         {
-
             screenShot.TakeScreenshot();
-
             //Vector2 topRight = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.rearBottomLeft));
             //Vector2 botLeft = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.frontTopRight));
             //screenShot.DrawBoundingBox(new Vector2(botLeft.X, botLeft.Y), new Vector2(topRight.X, topRight.Y), Color.Red);
 
             Ped2DBoundingBox box = CoordinatesUtils.GetPedBoundingBoxInScreen(CollectingState.Ped);
-            screenShot.DrawBoundingBox(new Vector2(box.PedBottomLeftX, box.PedBottomLeftY), new Vector2(box.PedTopRightX, box.PedTopRightY), Color.Blue);
+            if(Settings.PrintBox)
+                screenShot.DrawBoundingBox(new Vector2(box.PedBottomLeftX, box.PedBottomLeftY), new Vector2(box.PedTopRightX, box.PedTopRightY), Color.Blue);
             //screenShot.DrawBoundingBox(new Vector2(box.PedBottomLeftX, box.PedBottomLeftY), new Vector2(box.PedTopRightX, box.PedTopRightY), Color.Blue);
             /*
             GTA.UI.Notification.Show("TopLeft " + box.PedTopLeftX + " " + box.PedTopLeftY);
@@ -35,7 +34,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 
             Data data = new Data(
                     CollectingState.CollectedDataCounter++,
-                    GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position),
+                    World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position),
                     box,
                     CoordinatesUtils.GetPedHeight(CollectingState.Ped),
                     CollectingState.Ped.Rotation.Z,
@@ -44,6 +43,9 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
                     image.b64String,
                     World.CurrentTimeOfDay.ToString()
                 );
+
+            //GTA.UI.Notification.Show("ours " + GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position).ToString());
+            //GTA.UI.Notification.Show("SHV " + World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position).ToString());
          
             dataManager.AddElement(data);
         }

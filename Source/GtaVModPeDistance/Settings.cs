@@ -19,6 +19,7 @@ namespace GtaVModPeDistance
         public static int CollectingDataDelay { get; set; }
         public static int ClearCollectingDataDelay { get; set; }
         public static bool SaveScreenShotLocally { get; set; }
+        public static bool PrintBox { get; set; }
         public static string ImageFormat { get; set; }
         public static string DirectoryName { get; set; }
 
@@ -37,8 +38,29 @@ namespace GtaVModPeDistance
             {
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
+                fileSettings = GetDefaultSettings();
+                System.IO.File.WriteAllText(FilePath, fileSettings);
             }
             AssignValueToSettings(fileSettings);
+        }
+
+        private static string GetDefaultSettings()
+        {
+            return @"MaxCollectedData=30
+MaxCollectedSelectionable=5000
+CameraMinSpawningHeight=4
+CameraMaxSpawningHeight=15
+CameraFixedHeight=0,8
+CameraFov=30
+TeleportingDelay=5
+RenderingDelay=6
+PedSpawningDelay=1
+CollectingDataDelay=3
+ClearCollectingDataDelay=1
+SaveScreenShotLocally=True
+PrintBox=True
+ImageFormat=Jpeg
+DirectoryName=MachineLearningProject";
         }
 
         private static void AssignValueToSettings(string settings)
@@ -62,6 +84,7 @@ namespace GtaVModPeDistance
                     else if (key.Equals("CollectingDataDelay")) CollectingDataDelay = int.Parse(value);
                     else if (key.Equals("ClearCollectingDataDelay")) ClearCollectingDataDelay = int.Parse(value);
                     else if (key.Equals("SaveScreenShotLocally")) SaveScreenShotLocally = bool.Parse(value);
+                    else if (key.Equals("PrintBox")) PrintBox = bool.Parse(value);
                     else if (key.Equals("ImageFormat")) ImageFormat = value;
                     else if (key.Equals("DirectoryName")) DirectoryName = value;
                 }                
@@ -84,6 +107,7 @@ namespace GtaVModPeDistance
                 "CollectingDataDelay=" + CollectingDataDelay.ToString().Trim(),
                 "ClearCollectingDataDelay=" + ClearCollectingDataDelay.ToString().Trim(),
                 "SaveScreenShotLocally=" + SaveScreenShotLocally.ToString().Trim(),
+                "PrintBox=" + PrintBox.ToString().Trim(),
                 "ImageFormat=" + ImageFormat.ToString().Trim(),
                 "DirectoryName=" + DirectoryName.ToString().Trim()
             };
