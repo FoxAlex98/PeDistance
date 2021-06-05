@@ -62,7 +62,10 @@ namespace GtaVModPeDistance
 
             utilsList.Add(new MenuItem("Delete All Near Ped", UtilsFunctions.DeleteAllNearPed));
             utilsList.Add(new MenuItem("Delete All Near Vehicle", UtilsFunctions.DeleteAllNearVehicles));
+            utilsList.Add(new MenuItem("Dist between 2 point", () => UtilsFunctions.PrintDistancePoints(Game.Player.Character.Position)));            
+            utilsList.Add(new MenuItem("Clear between 2 point", () => UtilsFunctions.DistancePoints.Clear()));            
             utilsList.Add(new MenuItem("Ignored by everyone", () => { Game.Player.IgnoredByEveryone = true; }));
+            utilsList.Add(new MenuItem("Meter Mode", () => UtilsFunctions.ToggleMeterMode()));
             utilsList.Add(new MenuItem("Reset Wanted Level", UtilsFunctions.ResetWantedLevel));
             utilsList.Add(new MenuItem("Set Time Midday", () => UtilsFunctions.SetTime(12, 0, 0)));
             utilsList.Add(new MenuItem("Set Time Midnight", () => UtilsFunctions.SetTime(0, 0, 0)));

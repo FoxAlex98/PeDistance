@@ -62,6 +62,20 @@ namespace GtaVModPeDistance
             if (CollectingState.WannaDraw)
                 UtilsFunctions.DrawLine(CollectingState.Ped);
             */
+
+            if(UtilsFunctions.DistancePoints.Count > 0)
+            {
+                if(UtilsFunctions.DistancePoints.Count == 2) Utilities.DrawLine(UtilsFunctions.DistancePoints[0], UtilsFunctions.DistancePoints[1], System.Drawing.Color.Red);
+            }
+
+            if(UtilsFunctions.MeterMode)
+            {
+                if(Game.Player.Character.IsShooting)
+                {
+                    UtilsFunctions.PrintDistancePoints(Game.Player.Character.LastWeaponImpactPosition);
+                }                                  
+
+            }
         }
 
         private void onKeyDown(object sender, KeyEventArgs e)

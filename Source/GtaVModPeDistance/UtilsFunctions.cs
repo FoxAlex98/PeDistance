@@ -16,12 +16,12 @@ namespace GtaVModPeDistance
         static LocationManager locationManager = LocationManager.GetInstance();
 
         public static Ped ped;
-        public static Ped ped1;
-        public static Ped ped2;
-        public static Ped ped3;
+
+        public static List<Vector3> DistancePoints = new List<Vector3>();
 
         public static bool ActiveNearbyEntitiesBoundingBox = false;
 
+        public static bool MeterMode = false;
         #region Utils
 
         //public static void DrawLine(Ped ped)
@@ -172,6 +172,23 @@ namespace GtaVModPeDistance
 
         public static void ToggleNearbyEntityBoundingBox() => ActiveNearbyEntitiesBoundingBox = !ActiveNearbyEntitiesBoundingBox;
         #endregion
+
+        public static void PrintDistancePoints(Vector3 point)
+        {
+            if (DistancePoints.Count % 2 == 0) DistancePoints.Clear();
+            DistancePoints.Add(point);
+            Notification.Show("Point saved: " + point.ToString());
+            if (DistancePoints.Count == 2)
+            {
+                Notification.Show("Distance: " + World.GetDistance(DistancePoints[0], DistancePoints[1]) + " meter");               
+            }                            
+        }
+        
+        public static void ToggleMeterMode()
+        {
+            MeterMode = !MeterMode;
+            Notification.Show(" Meter mode " + (MeterMode ? "activated" : "deactivated"));
+        }
 
     }
 }
