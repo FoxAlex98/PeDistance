@@ -1,4 +1,5 @@
 ﻿using GTA;
+using GTA.Math;
 using GTA.UI;
 using GtaVModPeDistance.CollectingSteps;
 using NativeUI;
@@ -18,7 +19,7 @@ namespace GtaVModPeDistance
         public UIMenuCheckboxItem DebugMode;
 
         // Config
-        UIMenuListItem maxCollectedDataList, cameraMinSpawningHeightList, cameraMaxSpawningHeightList, imageFormatList;
+        UIMenuListItem maxCollectedDataList, imageFormatList;
         UIMenuListItem cameraFixedHeightList, cameraFovList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList;
         List<dynamic> listOfMaxCollectedData, listOfCameraMinSpawningHeight, listOfCameraMaxSpawningHeight, listOfCameraFixedHeight, listOfCameraFov;
         List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfImageFormat;
@@ -54,7 +55,7 @@ namespace GtaVModPeDistance
 
             allWeather = (Weather[])Enum.GetValues(typeof(Weather));
 
-            for(int i = 0; i < allWeather.Length; i++)
+            for (int i = 0; i < allWeather.Length; i++)
             {
                 listOfWeather.Add(allWeather[i]);
             }
@@ -68,23 +69,20 @@ namespace GtaVModPeDistance
 
             DebugMode.CheckboxEvent += UtilsFunctions.ToggleDebugMode;
             utilsList.Add(new MenuItem(DebugMode));
+            if (DebugMode.Checked)
+            {
+                AddDebugItemList(utilsList);
+            }
             utilsList.Add(new MenuItem("Delete All Near Ped", UtilsFunctions.DeleteAllNearPed));
             utilsList.Add(new MenuItem("Delete All Near Ped", UtilsFunctions.DeleteAllNearPed));
             utilsList.Add(new MenuItem("Delete All Near Vehicle", UtilsFunctions.DeleteAllNearVehicles));
-            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Dist between 2 point", Color.Green, Color.White), () => UtilsFunctions.PrintDistancePoints(Game.Player.Character.Position)));
-            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Clear between 2 point", Color.Green, Color.White), () => UtilsFunctions.DistancePoints.Clear()));            
             utilsList.Add(new MenuItem("Ignored by everyone", () => { Game.Player.IgnoredByEveryone = true; }));
-            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Meter Mode", Color.Green, Color.White), () => UtilsFunctions.ToggleMeterMode()));
             utilsList.Add(new MenuItem("Reset Wanted Level", UtilsFunctions.ResetWantedLevel));
             utilsList.Add(new MenuItem("Set Time Midday", () => UtilsFunctions.SetTime(12, 0, 0)));
             utilsList.Add(new MenuItem("Set Time Midnight", () => UtilsFunctions.SetTime(0, 0, 0)));
             utilsList.Add(new MenuItem("Set Time Afternoon", () => UtilsFunctions.SetTime(17, 0, 0)));
-            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Spawn Ped", Color.Green, Color.White), UtilsFunctions.SpawnOnePed));
             utilsList.Add(new MenuItem("Spawn Random Point", UtilsFunctions.SpawnAtRandomSavedLocation));
-            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Teleport To Waypoint", Color.Green, Color.White), UtilsFunctions.TeleportToWaypoint));
-            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Toggle nearby entity box", Color.Green, Color.White), UtilsFunctions.ToggleNearbyEntityBoundingBox));
-            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Save Point Coordinates", Color.Green, Color.White), UtilsFunctions.SaveCoordinates));
-            utilsList.Add(new MenuItem("Reset", Reset));
+            utilsList.Add(new MenuItem("Reset", UtilsFunctions.Reset));
             utilsList.Add(new MenuItem(planeList, () => { UtilsFunctions.SpawnVehicle(planeList, listOfPlanes); }));
             utilsList.Add(new MenuItem(helicopterList, () => { UtilsFunctions.SpawnVehicle(helicopterList, listOfHelicopter); }));
             utilsList.Add(new MenuItem(motorbikeList, () => { UtilsFunctions.SpawnVehicle(motorbikeList, listOfMotorbike); }));
@@ -92,6 +90,17 @@ namespace GtaVModPeDistance
             utilsList.Add(new MenuItem(weatherList, () => { UtilsFunctions.ChangeWeather(weatherList, listOfWeather); }));
 
             return utilsList;
+        }
+
+        private static void AddDebugItemList(List<MenuItem> utilsList)
+        {
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Dist between 2 point", Color.Green, Color.White), () => UtilsFunctions.PrintDistancePoints(Game.Player.Character.Position)));
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Clear between 2 point", Color.Green, Color.White), () => UtilsFunctions.DistancePoints.Clear()));
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Meter Mode", Color.Green, Color.White), () => UtilsFunctions.ToggleMeterMode()));
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Spawn Ped", Color.Green, Color.White), UtilsFunctions.SpawnOnePed));
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Teleport To Waypoint", Color.Green, Color.White), UtilsFunctions.TeleportToWaypoint));
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Toggle nearby entity box", Color.Green, Color.White), UtilsFunctions.ToggleNearbyEntityBoundingBox));
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Save Point Coordinates", Color.Green, Color.White), UtilsFunctions.SaveCoordinates));
         }
 
         public List<MenuItem> GetConfigMenu()
@@ -142,8 +151,6 @@ namespace GtaVModPeDistance
             listOfImageFormat.Add("Png");
 
             maxCollectedDataList = new UIMenuListItem("Max Collected Data: ", listOfMaxCollectedData, listOfMaxCollectedData.IndexOf(Settings.MaxCollectedData));
-            cameraMinSpawningHeightList = new UIMenuListItem("Camera Min Spawning Height (m): ", listOfCameraMinSpawningHeight, listOfCameraMinSpawningHeight.IndexOf(Settings.CameraMinSpawningHeight));
-            cameraMaxSpawningHeightList = new UIMenuListItem("Camera Max Spawning Height (m): ", listOfCameraMaxSpawningHeight, listOfCameraMaxSpawningHeight.IndexOf(Settings.CameraMaxSpawningHeight));
             cameraFixedHeightList = new UIMenuListItem("Camera Fixed Height (m): ", listOfCameraFixedHeight, listOfCameraFixedHeight.IndexOf(Settings.CameraFixedHeight));
             cameraFovList = new UIMenuListItem("Camera Fov: ", listOfCameraFov, listOfCameraFov.IndexOf(Settings.CameraFov));
             teleportingDelayList = new UIMenuListItem("Teleporting Delay (s): ", listOfTeleportingDelay, listOfTeleportingDelay.IndexOf(Settings.TeleportingDelay));
@@ -156,10 +163,9 @@ namespace GtaVModPeDistance
 
             List<MenuItem> configList = new List<MenuItem>();
             configList.Add(new MenuItem(maxCollectedDataList));
-            configList.Add(new MenuItem(cameraMinSpawningHeightList));
-            configList.Add(new MenuItem(cameraMaxSpawningHeightList));
             configList.Add(new MenuItem(cameraFixedHeightList));
             configList.Add(new MenuItem(cameraFovList));
+            //TODO: camera pitch (rotation)
             configList.Add(new MenuItem(teleportingDelayList));
             configList.Add(new MenuItem(renderingDelayList));
             configList.Add(new MenuItem(pedSpawningDelayList));
@@ -170,25 +176,28 @@ namespace GtaVModPeDistance
             configList.Add(new MenuItem(imageFormatList));
             configList.Add(new MenuItem("Save", SaveSettings));
 
+            cameraFovList.OnListChanged += CameraFovList_OnListChanged;
+            cameraFixedHeightList.OnListChanged += CameraFixedHeightList_OnListChanged;
+
             return configList;
         }
 
-        public void Reset()
+        private void CameraFixedHeightList_OnListChanged(UIMenuListItem sender, int newIndex)
         {
-            Game.Player.Character.IsVisible = true;
-            Globals.ShowHud();
-            World.RenderingCamera = null;
-            CollectingState.StartCollectingData = false;
-            CollectingState.ActualStep = new TeleportToRandomSavedLocationStep();
-            CollectingState.CollectedDataCounter = 0;
-            CollectingState.Ped = null;
+            float Z = Game.Player.Character.Position.Z + listOfCameraFixedHeight[newIndex];
+            Vector3 cameraPos = World.RenderingCamera.Position;
+            World.RenderingCamera.Position = new Vector3(cameraPos.X, cameraPos.Y, Z);
+        }
+
+        private void CameraFovList_OnListChanged(UIMenuListItem sender, int newIndex)
+        {
+            World.RenderingCamera.FieldOfView = listOfCameraFov[newIndex];
+            //UtilsFunctions.SpawnSettingPeds();
         }
 
         private void SaveSettings()
         {
             Settings.MaxCollectedData = listOfMaxCollectedData[maxCollectedDataList.Index];
-            Settings.CameraMinSpawningHeight = listOfCameraMinSpawningHeight[cameraMinSpawningHeightList.Index];
-            Settings.CameraMaxSpawningHeight = listOfCameraMaxSpawningHeight[cameraMaxSpawningHeightList.Index];
             Settings.CameraFixedHeight = listOfCameraFixedHeight[cameraFixedHeightList.Index];
             Settings.CameraFov = listOfCameraFov[cameraFovList.Index];
             Settings.TeleportingDelay = listOfTeleportingDelay[teleportingDelayList.Index];

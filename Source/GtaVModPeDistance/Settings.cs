@@ -9,8 +9,6 @@ namespace GtaVModPeDistance
         private static string FilePath;
         public static int MaxCollectedData { get; set; }
         public static int MaxCollectedSelectionable { get; set; }
-        public static int CameraMinSpawningHeight { get; set; }
-        public static int CameraMaxSpawningHeight { get; set; }
         public static float CameraFixedHeight { get; set; }
         public static int CameraFov { get; set; }
         public static int TeleportingDelay { get; set; }
@@ -74,8 +72,6 @@ DirectoryName=MachineLearningProject";
                     string value = line.Split('=')[1].Trim();
                     if (key.Equals("MaxCollectedData")) MaxCollectedData = int.Parse(value);
                     else if (key.Equals("MaxCollectedSelectionable")) MaxCollectedSelectionable = int.Parse(value);
-                    else if (key.Equals("CameraMinSpawningHeight")) CameraMinSpawningHeight = int.Parse(value);
-                    else if (key.Equals("CameraMaxSpawningHeight")) CameraMaxSpawningHeight = int.Parse(value);
                     else if (key.Equals("CameraFixedHeight")) CameraFixedHeight = float.Parse(value);
                     else if (key.Equals("CameraFov")) CameraFov = int.Parse(value);
                     else if (key.Equals("TeleportingDelay")) TeleportingDelay = int.Parse(value);
@@ -97,8 +93,6 @@ DirectoryName=MachineLearningProject";
             {
                 "MaxCollectedData=" + MaxCollectedData.ToString().Trim(),
                 "MaxCollectedSelectionable=" + MaxCollectedSelectionable.ToString().Trim(),
-                "CameraMinSpawningHeight=" + CameraMinSpawningHeight.ToString().Trim(),
-                "CameraMaxSpawningHeight=" + CameraMaxSpawningHeight.ToString().Trim(),
                 "CameraFixedHeight=" + CameraFixedHeight.ToString().Trim(),
                 "CameraFov=" + CameraFov.ToString().Trim(),
                 "TeleportingDelay=" + TeleportingDelay.ToString().Trim(),

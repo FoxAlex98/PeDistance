@@ -7,10 +7,13 @@ namespace GtaVModPeDistance
 {
     class CoordinatesUtils
     {
+        public static Vector3 playerPosition;
+
         private static float paddingTop = 0.12f;
         private static float paddingLeft = 0.1f;
         private static float paddingRight = 0.1f;
         private static float paddingBottom = 0.05f;
+
 
         /*
         public static Ped2DBoundingBox GetPedBoundingBoxByBones(Ped ped)

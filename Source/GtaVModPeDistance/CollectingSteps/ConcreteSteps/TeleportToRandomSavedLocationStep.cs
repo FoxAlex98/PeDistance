@@ -14,21 +14,7 @@ namespace GtaVModPeDistance.CollectingSteps
         {
             CollectingState.WannaDraw = false;
             CollectingState.SpawnPoint = locationManager.GetRandomPoint();
-            Vector3 Position = CollectingState.SpawnPoint.GetPosition();
-            Vector3 Rotation = CollectingState.SpawnPoint.GetRotation();
-            Game.Player.Character.Position = Position;
-            float Z;
-            if (Settings.CameraFixedHeight == 0)
-            {
-                // TODO sistemare l'orientamento della verso il basso della camera
-                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + rand.Next(Settings.CameraMinSpawningHeight, Settings.CameraMaxSpawningHeight);
-            }
-            else
-            {
-                Z = Position.Z + Settings.CameraFixedHeight;
-            }
-            Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, Settings.CameraFov);
-            World.RenderingCamera = camera;
+            UtilsFunctions.SetCameraPosition(CollectingState.SpawnPoint);
             // Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
 
         }

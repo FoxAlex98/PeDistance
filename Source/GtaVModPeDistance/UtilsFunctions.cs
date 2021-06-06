@@ -2,6 +2,7 @@
 using GTA.Math;
 using GTA.Native;
 using GTA.UI;
+using GtaVModPeDistance.CollectingSteps;
 using GtaVModPeDistance.Models;
 using NativeUI;
 using System;
@@ -15,7 +16,7 @@ namespace GtaVModPeDistance
 
         static LocationManager locationManager = LocationManager.GetInstance();
 
-        public static Ped ped;
+        public static Ped ped, pedMin, pedMax;
 
         public static List<Vector3> DistancePoints = new List<Vector3>();
 
@@ -61,21 +62,18 @@ namespace GtaVModPeDistance
             Notification.Show(angle.ToString());
             ped.Heading += angle;
 
+        }
 
-            //ped1 = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x + 1, y, 0)));
-            //ped1.Heading = 90;
-            //// Notification.Show(ped1.Rotation.ToString());
+        public static void SpawnSettingPeds()
+        {
+            float yMin = 10f - World.RenderingCamera.FieldOfView / 10f;
+            if (pedMin != null) pedMin.Delete();
+            pedMin = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(0, yMin, 0)));
+            pedMin.FacePosition(Game.Player.Character.Position);
 
-            //ped2 = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x + 2, y, 0)));
-            //ped2.Heading = 180;
-            //// Notification.Show(ped2.Rotation.ToString());
-
-            //ped3 = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(x + 3, y, 0)));
-            //ped3.Heading = 270;
-            //// Notification.Show(ped3.Rotation.ToString());
-            //ped.Heading = Utilities.NextFloat(1, 360);
-            //DrawBox(ped);
-
+            if (pedMax != null) pedMax.Delete();
+            pedMax = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(0, 20f, 0)));
+            pedMax.FacePosition(Game.Player.Character.Position);
         }
 
         public static void ChangeWeather(UIMenuListItem weatherList, List<dynamic> weathers)
@@ -121,15 +119,7 @@ namespace GtaVModPeDistance
 
         public static void ResetWantedLevel()
         {
-            if (Game.Player.WantedLevel == 0)
-            {
-                Screen.ShowSubtitle("you are innocent");
-            }
-            else
-            {
-                Game.Player.WantedLevel = 0;
-                Notification.Show("Player WantedLevel set to 0");
-            }
+            Game.Player.WantedLevel = 0;
         }
 
         public static void DeleteAllNearPed()
@@ -149,28 +139,34 @@ namespace GtaVModPeDistance
                 vc.Delete();
             }
         }
+
+        public static void SetCameraPosition(SpawnPoint spawnPoint)
+        {
+            Vector3 position = spawnPoint.GetPosition();
+            Vector3 rotation = spawnPoint.GetRotation();
+            Game.Player.Character.Position = position;
+            Game.Player.Character.Rotation = rotation;
+            //Game.Player.Character.Heading = 0f;
+            float Z = position.Z + Settings.CameraFixedHeight;
+            Camera camera = World.CreateCamera(new Vector3(position.X, position.Y, Z), rotation, Settings.CameraFov);
+            World.RenderingCamera = camera;
+        }
+
+        public static void Reset()
+        {
+            Game.Player.Character.IsVisible = true;
+            Globals.ShowHud();
+            World.RenderingCamera = null;
+            CollectingState.StartCollectingData = false;
+            CollectingState.ActualStep = new TeleportToRandomSavedLocationStep();
+            CollectingState.CollectedDataCounter = 0;
+            CollectingState.Ped = null;
+        }
+
         public static void SpawnAtRandomSavedLocation()
         {
             SpawnPoint spawnPoint = locationManager.GetRandomPoint();
-            Game.Player.Character.Position = spawnPoint.GetPosition();
-            Game.Player.Character.Rotation = spawnPoint.GetRotation();
-            SetCameraPosition(spawnPoint.GetPosition(), spawnPoint.GetRotation());
-        }
-
-        public static void SetCameraPosition(Vector3 Position, Vector3 Rotation)
-        {
-            float Z = 0;
-            if (Settings.CameraFixedHeight == 0)
-            {
-                // TODO sistemare l'orientamento della verso il basso della camera
-                Z = (Position.Z - World.GetGroundHeight(Game.Player.Character.Position)) + Utilities.NextFloat(Settings.CameraMinSpawningHeight, Settings.CameraMaxSpawningHeight);
-            }
-            else
-            {
-                Z = Position.Z + Settings.CameraFixedHeight;
-            }
-            Camera camera = World.CreateCamera(new Vector3(Position.X, Position.Y, Z), Rotation, 60);
-            World.RenderingCamera = camera;
+            SetCameraPosition(spawnPoint);
         }
 
         public static void ToggleNearbyEntityBoundingBox() => ActiveNearbyEntitiesBoundingBox = !ActiveNearbyEntitiesBoundingBox;
