@@ -22,6 +22,9 @@ namespace GtaVModPeDistance
         public static bool ActiveNearbyEntitiesBoundingBox = false;
 
         public static bool MeterMode = false;
+
+        public static bool SetupMenu = false;
+
         #region Utils
 
         //public static void DrawLine(Ped ped)
@@ -187,7 +190,15 @@ namespace GtaVModPeDistance
         public static void ToggleMeterMode()
         {
             MeterMode = !MeterMode;
-            Notification.Show(" Meter mode " + (MeterMode ? "activated" : "deactivated"));
+            Notification.Show("Meter mode " + (MeterMode ? "activated" : "deactivated"));
+        } 
+        
+        public static void ToggleDebugMode(UIMenuCheckboxItem debugMode, bool value)
+        {
+            debugMode.Checked = value;
+            SetupMenu = true;
+            Notification.Show("Advanced Mode " + (debugMode.Checked ? "activated" : "deactivated"));
+            Notification.Show("F5 to open menu");
         }
 
     }

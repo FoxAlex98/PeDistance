@@ -37,24 +37,31 @@ namespace GtaVModPeDistance
             if(modMenuPool != null)
                 modMenuPool.ProcessMenus();
 
+            if (UtilsFunctions.SetupMenu)
+            {
+                MenuSetup();
+                UtilsFunctions.SetupMenu = false;
+            }
+
             if (CollectingState.StartCollectingData)
                 CollectingState.ActualStep.Process();
 
-            /*
-            if (UtilsFunctions.ped != null)
+
+            if (UtilsFunctions.ped != null && menuHelper.DebugMode.Checked)
             {
                 UtilsFunctions.ped.Draw3DPedBoundingBoxUsingVertex(System.Drawing.Color.Red);
                 UtilsFunctions.ped.PrintPedAxis();
+                Game.Player.Character.PrintPedAxis();
             }
 
-            if (CollectingState.Ped != null)
-            {
-                CollectingState.Ped.Draw3DPedBoundingBoxUsingVertex(System.Drawing.Color.Red);
-            }
-            */
+            //if (CollectingState.Ped != null)
+            //{
+            //    CollectingState.Ped.Draw3DPedBoundingBoxUsingVertex(System.Drawing.Color.Red);
+            //}
+
 
             #region DrawBoundingBoxNearbyEntities
-            if(UtilsFunctions.ActiveNearbyEntitiesBoundingBox)
+            if (UtilsFunctions.ActiveNearbyEntitiesBoundingBox)
                 Utilities.DrawBoundingBoxNearbyEntities(75);
             #endregion
 

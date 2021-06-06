@@ -4,6 +4,7 @@ using GtaVModPeDistance.CollectingSteps;
 using NativeUI;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace GtaVModPeDistance
 {
@@ -14,7 +15,8 @@ namespace GtaVModPeDistance
         Weather[] allWeather;
         UIMenuListItem planeList, helicopterList, motorbikeList, boatList, weatherList;
         List<dynamic> listOfPlanes, listOfHelicopter, listOfMotorbike, listOfBoat, listOfWeather;
-        
+        public UIMenuCheckboxItem DebugMode;
+
         // Config
         UIMenuListItem maxCollectedDataList, cameraMinSpawningHeightList, cameraMaxSpawningHeightList, imageFormatList;
         UIMenuListItem cameraFixedHeightList, cameraFovList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList;
@@ -22,6 +24,10 @@ namespace GtaVModPeDistance
         List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfImageFormat;
         UIMenuCheckboxItem saveScreenShotLocally, printBox;
 
+        public MenuHelper()
+        {
+            DebugMode = new UIMenuCheckboxItem("Debug Mode", false);
+        }
 
         public List<MenuItem> GetUtilsMenu()
         {
@@ -60,21 +66,24 @@ namespace GtaVModPeDistance
             boatList = new UIMenuListItem("Boats: ", listOfBoat, 1);
             weatherList = new UIMenuListItem("Weather: ", listOfWeather, 1);
 
+            DebugMode.CheckboxEvent += UtilsFunctions.ToggleDebugMode;
+            utilsList.Add(new MenuItem(DebugMode));
+            utilsList.Add(new MenuItem("Delete All Near Ped", UtilsFunctions.DeleteAllNearPed));
             utilsList.Add(new MenuItem("Delete All Near Ped", UtilsFunctions.DeleteAllNearPed));
             utilsList.Add(new MenuItem("Delete All Near Vehicle", UtilsFunctions.DeleteAllNearVehicles));
-            utilsList.Add(new MenuItem("Dist between 2 point", () => UtilsFunctions.PrintDistancePoints(Game.Player.Character.Position)));            
-            utilsList.Add(new MenuItem("Clear between 2 point", () => UtilsFunctions.DistancePoints.Clear()));            
+            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Dist between 2 point", Color.Green, Color.White), () => UtilsFunctions.PrintDistancePoints(Game.Player.Character.Position)));
+            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Clear between 2 point", Color.Green, Color.White), () => UtilsFunctions.DistancePoints.Clear()));            
             utilsList.Add(new MenuItem("Ignored by everyone", () => { Game.Player.IgnoredByEveryone = true; }));
-            utilsList.Add(new MenuItem("Meter Mode", () => UtilsFunctions.ToggleMeterMode()));
+            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Meter Mode", Color.Green, Color.White), () => UtilsFunctions.ToggleMeterMode()));
             utilsList.Add(new MenuItem("Reset Wanted Level", UtilsFunctions.ResetWantedLevel));
             utilsList.Add(new MenuItem("Set Time Midday", () => UtilsFunctions.SetTime(12, 0, 0)));
             utilsList.Add(new MenuItem("Set Time Midnight", () => UtilsFunctions.SetTime(0, 0, 0)));
             utilsList.Add(new MenuItem("Set Time Afternoon", () => UtilsFunctions.SetTime(17, 0, 0)));
-            utilsList.Add(new MenuItem("Spawn Ped", UtilsFunctions.SpawnOnePed));
+            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Spawn Ped", Color.Green, Color.White), UtilsFunctions.SpawnOnePed));
             utilsList.Add(new MenuItem("Spawn Random Point", UtilsFunctions.SpawnAtRandomSavedLocation));
-            utilsList.Add(new MenuItem("Teleport To Waypoint", UtilsFunctions.TeleportToWaypoint));
-            utilsList.Add(new MenuItem("Toggle nearby entity box", UtilsFunctions.ToggleNearbyEntityBoundingBox));
-            utilsList.Add(new MenuItem("Save Point Coordinates", UtilsFunctions.SaveCoordinates));
+            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Teleport To Waypoint", Color.Green, Color.White), UtilsFunctions.TeleportToWaypoint));
+            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Toggle nearby entity box", Color.Green, Color.White), UtilsFunctions.ToggleNearbyEntityBoundingBox));
+            if (DebugMode.Checked) utilsList.Add(new MenuItem(new UIMenuColoredItem("Save Point Coordinates", Color.Green, Color.White), UtilsFunctions.SaveCoordinates));
             utilsList.Add(new MenuItem("Reset", Reset));
             utilsList.Add(new MenuItem(planeList, () => { UtilsFunctions.SpawnVehicle(planeList, listOfPlanes); }));
             utilsList.Add(new MenuItem(helicopterList, () => { UtilsFunctions.SpawnVehicle(helicopterList, listOfHelicopter); }));
