@@ -20,8 +20,8 @@ namespace GtaVModPeDistance
 
         // Config
         UIMenuListItem maxCollectedDataList, imageFormatList;
-        UIMenuListItem cameraFixedHeightList, cameraFovList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList;
-        List<dynamic> listOfMaxCollectedData, listOfCameraMinSpawningHeight, listOfCameraMaxSpawningHeight, listOfCameraFixedHeight, listOfCameraFov;
+        UIMenuListItem cameraFixedHeightList, cameraFovList, cameraAngleList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList;
+        List<dynamic> listOfMaxCollectedData, listOfCameraFixedHeight, listOfCameraFov, listOfCameraAngle;
         List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfImageFormat;
         UIMenuCheckboxItem saveScreenShotLocally, printBox;
 
@@ -107,8 +107,6 @@ namespace GtaVModPeDistance
         {
             // Config menu
             listOfMaxCollectedData = new List<dynamic>();
-            listOfCameraMinSpawningHeight = new List<dynamic>();
-            listOfCameraMaxSpawningHeight = new List<dynamic>();
             listOfCameraFixedHeight = new List<dynamic>();
             listOfTeleportingDelay = new List<dynamic>();
             listOfRenderingDelay = new List<dynamic>();
@@ -119,16 +117,20 @@ namespace GtaVModPeDistance
             printBox = new UIMenuCheckboxItem("Print Box", true);
             listOfImageFormat = new List<dynamic>();
             listOfCameraFov = new List<dynamic>();
+            listOfCameraAngle = new List<dynamic>();
 
             for (int i = 0; i <= 100; i++)
             {
-                listOfCameraMinSpawningHeight.Add(i);
-                listOfCameraMaxSpawningHeight.Add(i);
                 listOfTeleportingDelay.Add(i);
                 listOfRenderingDelay.Add(i);
                 listOfPedSpawningDelay.Add(i);
                 listOfCollectingDataDelay.Add(i);
                 listOfClearCollectingDataDelay.Add(i);
+            }
+
+            for(int i = -30; i <= 30; i ++)
+            {
+                listOfCameraAngle.Add(i);
             }
 
             for(int i = 20; i <= 90; i += 5)
@@ -153,6 +155,7 @@ namespace GtaVModPeDistance
             maxCollectedDataList = new UIMenuListItem("Max Collected Data: ", listOfMaxCollectedData, listOfMaxCollectedData.IndexOf(Settings.MaxCollectedData));
             cameraFixedHeightList = new UIMenuListItem("Camera Fixed Height (m): ", listOfCameraFixedHeight, listOfCameraFixedHeight.IndexOf(Settings.CameraFixedHeight));
             cameraFovList = new UIMenuListItem("Camera Fov: ", listOfCameraFov, listOfCameraFov.IndexOf(Settings.CameraFov));
+            cameraAngleList = new UIMenuListItem("Camera Angle: ", listOfCameraAngle, listOfCameraAngle.IndexOf(Settings.CameraAngle));
             teleportingDelayList = new UIMenuListItem("Teleporting Delay (s): ", listOfTeleportingDelay, listOfTeleportingDelay.IndexOf(Settings.TeleportingDelay));
             renderingDelayList = new UIMenuListItem("Rendering Delay (s): ", listOfRenderingDelay, listOfRenderingDelay.IndexOf(Settings.RenderingDelay));
             pedSpawningDelayList = new UIMenuListItem("Ped Spawning Delay (s): ", listOfPedSpawningDelay, listOfPedSpawningDelay.IndexOf(Settings.PedSpawningDelay));
@@ -165,7 +168,7 @@ namespace GtaVModPeDistance
             configList.Add(new MenuItem(maxCollectedDataList));
             configList.Add(new MenuItem(cameraFixedHeightList));
             configList.Add(new MenuItem(cameraFovList));
-            //TODO: camera pitch (rotation)
+            configList.Add(new MenuItem(cameraAngleList));
             configList.Add(new MenuItem(teleportingDelayList));
             configList.Add(new MenuItem(renderingDelayList));
             configList.Add(new MenuItem(pedSpawningDelayList));
@@ -177,9 +180,17 @@ namespace GtaVModPeDistance
             configList.Add(new MenuItem("Save", SaveSettings));
 
             cameraFovList.OnListChanged += CameraFovList_OnListChanged;
+            cameraAngleList.OnListChanged += CameraAngleList_OnListChanged;
             cameraFixedHeightList.OnListChanged += CameraFixedHeightList_OnListChanged;
+            
 
             return configList;
+        }
+
+        private void CameraAngleList_OnListChanged(UIMenuListItem sender, int newIndex)
+        {
+            Vector3 cameraRot = World.RenderingCamera.Rotation;
+            World.RenderingCamera.Rotation = new Vector3(listOfCameraAngle[newIndex], cameraRot.Y, cameraRot.Z);
         }
 
         private void CameraFixedHeightList_OnListChanged(UIMenuListItem sender, int newIndex)
@@ -192,7 +203,7 @@ namespace GtaVModPeDistance
         private void CameraFovList_OnListChanged(UIMenuListItem sender, int newIndex)
         {
             World.RenderingCamera.FieldOfView = listOfCameraFov[newIndex];
-            //UtilsFunctions.SpawnSettingPeds();
+            UtilsFunctions.SpawnSettingPeds();
         }
 
         private void SaveSettings()
@@ -200,6 +211,7 @@ namespace GtaVModPeDistance
             Settings.MaxCollectedData = listOfMaxCollectedData[maxCollectedDataList.Index];
             Settings.CameraFixedHeight = listOfCameraFixedHeight[cameraFixedHeightList.Index];
             Settings.CameraFov = listOfCameraFov[cameraFovList.Index];
+            Settings.CameraAngle = listOfCameraAngle[cameraAngleList.Index];
             Settings.TeleportingDelay = listOfTeleportingDelay[teleportingDelayList.Index];
             Settings.RenderingDelay = listOfRenderingDelay[renderingDelayList.Index];
             Settings.PedSpawningDelay = listOfPedSpawningDelay[pedSpawningDelayList.Index];

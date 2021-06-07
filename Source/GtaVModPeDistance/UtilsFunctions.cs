@@ -68,11 +68,11 @@ namespace GtaVModPeDistance
         {
             float yMin = 10f - World.RenderingCamera.FieldOfView / 10f;
             if (pedMin != null) pedMin.Delete();
-            pedMin = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(0, yMin, 0)));
+            pedMin = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(0, yMin, 0)));
             pedMin.FacePosition(Game.Player.Character.Position);
 
             if (pedMax != null) pedMax.Delete();
-            pedMax = World.CreateRandomPed(Game.Player.Character.GetOffsetPosition(new Vector3(0, 20f, 0)));
+            pedMax = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(0, 20f, 0)));
             pedMax.FacePosition(Game.Player.Character.Position);
         }
 
@@ -146,9 +146,10 @@ namespace GtaVModPeDistance
             Vector3 rotation = spawnPoint.GetRotation();
             Game.Player.Character.Position = position;
             Game.Player.Character.Rotation = rotation;
+            Vector3 camRotation = new Vector3(Settings.CameraAngle, rotation.Y, rotation.Z);
             //Game.Player.Character.Heading = 0f;
             float Z = position.Z + Settings.CameraFixedHeight;
-            Camera camera = World.CreateCamera(new Vector3(position.X, position.Y, Z), rotation, Settings.CameraFov);
+            Camera camera = World.CreateCamera(new Vector3(position.X, position.Y, Z), camRotation, Settings.CameraFov);
             World.RenderingCamera = camera;
         }
 

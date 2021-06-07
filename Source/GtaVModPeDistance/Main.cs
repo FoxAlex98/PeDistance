@@ -125,7 +125,7 @@ namespace GtaVModPeDistance
             CoordinatesUtils.playerPosition = Game.Player.Character.Position;
             Game.Player.Character.IsVisible = false;
             UtilsFunctions.SpawnAtRandomSavedLocation();
-            //UtilsFunctions.SpawnSettingPeds();
+            UtilsFunctions.SpawnSettingPeds();//doesn't work
         }
     }
 }

@@ -11,6 +11,7 @@ namespace GtaVModPeDistance
         public static int MaxCollectedSelectionable { get; set; }
         public static float CameraFixedHeight { get; set; }
         public static int CameraFov { get; set; }
+        public static int CameraAngle { get; set; }
         public static int TeleportingDelay { get; set; }
         public static int RenderingDelay { get; set; }
         public static int PedSpawningDelay { get; set; }
@@ -50,6 +51,7 @@ CameraMinSpawningHeight=4
 CameraMaxSpawningHeight=15
 CameraFixedHeight=0,8
 CameraFov=30
+CameraAngle=0
 TeleportingDelay=5
 RenderingDelay=6
 PedSpawningDelay=1
@@ -74,6 +76,7 @@ DirectoryName=MachineLearningProject";
                     else if (key.Equals("MaxCollectedSelectionable")) MaxCollectedSelectionable = int.Parse(value);
                     else if (key.Equals("CameraFixedHeight")) CameraFixedHeight = float.Parse(value);
                     else if (key.Equals("CameraFov")) CameraFov = int.Parse(value);
+                    else if (key.Equals("CameraAngle")) CameraAngle = int.Parse(value);
                     else if (key.Equals("TeleportingDelay")) TeleportingDelay = int.Parse(value);
                     else if (key.Equals("RenderingDelay")) RenderingDelay = int.Parse(value);
                     else if (key.Equals("PedSpawningDelay")) PedSpawningDelay = int.Parse(value);
@@ -95,6 +98,7 @@ DirectoryName=MachineLearningProject";
                 "MaxCollectedSelectionable=" + MaxCollectedSelectionable.ToString().Trim(),
                 "CameraFixedHeight=" + CameraFixedHeight.ToString().Trim(),
                 "CameraFov=" + CameraFov.ToString().Trim(),
+                "CameraAngle=" + CameraAngle.ToString().Trim(),
                 "TeleportingDelay=" + TeleportingDelay.ToString().Trim(),
                 "RenderingDelay=" + RenderingDelay.ToString().Trim(),
                 "PedSpawningDelay=" + PedSpawningDelay.ToString().Trim(),
