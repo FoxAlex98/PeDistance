@@ -128,7 +128,7 @@ namespace GtaVModPeDistance
                 listOfClearCollectingDataDelay.Add(i);
             }
 
-            for(int i = -30; i <= 30; i ++)
+            for(int i = -90; i <= 90; i++)
             {
                 listOfCameraAngle.Add(i);
             }
@@ -144,9 +144,9 @@ namespace GtaVModPeDistance
                 listOfMaxCollectedData.Add(i);
             }
 
-            for (float i = 0; i <= 15; i += 0.2f)
+            for (float i = 0; i <= 15; i += 0.1f)
             {
-                listOfCameraFixedHeight.Add(i);
+                listOfCameraFixedHeight.Add((float) Math.Round(i, 1));
             }
 
             listOfImageFormat.Add("Jpeg");
@@ -177,7 +177,6 @@ namespace GtaVModPeDistance
             configList.Add(new MenuItem(saveScreenShotLocally));
             configList.Add(new MenuItem(printBox));
             configList.Add(new MenuItem(imageFormatList));
-            configList.Add(new MenuItem("Save", SaveSettings));
 
             cameraFovList.OnListChanged += CameraFovList_OnListChanged;
             cameraAngleList.OnListChanged += CameraAngleList_OnListChanged;
@@ -195,7 +194,7 @@ namespace GtaVModPeDistance
 
         private void CameraFixedHeightList_OnListChanged(UIMenuListItem sender, int newIndex)
         {
-            float Z = Game.Player.Character.Position.Z + listOfCameraFixedHeight[newIndex];
+            float Z = (Game.Player.Character.Position.Z - 1) + listOfCameraFixedHeight[newIndex];
             Vector3 cameraPos = World.RenderingCamera.Position;
             World.RenderingCamera.Position = new Vector3(cameraPos.X, cameraPos.Y, Z);
         }
@@ -206,7 +205,7 @@ namespace GtaVModPeDistance
             UtilsFunctions.SpawnSettingPeds();
         }
 
-        private void SaveSettings()
+        public void SaveSettings()
         {
             Settings.MaxCollectedData = listOfMaxCollectedData[maxCollectedDataList.Index];
             Settings.CameraFixedHeight = listOfCameraFixedHeight[cameraFixedHeightList.Index];

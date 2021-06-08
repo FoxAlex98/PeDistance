@@ -164,7 +164,7 @@ namespace GtaVModPeDistance
         public static void Draw3DPedBoundingBoxUsingVertex(this Entity entity, Color color)
         {
             Vector3 previousRotation = entity.Rotation;
-            entity.Rotation = Vector3.Zero;
+            entity.Rotation = new Vector3(previousRotation.X, previousRotation.Y, 0);
 
             Vector3 DBL = entity.Model.Dimensions.rearBottomLeft;     // Down Behind left
             Vector3 TFR = entity.Model.Dimensions.frontTopRight;      // Top front right

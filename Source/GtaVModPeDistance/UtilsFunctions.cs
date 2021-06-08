@@ -148,7 +148,7 @@ namespace GtaVModPeDistance
             Game.Player.Character.Rotation = rotation;
             Vector3 camRotation = new Vector3(Settings.CameraAngle, rotation.Y, rotation.Z);
             //Game.Player.Character.Heading = 0f;
-            float Z = position.Z + Settings.CameraFixedHeight;
+            float Z = (Game.Player.Character.Position.Z - 1) + Settings.CameraFixedHeight;
             Camera camera = World.CreateCamera(new Vector3(position.X, position.Y, Z), camRotation, Settings.CameraFov);
             World.RenderingCamera = camera;
         }

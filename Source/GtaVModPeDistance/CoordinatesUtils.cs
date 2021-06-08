@@ -42,7 +42,7 @@ namespace GtaVModPeDistance
         public static Ped2DBoundingBox GetPedBoundingBoxInScreen(Ped ped)
         {
             Vector3 previousRotation = ped.Rotation;
-            ped.Rotation = Vector3.Zero;
+            ped.Rotation = new Vector3(previousRotation.X, previousRotation.Y, 0);
 
             Vector3 DBL = ped.Model.Dimensions.rearBottomLeft;     // Down Behind left
             Vector3 TFR = ped.Model.Dimensions.frontTopRight;      // Top front right

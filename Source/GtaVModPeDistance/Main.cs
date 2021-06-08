@@ -107,7 +107,7 @@ namespace GtaVModPeDistance
             UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Utils Menu");
             new Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
 
-            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Settings Menu", "Show up a menu to let you set your own preferred settings. ~r~Do not forget ~w~to use ~g~Save ~w~to save modified settings.");
+            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Settings Menu", "Show up a menu to let you set your own preferred settings.");
             new Menu(uiMlMenu, menuHelper.GetConfigMenu());
             uiMlMenu.OnMenuOpen += OnSettingsMenuOpen;
             uiMlMenu.OnMenuClose += OnSettingsMenuClose;
@@ -118,6 +118,7 @@ namespace GtaVModPeDistance
             UtilsFunctions.DeleteAllNearPed();
             Game.Player.Character.Position = CoordinatesUtils.playerPosition;
             UtilsFunctions.Reset();
+            menuHelper.SaveSettings();
             //confirm to Save
         }
 
