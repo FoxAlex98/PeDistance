@@ -11,6 +11,8 @@ namespace GtaVModPeDistance.CollectingSteps
 
         public static void StartCollectingData()
         {
+            if (CollectingState.StartCollectingData) return;
+            
             CollectingState.InitialPosition = Game.Player.Character.Position;
             Game.Player.Character.IsVisible = false;
             UtilsFunctions.ResetWantedLevel();//sembra che non funzioni
@@ -21,7 +23,6 @@ namespace GtaVModPeDistance.CollectingSteps
             CollectingState.ActualStep = GetFirstStep();
             Notification.Show("Starting collecting data... Remove menu using ESC");
             CollectingState.StartCollectingData = true;
-
         }
         public static void EndingCollectingData()
         {
@@ -36,11 +37,10 @@ namespace GtaVModPeDistance.CollectingSteps
 
         public static void StopCollectingData()
         {
-            if (CollectingState.StartCollectingData)
-            {
-                Notification.Show("Stop collecting data...");
-                CollectingState.WannaStop = true;
-            }
+            if (!CollectingState.StartCollectingData) return;
+
+            Notification.Show("Stop collecting data...");
+            CollectingState.WannaStop = true;
         }
 
         public static void ForceWritingData()
@@ -55,6 +55,8 @@ namespace GtaVModPeDistance.CollectingSteps
 
         public static void ClearCollectedData()
         {
+            if (CollectingState.StartCollectingData) return;
+
             dataManager.CleanFile();
             screenShotManager.DeleteAllScreenShot();
             Notification.Show("Dataset and Screenshot cleaned");
