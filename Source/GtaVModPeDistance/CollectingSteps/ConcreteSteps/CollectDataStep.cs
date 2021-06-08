@@ -33,20 +33,19 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             ScreenShot image = screenShot.SaveScreenShot();
 
             Data data = new Data(
-                    CollectingState.CollectedDataCounter++,
                     World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position),
                     box,
-                    CoordinatesUtils.GetPedHeight(CollectingState.Ped),
-                    CollectingState.Ped.Rotation.Z,
-                    World.RenderingCamera.Position.Z - World.GetGroundHeight(Game.Player.Character.Position),
                     image.Name,
                     image.b64String,
-                    World.CurrentTimeOfDay.ToString()
+                    World.CurrentTimeOfDay.ToString(),
+                    CollectingState.Ped.Rotation.Z,
+                    World.RenderingCamera.Position.Z - World.GetGroundHeight(Game.Player.Character.Position),                    
+                    CoordinatesUtils.GetPedHeight(CollectingState.Ped)
                 );
 
             //GTA.UI.Notification.Show("ours " + GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position).ToString());
             //GTA.UI.Notification.Show("SHV " + World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position).ToString());
-         
+
             dataManager.AddElement(data);
         }
         private double GetDistance(Vector3 pedPosition, Vector3 cameraPosition)

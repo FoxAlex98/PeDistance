@@ -7,7 +7,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
     {
         public override void ExecuteStep()
         {
-            Notification.Show("Counter: " + CollectingState.CollectedDataCounter + "/" + Settings.MaxCollectedData);
+            Notification.Show("Counter: " + (++CollectingState.CollectedDataCounter) + "/" + Settings.MaxCollectedData);
             if (CollectingState.CollectedDataCounter >= Settings.MaxCollectedData || CollectingState.WannaStop)
             {
                 Notification.Show("Stop collecting data...");
