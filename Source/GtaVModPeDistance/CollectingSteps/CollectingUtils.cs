@@ -15,8 +15,6 @@ namespace GtaVModPeDistance.CollectingSteps
             Game.Player.Character.IsVisible = false;
             UtilsFunctions.ResetWantedLevel();//sembra che non funzioni
             Globals.HideHud();
-            screenShotManager.DeleteAllScreenShot();
-            dataManager.CleanFile();
             CollectingState.WannaStop = false;
             CollectingState.CollectedDataCounter = 0;
             CollectingState.Ped = null;
@@ -53,6 +51,13 @@ namespace GtaVModPeDistance.CollectingSteps
         public static CollectingStep GetFirstStep()
         {
             return new TeleportToRandomSavedLocationStep();
+        }
+
+        public static void ClearCollectedData()
+        {
+            dataManager.CleanFile();
+            screenShotManager.DeleteAllScreenShot();
+            Notification.Show("Dataset and Screenshot cleaned");
         }
 
     }
