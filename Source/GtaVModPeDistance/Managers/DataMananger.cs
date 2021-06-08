@@ -24,18 +24,17 @@ namespace GtaVModPeDistance.File
         private DataMananger()
         {
             data = new List<Data>();
-            filePath = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", "Dataset.csv");
             string mainFolder = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", Settings.DirectoryName, "data");
             if (!Directory.Exists(mainFolder)) Directory.CreateDirectory(mainFolder);
             filePath = Path.Combine(mainFolder, "Dataset.csv");
-            CleanFile();
+            InitWriter();
         }
 
         public void InitWriter()
         {
             try
             {
-                csvWriter = new CsvWriter(new StreamWriter(filePath), CultureInfo.InvariantCulture);
+                csvWriter = new CsvWriter(new StreamWriter(filePath, true), CultureInfo.InvariantCulture);
             }
             catch (FileNotFoundException e)
             {
