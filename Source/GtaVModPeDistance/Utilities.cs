@@ -161,13 +161,15 @@ namespace GtaVModPeDistance
         //}
         #endregion
 
-        public static void Draw3DPedBoundingBoxUsingVertex(this GTA.Entity entity, Color color)
+        public static void Draw3DPedBoundingBoxUsingVertex(this Entity entity, Color color)
         {
-            float Z = entity.Rotation.Z;
+            Vector3 previousRotation = entity.Rotation;
             entity.Rotation = Vector3.Zero;
 
             Vector3 DBL = entity.Model.Dimensions.rearBottomLeft;     // Down Behind left
             Vector3 TFR = entity.Model.Dimensions.frontTopRight;      // Top front right
+
+            entity.Rotation = previousRotation;
 
             // aggiustamenti dei margini
             DBL.X += 0.25f;
@@ -182,7 +184,6 @@ namespace GtaVModPeDistance
             Vector3 TBR = new Vector3(TFR.X, DBL.Y, TFR.Z);        // Top Behind right
             Vector3 TFL = new Vector3(DBL.X, TFR.Y, TFR.Z);        // Top front left
 
-            entity.Rotation = new Vector3(0, 0, Z);
 
             Draw3DBoundingBox(
                 entity.GetOffsetPosition(DBL),
@@ -195,51 +196,6 @@ namespace GtaVModPeDistance
                 entity.GetOffsetPosition(TFR),
                 color);
 
-            //Draw3DBoundingBox(
-            //  DBL,
-            //  DBR,
-            //  DFL,
-            //  DFR,
-            //  TBL,
-            //  TBR,
-            //  TFL,
-            //  TFR,
-            //  color);
-
-        }
-
-        public static void Draw3BBoundingBoxUsingEntityPosition(this GTA.Entity entity, Color color)
-        {
-            float Z = entity.Rotation.Z;
-            entity.Rotation = Vector3.Zero;
-
-            Vector3 LRA = new Vector3(entity.LeftPosition.X, entity.RearPosition.Y, entity.AbovePosition.Z);       // Left Rear Above
-            Vector3 LFA = new Vector3(entity.LeftPosition.X, entity.FrontPosition.Y, entity.AbovePosition.Z);      // Left Front Above
-            Vector3 RRA = new Vector3(entity.RightPosition.X, entity.RearPosition.Y, entity.AbovePosition.Z);      // Right Rear Above
-            Vector3 RFA = new Vector3(entity.RightPosition.X, entity.FrontPosition.Y, entity.AbovePosition.Z);     // Right Front Above
-
-            Vector3 LRB = new Vector3(entity.LeftPosition.X, entity.RearPosition.Y, entity.BelowPosition.Z);       // Left Rear Below
-            Vector3 LFB = new Vector3(entity.LeftPosition.X, entity.FrontPosition.Y, entity.BelowPosition.Z);      // Left Front Below
-            Vector3 RRB = new Vector3(entity.RightPosition.X, entity.RearPosition.Y, entity.BelowPosition.Z);      // Right Rear Below
-            Vector3 RFB = new Vector3(entity.RightPosition.X, entity.FrontPosition.Y, entity.BelowPosition.Z);     // Right Front Below
-
-            //DBL.X += 0.2f;
-            //TFR.X -= 0.2f;
-
-            entity.Rotation = new Vector3(0, 0, Z);
-
-            //Draw3DBoundingBox(LRB, RRB, LFB, RFB, LRA, RRA, LFA, RFA, color);
-
-            Draw3DBoundingBox(
-                entity.GetOffsetPosition(LRB),
-                entity.GetOffsetPosition(RRB),
-                entity.GetOffsetPosition(LFB),
-                entity.GetOffsetPosition(RFB),
-                entity.GetOffsetPosition(LRA),
-                entity.GetOffsetPosition(RRA),
-                entity.GetOffsetPosition(LFA),
-                entity.GetOffsetPosition(RFA),
-                color);
         }
 
         public static void DrawBoundingBoxNearbyEntities(float radius)
@@ -252,9 +208,7 @@ namespace GtaVModPeDistance
                     if (ent is Vehicle)
                         ent.Draw3DPedBoundingBoxUsingVertex(Color.Magenta);
                     else if (ent is Ped)
-                        ent.Draw3DPedBoundingBoxUsingVertex(Color.Red);
-                    else if(ent is Weapon)
-                        ent.Draw3DPedBoundingBoxUsingVertex(Color.Blue);
+                        ent.Draw3DPedBoundingBoxUsingVertex(Color.Red);                   
                     else
                         ent.Draw3DPedBoundingBoxUsingVertex(Color.Aqua);
                 }
