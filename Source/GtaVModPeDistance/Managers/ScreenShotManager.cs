@@ -32,25 +32,6 @@ namespace GtaVModPeDistance.File
             screenWidth = Screen.PrimaryScreen.Bounds.Width;
             screenHeight = Screen.PrimaryScreen.Bounds.Height;
         }
-    
-        // TODO 0 riferimenti, potenzialmente da rimuovere
-        //public ScreenShot TakeScreenshot(bool notification = false)
-        //{
-        //    Vector3 actualPlayerPosition = Game.Player.Character.Position;
-        //    memoryImage = new Bitmap(screenWidth, screenHeight);
-        //    size = new Size(memoryImage.Width, memoryImage.Height);
-        //    memoryGraphics = Graphics.FromImage(memoryImage);
-
-        //    memoryGraphics.CopyFromScreen(0, 0, 0, 0, size);
-        //    string finalName = FileNameFormatter(World.GetStreetName(actualPlayerPosition), World.GetZoneLocalizedName(actualPlayerPosition));
-        //    if (Settings.SaveScreenShotLocally)
-        //    {
-        //        fileName = Path.Combine(mainFolder, finalName);
-        //        memoryImage.Save(string.Format(fileName));
-        //    }                                             
-        //    if(notification) GTA.UI.Notification.Show("ScreenShot Saved");
-        //    return new ScreenShot(finalName, Utilities.ToBase64String(memoryImage, Settings.ImageFormat.Equals("Png")? ImageFormat.Png : ImageFormat.Jpeg));
-        //}
 
         public void TakeScreenshot()
         {
@@ -75,27 +56,29 @@ namespace GtaVModPeDistance.File
             return new ScreenShot(finalName, Utilities.ToBase64String(memoryImage, Settings.ImageFormat.Equals("Png") ? ImageFormat.Png : ImageFormat.Jpeg));
         }
 
-        //TODO parametrizzare la dimensione del border
+        //TODO: parametrizzare la dimensione del border
         public void DrawBoundingBox(Vector2 bottomLeft, Vector2 topRight, Color color)
         {
-            //GTA.UI.Notification.Show("bottomLeft " + bottomLeft.ToString());
-            //GTA.UI.Notification.Show("topRight " + topRight.ToString());
-
             int xFix = topRight.X == Screen.PrimaryScreen.Bounds.Width ? -1 : 0;
             int yFix = bottomLeft.Y == Screen.PrimaryScreen.Bounds.Height ? -1 : 0;
 
             int border = 5; //meglio se dispari
 
-            //fill Horizontal line
-            for (int x = (int) bottomLeft.X - border/2; x < topRight.X + border / 2; x++)
+            fillHorizontalLine(bottomLeft, topRight, color, yFix, border);
+            fillVerticalLine(bottomLeft, topRight, color, xFix, border);
+        }
+        private void fillHorizontalLine(Vector2 bottomLeft, Vector2 topRight, Color color, int yFix, int border)
+        {
+            for (int x = (int)bottomLeft.X - border / 2; x < topRight.X + border / 2; x++)
             {
                 BorderFillerHorizontalLine(new Vector2(x, bottomLeft.Y + yFix), border, color);
                 BorderFillerHorizontalLine(new Vector2(x, topRight.Y), border, color);
-
             }
+        }
 
-            //fill Vertical line
-            for (int y = (int) topRight.Y; y < bottomLeft.Y; y++)
+        private void fillVerticalLine(Vector2 bottomLeft, Vector2 topRight, Color color, int xFix, int border)
+        {
+            for (int y = (int)topRight.Y; y < bottomLeft.Y; y++)
             {
                 BorderFillerVerticalLine(new Vector2(bottomLeft.X, y), border, color);
                 BorderFillerVerticalLine(new Vector2(topRight.X + xFix, y), border, color);

@@ -1,6 +1,7 @@
 ﻿using GTA;
 using GTA.Math;
 using GTA.Native;
+using GtaVModPeDistance.Models;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -52,9 +53,6 @@ namespace GtaVModPeDistance
             Function.Call<bool>(Hash.GET_SCREEN_COORD_FROM_WORLD_COORD, pos.X, pos.Y, pos.Z, x2dp, y2dp);
 
             return new Vector2(x2dp.GetResult<float>().ParseToScreenWidth(), y2dp.GetResult<float>().ParseToScreenHeight());
-            
-            //PointF screenCoords = GTA.UI.Screen.WorldToScreen(pos);
-            //return new Vector2(screenCoords.X, screenCoords.Y);
         }
 
         public static Vector2 World3DToScreen2d(Vector3 pos, Vector3 support)
@@ -65,137 +63,26 @@ namespace GtaVModPeDistance
 
             if (y < 0)
             {
-                //GTA.UI.Notification.Show("Testone " + pos2D.ToString());
                 x = World3DToScreen2d(support).X;
                 y = -y;
-                //GTA.UI.Notification.Show("Testone MOD" + x + " " + y);
             }
 
             return new Vector2(x, y);
         }
 
-        #region ToCheck
-        //public static void getMaxBotLeft(Vector3 dbl)
-        //{
-        //    Vector3 dbr = new Vector3(TFR.X, DBL.Y, DBL.Z);
-        //    Vector3 dfr = new Vector3(TFR.X, TFR.Y, DBL.Z);
-        //    Vector3 dfl = new Vector3(DBL.X, TFR.Y, DBL.Z);
-
-        //}
-
-        //public static void getMaxTopRight()
-        //{
-
-        //}
-
-        //private void DrawBoundingBox(Entity e, Vector3 dim, Vector3 FUL, Vector3 BLR)
-        //{
-        //    Vector3[] vertices = new Vector3[8];
-
-        //    vertices[0] = FUL;
-        //    vertices[1] = FUL - dim.X * e.RightVector;
-        //    vertices[2] = FUL - dim.Z * e.UpVector;
-        //    vertices[3] = FUL - dim.Y * Vector3.Cross(e.UpVector, e.RightVector);
-
-        //    vertices[4] = BLR;
-        //    vertices[5] = BLR - dim.X * e.RightVector;
-        //    vertices[6] = BLR - dim.Z * e.UpVector;
-        //    vertices[7] = BLR - dim.Y * Vector3.Cross(e.UpVector, e.RightVector);
-
-        //    int xMin = int.MaxValue;
-        //    int yMin = int.MaxValue;
-        //    int xMax = 0;
-        //    int yMax = 0;
-
-        //    foreach (Vector3 v in vertices)
-        //    {
-        //        int x = (int)get2Dfrom3D(v).X;
-        //        int y = (int)get2Dfrom3D(v).Y;
-
-        //        if (x < xMin)
-        //            xMin = x;
-        //        if (x > xMax)
-        //            xMin = x;
-        //        if (y < yMin)
-        //            yMin = y;
-        //        if (y > yMax)
-        //            yMax = y;
-        //    }
-
-        //    if (xMin < 0)
-        //        xMin = 0;
-        //    if (yMin < 0)
-        //        yMin = 0;
-
-        //    if (xMax > UI.WIDTH)
-        //        xMax = UI.WIDTH;
-        //    if (yMax > UI.HEIGHT)
-        //        yMax = UI.HEIGHT;
-
-        //    int width = xMax - xMin;
-        //    int height = yMax - yMin;
-
-        //    xMin = (int)(IMAGE_WIDTH / (1.0f * UI.WIDTH) * xMin);
-        //    xMax = (int)(IMAGE_WIDTH / (1.0f * UI.WIDTH) * xMax);
-        //    yMin = (int)(IMAGE_HEIGHT / (1.0f * UI.HEIGHT) * yMin);
-        //    yMax = (int)(IMAGE_HEIGHT / (1.0f * UI.HEIGHT) * yMax);
-
-        //    width = xMax - xMin;
-        //    height = yMax - yMin;
-
-        //}
-        //public static Vector3 RotateOnZ(Vector3 point, Matrix matrix)
-        //{
-        //    return matrix.TransformPoint(point);
-        //}
-
-        //public static Matrix GetRotationMatrix(float angle)
-        //{
-        //    double rad = Deg2rad(angle);
-        //    return Matrix.RotationZ((float) rad);
-        //}
-
-        //public static double Deg2rad(double angle)
-        //{
-        //    return (Math.PI / 180) * angle;
-        //}
-        #endregion
-
         public static void Draw3DPedBoundingBoxUsingVertex(this Entity entity, Color color)
         {
-            Vector3 previousRotation = entity.Rotation;
-            entity.Rotation = new Vector3(previousRotation.X, previousRotation.Y, 0);
-
-            Vector3 DBL = entity.Model.Dimensions.rearBottomLeft;     // Down Behind left
-            Vector3 TFR = entity.Model.Dimensions.frontTopRight;      // Top front right
-
-            entity.Rotation = previousRotation;
-
-            // aggiustamenti dei margini
-            DBL.X += 0.25f;
-            TFR.X -= 0.25f;
-            //TFR.Z -= 0.12f;   
-
-            Vector3 DBR = new Vector3(TFR.X, DBL.Y, DBL.Z);        // Down Behind right
-            Vector3 DFR = new Vector3(TFR.X, TFR.Y, DBL.Z);        // Down front right
-            Vector3 DFL = new Vector3(DBL.X, TFR.Y, DBL.Z);        // Down front left
-
-            Vector3 TBL = new Vector3(DBL.X, DBL.Y, TFR.Z);        // Top Behind left
-            Vector3 TBR = new Vector3(TFR.X, DBL.Y, TFR.Z);        // Top Behind right
-            Vector3 TFL = new Vector3(DBL.X, TFR.Y, TFR.Z);        // Top front left
-
-
+            Entity3DBoundingBox box3D = CoordinatesUtils.getEntity3DBoundingBox(entity);
             Draw3DBoundingBox(
-                entity.GetOffsetPosition(DBL),
-                entity.GetOffsetPosition(DBR),
-                entity.GetOffsetPosition(DFL),
-                entity.GetOffsetPosition(DFR),
-                entity.GetOffsetPosition(TBL),
-                entity.GetOffsetPosition(TBR),
-                entity.GetOffsetPosition(TFL),
-                entity.GetOffsetPosition(TFR),
+                box3D.DBL,
+                box3D.DBR,
+                box3D.DFL,
+                box3D.DFR,
+                box3D.TBL,
+                box3D.TBR,
+                box3D.TFL,
+                box3D.TFR,
                 color);
-
         }
 
         public static void DrawBoundingBoxNearbyEntities(float radius)
@@ -261,11 +148,6 @@ namespace GtaVModPeDistance
         public static float ParseToScreenHeight(this float value)
         {
             return value * Screen.PrimaryScreen.Bounds.Height;
-        }
-
-        public static void DrawBox(Vector3 a, Vector3 b, Color col)
-        {         
-            Function.Call(Hash.DRAW_BOX, a.X, a.Y, a.Z, b.X, b.Y, b.Z, col.R, col.G, col.B, col.A);
         }
 
         public static void DrawLine(Vector3 a, Vector3 b, Color col)

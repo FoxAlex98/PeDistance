@@ -13,7 +13,6 @@ namespace GtaVModPeDistance
             set => _modMenu = value;
         }
 
-
         public Menu(string menuName, string menuSubtitle, List<MenuItem> itemList)
         {
             _modMenu = new UIMenu(menuName, menuSubtitle);
