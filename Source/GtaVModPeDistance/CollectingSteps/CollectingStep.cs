@@ -5,14 +5,14 @@ namespace GtaVModPeDistance.CollectingSteps
     //TODO: fare refactor dei concretestep usando i delegate
     abstract class CollectingStep
     {
-        private float _start;
+        private float start;
         public CollectingStep()
         {
-            _start = Game.GameTime;
+            start = Game.GameTime;
         }
         public void Process()
         {
-            if (Game.GameTime > _start + GetDelay())
+            if (Game.GameTime > start + GetDelay())
             {
                 ExecuteStep();
                 CollectingState.ActualStep = GetNextStep();

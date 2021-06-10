@@ -4,33 +4,21 @@ using GtaVModPeDistance.File;
 using GtaVModPeDistance.Models;
 using System;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
     class CollectDataStep : CollectingStep
     {
-        ScreenShotManager screenShot = ScreenShotManager.GetInstance();
+        ScreenShotManager screenShotManager = ScreenShotManager.GetInstance();
         DataMananger dataManager = DataMananger.GetInstance();
 
         public override void ExecuteStep()
         {
-            screenShot.TakeScreenshot();
-            //Vector2 topRight = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.rearBottomLeft));
-            //Vector2 botLeft = Utilities.World3DToScreen2d(CollectingState.Ped.GetOffsetPosition(CollectingState.Ped.Model.Dimensions.frontTopRight));
-            //screenShot.DrawBoundingBox(new Vector2(botLeft.X, botLeft.Y), new Vector2(topRight.X, topRight.Y), Color.Red);
-
+            screenShotManager.TakeScreenshot();
             Ped2DBoundingBox box = CoordinatesUtils.GetPedBoundingBoxInScreen(CollectingState.Ped);
             if(Settings.PrintBox)
-                screenShot.DrawBoundingBox(new Vector2(box.PedBottomLeftX, box.PedBottomLeftY), new Vector2(box.PedTopRightX, box.PedTopRightY), Color.Blue);
-            //screenShot.DrawBoundingBox(new Vector2(box.PedBottomLeftX, box.PedBottomLeftY), new Vector2(box.PedTopRightX, box.PedTopRightY), Color.Blue);
-            /*
-            GTA.UI.Notification.Show("TopLeft " + box.PedTopLeftX + " " + box.PedTopLeftY);
-            GTA.UI.Notification.Show("TopRight " + box.PedTopRightX + " " + box.PedTopRightY);
-            GTA.UI.Notification.Show("BottomLeft " + box.PedBottomLeftX + " " + box.PedBottomLeftY);
-            GTA.UI.Notification.Show("BottomRight " + box.PedBottomRightX + " " + box.PedBottomRightY);
-            */
-            ScreenShot image = screenShot.SaveScreenShot();
+                screenShotManager.DrawBoundingBox(new Vector2(box.PedBottomLeftX, box.PedBottomLeftY), new Vector2(box.PedTopRightX, box.PedTopRightY), Color.Blue);
+            ScreenShot image = screenShotManager.SaveScreenShot();
 
             Data data = new Data(
                     World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position),
@@ -42,10 +30,6 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
                     World.RenderingCamera.Position.Z - World.GetGroundHeight(Game.Player.Character.Position),                    
                     CoordinatesUtils.GetPedHeight(CollectingState.Ped)
                 );
-
-            //GTA.UI.Notification.Show("ours " + GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position).ToString());
-            //GTA.UI.Notification.Show("SHV " + World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position).ToString());
-
             dataManager.AddElement(data);
         }
         private double GetDistance(Vector3 pedPosition, Vector3 cameraPosition)

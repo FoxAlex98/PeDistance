@@ -1,5 +1,4 @@
-﻿using GTA;
-using GTA.UI;
+﻿using GTA.UI;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
@@ -9,20 +8,9 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
         {
             Notification.Show("Counter: " + (++CollectingState.CollectedDataCounter) + "/" + Settings.MaxCollectedData);
             if (CollectingState.CollectedDataCounter >= Settings.MaxCollectedData || CollectingState.WannaStop)
-            {
-                Notification.Show("Stop collecting data...");
-                Game.Player.Character.IsVisible = true;
-                Game.Player.Character.Position = CollectingState.InitialPosition;
-                Globals.ShowHud(); //TODO: check bug hud
-                World.RenderingCamera = null;
-                CollectingState.Ped = null;
-                CollectingState.StartCollectingData = false;
-            }
+                CollectingUtils.EndingCollectingData();
             if (CollectingState.WannaStop)
-            {
                 CollectingUtils.ForceWritingData();
-            }
-            CollectingState.WannaDraw = false;
         }
 
         public override int GetDelay()

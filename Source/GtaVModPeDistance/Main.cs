@@ -98,7 +98,7 @@ namespace GtaVModPeDistance
             // Main menu
             List<MenuItem> mainMenuItem = new List<MenuItem>();
             mainMenuItem.Add(new MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
-            mainMenuItem.Add(new MenuItem("Stop Collecting Data", CollectingUtils.StopCollectingData));
+            mainMenuItem.Add(new MenuItem("Stop Collecting Data", CollectingUtils.WannaStopCollectingData));
             mainMenuItem.Add(new MenuItem("Clear Data", CollectingUtils.ClearCollectedData));
 
             mainMenu = new Menu("PeDistance Menu", "SELECT AN OPTION", mainMenuItem);

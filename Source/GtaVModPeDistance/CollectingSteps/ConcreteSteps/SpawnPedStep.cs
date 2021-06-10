@@ -11,8 +11,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             float x = Utilities.GetPosXByPosY(y);
             CollectingState.Ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));
             CollectingState.Ped.Heading += GetRotationUsingCameraAxis();
-            //CollectingState.Ped.Heading += GetRotationUsingCameraPosition();
-            CollectingState.WannaDraw = true;
+            //CollectingState.Ped.Heading += GetRotationUsingCameraPosition(); //TODO: controllare se togliere
         }
 
         public override int GetDelay()
