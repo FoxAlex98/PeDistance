@@ -70,10 +70,7 @@ namespace GtaVModPeDistance
             DebugMode.CheckboxEvent += UtilsFunctions.ToggleDebugMode;
             utilsList.Add(new MenuItem(DebugMode));
             if (DebugMode.Checked)
-            {
                 AddDebugItemList(utilsList);
-            }
-            utilsList.Add(new MenuItem("Delete All Near Ped", UtilsFunctions.DeleteAllNearPed));
             utilsList.Add(new MenuItem("Delete All Near Ped", UtilsFunctions.DeleteAllNearPed));
             utilsList.Add(new MenuItem("Delete All Near Vehicle", UtilsFunctions.DeleteAllNearVehicles));
             utilsList.Add(new MenuItem("Ignored by everyone", () => { Game.Player.IgnoredByEveryone = true; }));

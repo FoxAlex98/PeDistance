@@ -54,40 +54,21 @@ namespace GtaVModPeDistance
                 Game.Player.Character.PrintPedAxis();
             }
 
-            //if (CollectingState.Ped != null)
-            //{
-            //    CollectingState.Ped.Draw3DPedBoundingBoxUsingVertex(System.Drawing.Color.Red);
-            //}
-
-
-            #region DrawBoundingBoxNearbyEntities
             if (UtilsFunctions.ActiveNearbyEntitiesBoundingBox)
                 Utilities.DrawBoundingBoxNearbyEntities(75);
-            #endregion
-
-            /*
-            if (CollectingState.WannaDraw)
-                UtilsFunctions.DrawLine(CollectingState.Ped);
-            */
 
             if(UtilsFunctions.DistancePoints.Count > 0)
             {
                 if(UtilsFunctions.DistancePoints.Count == 2) Utilities.DrawLine(UtilsFunctions.DistancePoints[0], UtilsFunctions.DistancePoints[1], System.Drawing.Color.Red);
             }
 
-            if(UtilsFunctions.MeterMode)
-            {
-                if(Game.Player.Character.IsShooting)
-                {
+            if(UtilsFunctions.MeterMode && Game.Player.Character.IsShooting)
                     UtilsFunctions.PrintDistancePoints(Game.Player.Character.LastWeaponImpactPosition);
-                }                                  
-
-            }
         }
 
         private void onKeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.F5 && !modMenuPool.IsAnyMenuOpen())
+            if(e.KeyCode == Keys.F5)
                 mainMenu.ToggleMenu();
         }
 
@@ -127,7 +108,7 @@ namespace GtaVModPeDistance
             CoordinatesUtils.playerPosition = Game.Player.Character.Position;
             Game.Player.Character.IsVisible = false;
             UtilsFunctions.SpawnAtRandomSavedLocation();
-            UtilsFunctions.SpawnSettingPeds();//doesn't work
+            //UtilsFunctions.SpawnSettingPeds();//doesn't work
         }
     }
 }

@@ -11,27 +11,14 @@ namespace GtaVModPeDistance
 
         public static Ped2DBoundingBox GetPedBoundingBoxInScreen(Ped ped)
         {
-            Entity3DBoundingBox box3D = getEntity3DBoundingBox(ped);
-
+            Entity3DBoundingBox box3D = new Entity3DBoundingBox(ped);
             Vector2[] vertices = get3DBoundingBoxVertices(box3D);
             return get2DBoundingBoxFrom3DVertices(vertices);
-        }
-
-        public static Entity3DBoundingBox getEntity3DBoundingBox(Entity entity)
-        {
-            Vector3 previousRotation = entity.Rotation;
-            entity.Rotation = new Vector3(previousRotation.X, previousRotation.Y, 0);
-
-            Entity3DBoundingBox box3D = new Entity3DBoundingBox(entity);
-
-            entity.Rotation = previousRotation;
-            return box3D;
         }
 
         private static Vector2[] get3DBoundingBoxVertices(Entity3DBoundingBox box3D)
         {
             Vector2[] vertices = new Vector2[8];
-
             vertices[0] = Utilities.World3DToScreen2d(box3D.TFR);
             vertices[1] = Utilities.World3DToScreen2d(box3D.TBL);
             vertices[2] = Utilities.World3DToScreen2d(box3D.TBR);
@@ -85,12 +72,11 @@ namespace GtaVModPeDistance
 
         public static float GetPedHeight(Ped ped)
         {
-            float max = ped.Bones[0].Position.Z;
+            /*float max = ped.Bones[0].Position.Z;
             foreach (PedBone pedBone in ped.Bones)
-            {
                 max = pedBone.Position.Z > max ? pedBone.Position.Z : max;
-            }
-            return max - World.GetGroundHeight(ped.Position);
+            return max - World.GetGroundHeight(ped.Position);*/
+            return 1.80f;
         }
     }
 }

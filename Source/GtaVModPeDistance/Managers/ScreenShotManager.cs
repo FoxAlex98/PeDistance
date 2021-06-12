@@ -63,13 +63,12 @@ namespace GtaVModPeDistance.File
             int yFix = bottomLeft.Y == Screen.PrimaryScreen.Bounds.Height ? -1 : 0;
 
             int border = 5; //meglio se dispari
-
             fillHorizontalLine(bottomLeft, topRight, color, yFix, border);
             fillVerticalLine(bottomLeft, topRight, color, xFix, border);
         }
         private void fillHorizontalLine(Vector2 bottomLeft, Vector2 topRight, Color color, int yFix, int border)
         {
-            for (int x = (int)bottomLeft.X - border / 2; x < topRight.X + border / 2; x++)
+            for (int x = (int) bottomLeft.X; x < topRight.X + border / 2; x++)
             {
                 BorderFillerHorizontalLine(new Vector2(x, bottomLeft.Y + yFix), border, color);
                 BorderFillerHorizontalLine(new Vector2(x, topRight.Y), border, color);
@@ -78,7 +77,7 @@ namespace GtaVModPeDistance.File
 
         private void fillVerticalLine(Vector2 bottomLeft, Vector2 topRight, Color color, int xFix, int border)
         {
-            for (int y = (int)topRight.Y; y < bottomLeft.Y; y++)
+            for (int y = (int) topRight.Y; y < bottomLeft.Y; y++)
             {
                 BorderFillerVerticalLine(new Vector2(bottomLeft.X, y), border, color);
                 BorderFillerVerticalLine(new Vector2(topRight.X + xFix, y), border, color);
@@ -88,19 +87,15 @@ namespace GtaVModPeDistance.File
         public void BorderFillerVerticalLine(Vector2 median, int border, Color color)
         {
             for(int i = (int) median.X - border/2; i < median.X + border/2; i++)
-            {
                 if (i >= 0 && i < Screen.PrimaryScreen.Bounds.Width)
                     memoryImage.SetPixel(i, (int) median.Y, color);
-            }
         }
         
         public void BorderFillerHorizontalLine(Vector2 median, int border, Color color)
         {
-            for(int i = (int) median.Y - border/2; i < median.Y + border/2; i++)
-            {
-                if(i < Screen.PrimaryScreen.Bounds.Height)
+            for (int i = (int) median.Y - border/2; i < median.Y + border/2; i++)
+                if (i >= 0 && i < Screen.PrimaryScreen.Bounds.Height)
                     memoryImage.SetPixel((int) median.X, i, color);
-            }
         }
 
         public string FileNameFormatter(string streetName, string zoneName)

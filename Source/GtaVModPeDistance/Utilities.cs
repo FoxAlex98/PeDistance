@@ -72,7 +72,7 @@ namespace GtaVModPeDistance
 
         public static void Draw3DPedBoundingBoxUsingVertex(this Entity entity, Color color)
         {
-            Entity3DBoundingBox box3D = CoordinatesUtils.getEntity3DBoundingBox(entity);
+            Entity3DBoundingBox box3D = new Entity3DBoundingBox(entity);
             Draw3DBoundingBox(
                 box3D.DBL,
                 box3D.DBR,
