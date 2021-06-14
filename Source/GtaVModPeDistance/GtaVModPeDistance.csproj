@@ -76,6 +76,9 @@
     <Compile Include="CollectingSteps\ConcreteSteps\FinalStep.cs" />
     <Compile Include="CollectingSteps\ConcreteSteps\SpawnPedStep.cs" />
     <Compile Include="CollectingSteps\ConcreteSteps\TeleportToRandomSavedLocationStep.cs" />
+    <Compile Include="Menu\Impl\WeatherListItem.cs" />
+    <Compile Include="Menu\MenuListItem.cs" />
+    <Compile Include="Menu\MenuSettingItem.cs" />
     <Compile Include="Models\Entity3DBoundingBox.cs" />
     <Compile Include="Models\Ped2DBoundingBox.cs" />
     <Compile Include="CoordinatesUtils.cs" />

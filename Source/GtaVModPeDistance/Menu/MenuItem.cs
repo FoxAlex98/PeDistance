@@ -1,24 +1,21 @@
 ﻿using NativeUI;
 
-namespace GtaVModPeDistance
+namespace GtaVModPeDistance.Menu
 {
     public delegate void ActionToDo();
     public class MenuItem
     {
         private UIMenuItem _item;
-        public UIMenuItem Item
+        protected ActionToDo action;
+
+        public MenuItem()
         {
-            get => _item;
-            set => _item = value;
+
         }
-        private string name;
-        private ActionToDo action;
-        
+
         public MenuItem(string name, ActionToDo action) //optional description?
         {
-            this.name = name;
             this.action = action;
-
             _item = new UIMenuItem(name);
         }
 
@@ -26,6 +23,11 @@ namespace GtaVModPeDistance
         {
             _item = item;
             this.action = action;
+        }
+        public UIMenuItem Item
+        {
+            get => _item;
+            set => _item = value;
         }
 
         public void Evaluate(UIMenuItem itemToCompare)

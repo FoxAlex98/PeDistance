@@ -1,21 +1,20 @@
 ﻿using GTA;
 using GTA.Math;
 using GTA.UI;
-using GtaVModPeDistance.CollectingSteps;
+using GtaVModPeDistance.Menu;
+using GtaVModPeDistance.Menu.Impl;
 using NativeUI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace GtaVModPeDistance
+namespace GtaVModPeDistance.Menu
 {
     class MenuHelper
     {
         // Utils
-        VehicleHash[] allVehiclesHash;
-        Weather[] allWeather;
         UIMenuListItem planeList, helicopterList, motorbikeList, boatList, weatherList;
-        List<dynamic> listOfPlanes, listOfHelicopter, listOfMotorbike, listOfBoat, listOfWeather;
+        List<dynamic> listOfPlanes, listOfHelicopter, listOfMotorbike, listOfBoat;
         public UIMenuCheckboxItem DebugMode;
 
         // Config
@@ -35,13 +34,12 @@ namespace GtaVModPeDistance
             //utils menu
             List<MenuItem> utilsList = new List<MenuItem>();
 
-            allVehiclesHash = (VehicleHash[])Enum.GetValues(typeof(VehicleHash));
+            VehicleHash[] allVehiclesHash = (VehicleHash[])Enum.GetValues(typeof(VehicleHash));
 
             listOfPlanes = new List<dynamic>();
             listOfHelicopter = new List<dynamic>();
             listOfMotorbike = new List<dynamic>();
             listOfBoat = new List<dynamic>();
-            listOfWeather = new List<dynamic>();
 
             for (int i = 0; i < allVehiclesHash.Length; i++)
             {
@@ -53,19 +51,13 @@ namespace GtaVModPeDistance
                 else if (tempModel.IsBoat) listOfBoat.Add(allVehiclesHash[i]);
             }
 
-            allWeather = (Weather[])Enum.GetValues(typeof(Weather));
-
-            for (int i = 0; i < allWeather.Length; i++)
-            {
-                listOfWeather.Add(allWeather[i]);
-            }
+            MenuListItem weatherListItem = new WeatherListItem();
 
             //TODO: find index problem
             planeList = new UIMenuListItem("Planes: ", listOfPlanes, 1);
             helicopterList = new UIMenuListItem("Helicopters: ", listOfHelicopter, 1);
             motorbikeList = new UIMenuListItem("Motorbikes: ", listOfMotorbike, 1);
             boatList = new UIMenuListItem("Boats: ", listOfBoat, 1);
-            weatherList = new UIMenuListItem("Weather: ", listOfWeather, 1);
 
             DebugMode.CheckboxEvent += UtilsFunctions.ToggleDebugMode;
             utilsList.Add(new MenuItem(DebugMode));
@@ -83,7 +75,7 @@ namespace GtaVModPeDistance
             utilsList.Add(new MenuItem(helicopterList, () => { UtilsFunctions.SpawnVehicle(helicopterList, listOfHelicopter); }));
             utilsList.Add(new MenuItem(motorbikeList, () => { UtilsFunctions.SpawnVehicle(motorbikeList, listOfMotorbike); }));
             utilsList.Add(new MenuItem(boatList, () => { UtilsFunctions.SpawnVehicle(boatList, listOfBoat); }));
-            utilsList.Add(new MenuItem(weatherList, () => { UtilsFunctions.ChangeWeather(weatherList, listOfWeather); }));
+            utilsList.Add(weatherListItem);
 
             return utilsList;
         }

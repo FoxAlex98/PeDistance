@@ -1,7 +1,7 @@
 using GTA;
-using GTA.Math;
 using GTA.UI;
 using GtaVModPeDistance.CollectingSteps;
+using GtaVModPeDistance.Menu;
 using NativeUI;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace GtaVModPeDistance
         string Version = "1.0";
 
         MenuPool modMenuPool;
-        Menu mainMenu;
+        Menu.Menu mainMenu;
         MenuHelper menuHelper;
 
         public Main()
@@ -77,20 +77,20 @@ namespace GtaVModPeDistance
             modMenuPool = new MenuPool();
 
             // Main menu
-            List<MenuItem> mainMenuItem = new List<MenuItem>();
-            mainMenuItem.Add(new MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
-            mainMenuItem.Add(new MenuItem("Stop Collecting Data", CollectingUtils.WannaStopCollectingData));
-            mainMenuItem.Add(new MenuItem("Clear Data", CollectingUtils.ClearCollectedData));
-            mainMenuItem.Add(new MenuItem("Reset", UtilsFunctions.Reset));
+            List<Menu.MenuItem> mainMenuItem = new List<Menu.MenuItem>();
+            mainMenuItem.Add(new Menu.MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
+            mainMenuItem.Add(new Menu.MenuItem("Stop Collecting Data", CollectingUtils.WannaStopCollectingData));
+            mainMenuItem.Add(new Menu.MenuItem("Clear Data", CollectingUtils.ClearCollectedData));
+            mainMenuItem.Add(new Menu.MenuItem("Reset", UtilsFunctions.Reset));
 
-            mainMenu = new Menu("PeDistance Menu", "SELECT AN OPTION", mainMenuItem);
+            mainMenu = new Menu.Menu("PeDistance Menu", "SELECT AN OPTION", mainMenuItem);
             modMenuPool.Add(mainMenu.ModMenu);
 
             UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Utils Menu");
-            new Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
+            new Menu.Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
 
             UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Settings Menu", "Show up a menu to let you set your own preferred settings.");
-            new Menu(uiMlMenu, menuHelper.GetConfigMenu());
+            new Menu.Menu(uiMlMenu, menuHelper.GetConfigMenu());
             uiMlMenu.OnMenuOpen += OnSettingsMenuOpen;
             uiMlMenu.OnMenuClose += OnSettingsMenuClose;
         }

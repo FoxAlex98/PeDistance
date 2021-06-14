@@ -76,11 +76,6 @@ namespace GtaVModPeDistance
             pedMax.FacePosition(Game.Player.Character.Position);
         }
 
-        public static void ChangeWeather(UIMenuListItem weatherList, List<dynamic> weathers)
-        {
-            World.TransitionToWeather(weathers[weatherList.Index], 0f);
-        }
-
         public static void SpawnVehicle(UIMenuListItem vehicleTypeList, List<dynamic> typeList)
         {
 
