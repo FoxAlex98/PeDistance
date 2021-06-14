@@ -82,14 +82,14 @@
     <Compile Include="UtilsFunctions.cs" />
     <Compile Include="CollectingSteps\CollectingStep.cs" />
     <Compile Include="Globals.cs" />
-    <Compile Include="MenuHelper.cs" />
+    <Compile Include="Menu\MenuHelper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Managers\DataMananger.cs" />
     <Compile Include="Managers\LocationManager.cs" />
     <Compile Include="Managers\ScreenShotManager.cs" />
-    <Compile Include="MenuItem.cs" />
-    <Compile Include="Menu.cs" />
+    <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="Menu\Menu.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Models\ScreenShot.cs" />
     <Compile Include="Models\Data.cs" />
