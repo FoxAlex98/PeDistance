@@ -1,14 +1,13 @@
 ﻿using GTA;
 using GTA.Math;
 using GTA.UI;
-using GtaVModPeDistance.Menu;
-using GtaVModPeDistance.Menu.Impl;
 using NativeUI;
 using System;
+using GtaVModPeDistance.Menus.Impl;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace GtaVModPeDistance.Menu
+namespace GtaVModPeDistance.Menus
 {
     class MenuHelper
     {

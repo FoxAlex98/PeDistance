@@ -1,5 +1,6 @@
 ﻿using GTA;
 using GTA.UI;
+using GtaVModPeDistance.CollectingSteps.ConcreteSteps;
 using GtaVModPeDistance.File;
 
 namespace GtaVModPeDistance.CollectingSteps

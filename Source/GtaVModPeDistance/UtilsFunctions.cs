@@ -3,6 +3,8 @@ using GTA.Math;
 using GTA.Native;
 using GTA.UI;
 using GtaVModPeDistance.CollectingSteps;
+using GtaVModPeDistance.CollectingSteps.ConcreteSteps;
+using GtaVModPeDistance.File;
 using GtaVModPeDistance.Models;
 using NativeUI;
 using System;

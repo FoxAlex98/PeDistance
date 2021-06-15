@@ -1,7 +1,7 @@
 ﻿using NativeUI;
 using System.Collections.Generic;
 
-namespace GtaVModPeDistance.Menu
+namespace GtaVModPeDistance.Menus
 {
     public class Menu
     {

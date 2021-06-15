@@ -1,6 +1,6 @@
 ﻿using NativeUI;
 
-namespace GtaVModPeDistance.Menu
+namespace GtaVModPeDistance.Menus
 {
     public delegate void ActionToDo();
     public class MenuItem

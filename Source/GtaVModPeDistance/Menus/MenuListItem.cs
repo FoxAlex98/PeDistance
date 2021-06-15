@@ -1,11 +1,7 @@
 ﻿using NativeUI;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GtaVModPeDistance.Menu
+namespace GtaVModPeDistance.Menus
 {
     public abstract class MenuListItem : MenuItem
     {

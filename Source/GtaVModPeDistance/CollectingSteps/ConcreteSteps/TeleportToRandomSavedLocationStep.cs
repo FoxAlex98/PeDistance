@@ -1,6 +1,6 @@
-﻿using GtaVModPeDistance.CollectingSteps.ConcreteSteps;
+﻿using GtaVModPeDistance.File;
 
-namespace GtaVModPeDistance.CollectingSteps
+namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
     class TeleportToRandomSavedLocationStep : CollectingStep
     {

@@ -1,11 +1,10 @@
 using GTA;
 using GTA.UI;
 using GtaVModPeDistance.CollectingSteps;
-using GtaVModPeDistance.Menu;
+using GtaVModPeDistance.Menus;
 using NativeUI;
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 
 namespace GtaVModPeDistance
 {
@@ -16,7 +15,7 @@ namespace GtaVModPeDistance
         string Version = "1.0";
 
         MenuPool modMenuPool;
-        Menu.Menu mainMenu;
+        Menu mainMenu;
         MenuHelper menuHelper;
 
         public Main()
@@ -66,9 +65,9 @@ namespace GtaVModPeDistance
                     UtilsFunctions.PrintDistancePoints(Game.Player.Character.LastWeaponImpactPosition);
         }
 
-        private void onKeyDown(object sender, KeyEventArgs e)
+        private void onKeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.F5)
+            if(e.KeyCode == System.Windows.Forms.Keys.F5)
                 mainMenu.ToggleMenu();
         }
 
@@ -77,20 +76,20 @@ namespace GtaVModPeDistance
             modMenuPool = new MenuPool();
 
             // Main menu
-            List<Menu.MenuItem> mainMenuItem = new List<Menu.MenuItem>();
-            mainMenuItem.Add(new Menu.MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
-            mainMenuItem.Add(new Menu.MenuItem("Stop Collecting Data", CollectingUtils.WannaStopCollectingData));
-            mainMenuItem.Add(new Menu.MenuItem("Clear Data", CollectingUtils.ClearCollectedData));
-            mainMenuItem.Add(new Menu.MenuItem("Reset", UtilsFunctions.Reset));
+            List<MenuItem> mainMenuItem = new List<MenuItem>();
+            mainMenuItem.Add(new Menus.MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
+            mainMenuItem.Add(new MenuItem("Stop Collecting Data", CollectingUtils.WannaStopCollectingData));
+            mainMenuItem.Add(new MenuItem("Clear Data", CollectingUtils.ClearCollectedData));
+            mainMenuItem.Add(new MenuItem("Reset", UtilsFunctions.Reset));
 
-            mainMenu = new Menu.Menu("PeDistance Menu", "SELECT AN OPTION", mainMenuItem);
+            mainMenu = new Menu("PeDistance Menu", "SELECT AN OPTION", mainMenuItem);
             modMenuPool.Add(mainMenu.ModMenu);
 
             UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Utils Menu");
-            new Menu.Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
+            new Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
 
             UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Settings Menu", "Show up a menu to let you set your own preferred settings.");
-            new Menu.Menu(uiMlMenu, menuHelper.GetConfigMenu());
+            new Menu(uiMlMenu, menuHelper.GetConfigMenu());
             uiMlMenu.OnMenuOpen += OnSettingsMenuOpen;
             uiMlMenu.OnMenuClose += OnSettingsMenuClose;
         }
