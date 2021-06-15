@@ -12,16 +12,24 @@ namespace GtaVModPeDistance.Menus
     class MenuHelper
     {
         // Utils
-        UIMenuListItem planeList, helicopterList, motorbikeList, boatList, weatherList;
+        UIMenuListItem planeList, helicopterList, motorbikeList, boatList;
         List<dynamic> listOfPlanes, listOfHelicopter, listOfMotorbike, listOfBoat;
         public UIMenuCheckboxItem DebugMode;
 
         // Config
-        UIMenuListItem maxCollectedDataList, imageFormatList;
-        UIMenuListItem cameraFixedHeightList, cameraFovList, cameraAngleList, teleportingDelayList, renderingDelayList, pedSpawningDelayList, collectingDataDelayList, clearCollectingDataDelayList;
-        List<dynamic> listOfMaxCollectedData, listOfCameraFixedHeight, listOfCameraFov, listOfCameraAngle;
-        List<dynamic> listOfTeleportingDelay, listOfRenderingDelay, listOfPedSpawningDelay, listOfCollectingDataDelay, listOfClearCollectingDataDelay, listOfImageFormat;
         UIMenuCheckboxItem saveScreenShotLocally, printBox;
+
+        //Impl
+        CameraFixedHeightListItem cameraFixedHeightListItem = new CameraFixedHeightListItem();
+        CameraFovListItem cameraFovListItem = new CameraFovListItem();
+        ImageFormatListItem imageFormatListItem = new ImageFormatListItem();
+        MaxCollectedDataListItem maxCollectedDataListItem = new MaxCollectedDataListItem();
+        CameraAngleListItem cameraAngleListItem = new CameraAngleListItem();
+        TeleportingDelayListItem teleportingDelayListItem = new TeleportingDelayListItem();
+        RenderingDelayListItem renderingDelayListItem = new RenderingDelayListItem();
+        PedSpawningDelayListItem pedSpawningDelayListItem = new PedSpawningDelayListItem();
+        CollectingDataDelayListItem collectingDataDelayListItem = new CollectingDataDelayListItem();
+        ClearCollectingDataDelayListItem clearCollectingDataDelayListItem = new ClearCollectingDataDelayListItem();
 
         public MenuHelper()
         {
@@ -50,8 +58,6 @@ namespace GtaVModPeDistance.Menus
                 else if (tempModel.IsBoat) listOfBoat.Add(allVehiclesHash[i]);
             }
 
-            MenuListItem weatherListItem = new WeatherListItem();
-
             //TODO: find index problem
             planeList = new UIMenuListItem("Planes: ", listOfPlanes, 1);
             helicopterList = new UIMenuListItem("Helicopters: ", listOfHelicopter, 1);
@@ -74,7 +80,7 @@ namespace GtaVModPeDistance.Menus
             utilsList.Add(new MenuItem(helicopterList, () => { UtilsFunctions.SpawnVehicle(helicopterList, listOfHelicopter); }));
             utilsList.Add(new MenuItem(motorbikeList, () => { UtilsFunctions.SpawnVehicle(motorbikeList, listOfMotorbike); }));
             utilsList.Add(new MenuItem(boatList, () => { UtilsFunctions.SpawnVehicle(boatList, listOfBoat); }));
-            utilsList.Add(weatherListItem);
+            utilsList.Add(new WeatherListItem());
 
             return utilsList;
         }
@@ -93,119 +99,43 @@ namespace GtaVModPeDistance.Menus
         public List<MenuItem> GetConfigMenu()
         {
             // Config menu
-            listOfMaxCollectedData = new List<dynamic>();
-            listOfCameraFixedHeight = new List<dynamic>();
-            listOfTeleportingDelay = new List<dynamic>();
-            listOfRenderingDelay = new List<dynamic>();
-            listOfPedSpawningDelay = new List<dynamic>();
-            listOfCollectingDataDelay = new List<dynamic>();
-            listOfClearCollectingDataDelay = new List<dynamic>();
             saveScreenShotLocally = new UIMenuCheckboxItem("Save ScreenShot Locally", true);
             printBox = new UIMenuCheckboxItem("Print Box", true);
-            listOfImageFormat = new List<dynamic>();
-            listOfCameraFov = new List<dynamic>();
-            listOfCameraAngle = new List<dynamic>();
-
-            for (int i = 0; i <= 100; i++)
-            {
-                listOfTeleportingDelay.Add(i);
-                listOfRenderingDelay.Add(i);
-                listOfPedSpawningDelay.Add(i);
-                listOfCollectingDataDelay.Add(i);
-                listOfClearCollectingDataDelay.Add(i);
-            }
-
-            for(int i = -90; i <= 90; i++)
-            {
-                listOfCameraAngle.Add(i);
-            }
-
-            for(int i = 20; i <= 90; i += 5)
-            {
-                listOfCameraFov.Add(i);
-            }
-
-            listOfMaxCollectedData.Add(5);
-            for (int i = 30; i <= Settings.MaxCollectedSelectionable; i += 30)
-            {
-                listOfMaxCollectedData.Add(i);
-            }
-
-            for (float i = 0; i <= 15; i += 0.1f)
-            {
-                listOfCameraFixedHeight.Add((float) Math.Round(i, 1));
-            }
-
-            listOfImageFormat.Add("Jpeg");
-            listOfImageFormat.Add("Png");
-
-            maxCollectedDataList = new UIMenuListItem("Max Collected Data: ", listOfMaxCollectedData, listOfMaxCollectedData.IndexOf(Settings.MaxCollectedData));
-            cameraFixedHeightList = new UIMenuListItem("Camera Fixed Height (m): ", listOfCameraFixedHeight, listOfCameraFixedHeight.IndexOf(Settings.CameraFixedHeight));
-            cameraFovList = new UIMenuListItem("Camera Fov: ", listOfCameraFov, listOfCameraFov.IndexOf(Settings.CameraFov));
-            cameraAngleList = new UIMenuListItem("Camera Angle: ", listOfCameraAngle, listOfCameraAngle.IndexOf(Settings.CameraAngle));
-            teleportingDelayList = new UIMenuListItem("Teleporting Delay (s): ", listOfTeleportingDelay, listOfTeleportingDelay.IndexOf(Settings.TeleportingDelay));
-            renderingDelayList = new UIMenuListItem("Rendering Delay (s): ", listOfRenderingDelay, listOfRenderingDelay.IndexOf(Settings.RenderingDelay));
-            pedSpawningDelayList = new UIMenuListItem("Ped Spawning Delay (s): ", listOfPedSpawningDelay, listOfPedSpawningDelay.IndexOf(Settings.PedSpawningDelay));
-            collectingDataDelayList = new UIMenuListItem("Collecting Data Delay (s): ", listOfCollectingDataDelay, listOfCollectingDataDelay.IndexOf(Settings.CollectingDataDelay));
-            clearCollectingDataDelayList = new UIMenuListItem("Clear Collecting Data Delay (s): ", listOfClearCollectingDataDelay, listOfClearCollectingDataDelay.IndexOf(Settings.ClearCollectingDataDelay));
-            imageFormatList = new UIMenuListItem("Image Format: ", listOfImageFormat, listOfImageFormat.IndexOf(Settings.ImageFormat));
-
 
             List<MenuItem> configList = new List<MenuItem>();
-            configList.Add(new MenuItem(maxCollectedDataList));
-            configList.Add(new MenuItem(cameraFixedHeightList));
-            configList.Add(new MenuItem(cameraFovList));
-            configList.Add(new MenuItem(cameraAngleList));
-            configList.Add(new MenuItem(teleportingDelayList));
-            configList.Add(new MenuItem(renderingDelayList));
-            configList.Add(new MenuItem(pedSpawningDelayList));
-            configList.Add(new MenuItem(collectingDataDelayList));
-            configList.Add(new MenuItem(clearCollectingDataDelayList));
+            configList.Add(cameraFovListItem);
+            configList.Add(cameraAngleListItem);
+            configList.Add(cameraFixedHeightListItem);
+            configList.Add(imageFormatListItem);
+            configList.Add(maxCollectedDataListItem);
+            configList.Add(teleportingDelayListItem);
+            configList.Add(renderingDelayListItem);
+            configList.Add(pedSpawningDelayListItem);
+            configList.Add(collectingDataDelayListItem);
+            configList.Add(clearCollectingDataDelayListItem);
+
+            //Checkbox
             configList.Add(new MenuItem(saveScreenShotLocally));
             configList.Add(new MenuItem(printBox));
-            configList.Add(new MenuItem(imageFormatList));
-
-            cameraFovList.OnListChanged += CameraFovList_OnListChanged;
-            cameraAngleList.OnListChanged += CameraAngleList_OnListChanged;
-            cameraFixedHeightList.OnListChanged += CameraFixedHeightList_OnListChanged;
-            
 
             return configList;
         }
 
-        private void CameraAngleList_OnListChanged(UIMenuListItem sender, int newIndex)
-        {
-            Vector3 cameraRot = World.RenderingCamera.Rotation;
-            World.RenderingCamera.Rotation = new Vector3(listOfCameraAngle[newIndex], cameraRot.Y, cameraRot.Z);
-        }
-
-        private void CameraFixedHeightList_OnListChanged(UIMenuListItem sender, int newIndex)
-        {
-            float Z = (Game.Player.Character.Position.Z - 1) + listOfCameraFixedHeight[newIndex];
-            Vector3 cameraPos = World.RenderingCamera.Position;
-            World.RenderingCamera.Position = new Vector3(cameraPos.X, cameraPos.Y, Z);
-        }
-
-        private void CameraFovList_OnListChanged(UIMenuListItem sender, int newIndex)
-        {
-            World.RenderingCamera.FieldOfView = listOfCameraFov[newIndex];
-            UtilsFunctions.SpawnSettingPeds();
-        }
-
         public void SaveSettings()
         {
-            Settings.MaxCollectedData = listOfMaxCollectedData[maxCollectedDataList.Index];
-            Settings.CameraFixedHeight = listOfCameraFixedHeight[cameraFixedHeightList.Index];
-            Settings.CameraFov = listOfCameraFov[cameraFovList.Index];
-            Settings.CameraAngle = listOfCameraAngle[cameraAngleList.Index];
-            Settings.TeleportingDelay = listOfTeleportingDelay[teleportingDelayList.Index];
-            Settings.RenderingDelay = listOfRenderingDelay[renderingDelayList.Index];
-            Settings.PedSpawningDelay = listOfPedSpawningDelay[pedSpawningDelayList.Index];
-            Settings.CollectingDataDelay = listOfCollectingDataDelay[collectingDataDelayList.Index];
-            Settings.ClearCollectingDataDelay = listOfClearCollectingDataDelay[clearCollectingDataDelayList.Index];
+            maxCollectedDataListItem.Save();
+            cameraFovListItem.Save();
+            cameraFixedHeightListItem.Save();
+            imageFormatListItem.Save();
+            cameraAngleListItem.Save();
+            teleportingDelayListItem.Save();
+            renderingDelayListItem.Save();
+            pedSpawningDelayListItem.Save();
+            collectingDataDelayListItem.Save();
+            clearCollectingDataDelayListItem.Save();
+
             Settings.SaveScreenShotLocally = saveScreenShotLocally.Checked;
             Settings.PrintBox = printBox.Checked;
-            Settings.ImageFormat = listOfImageFormat[imageFormatList.Index];
             Settings.SaveSettings();
             Notification.Show("Settings saved");
         }

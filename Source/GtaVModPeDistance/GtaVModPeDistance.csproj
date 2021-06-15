@@ -76,6 +76,16 @@
     <Compile Include="CollectingSteps\ConcreteSteps\FinalStep.cs" />
     <Compile Include="CollectingSteps\ConcreteSteps\SpawnPedStep.cs" />
     <Compile Include="CollectingSteps\ConcreteSteps\TeleportToRandomSavedLocationStep.cs" />
+    <Compile Include="Menus\Impl\CameraFixedHeightListItem.cs" />
+    <Compile Include="Menus\Impl\CameraAngleListItem.cs" />
+    <Compile Include="Menus\Impl\ClearCollectingDataDelayListItem.cs" />
+    <Compile Include="Menus\Impl\RenderingDelayListItem.cs" />
+    <Compile Include="Menus\Impl\CollectingDataDelayListItem.cs" />
+    <Compile Include="Menus\Impl\PedSpawningDelayListItem.cs" />
+    <Compile Include="Menus\Impl\TeleportingDelayList.cs" />
+    <Compile Include="Menus\Impl\ImageFormatListItem.cs" />
+    <Compile Include="Menus\Impl\MaxCollectedDataListItem.cs" />
+    <Compile Include="Menus\Impl\CameraFovListItem.cs" />
     <Compile Include="Menus\Impl\WeatherListItem.cs" />
     <Compile Include="Menus\MenuListItem.cs" />
     <Compile Include="Menus\MenuSettingItem.cs" />

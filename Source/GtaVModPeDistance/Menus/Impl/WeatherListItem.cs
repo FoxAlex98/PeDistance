@@ -1,4 +1,5 @@
 ﻿using GTA;
+using NativeUI;
 using System;
 using System.Collections.Generic;
 
@@ -6,7 +7,6 @@ namespace GtaVModPeDistance.Menus.Impl
 {
     class WeatherListItem : MenuListItem
     {
-
         public WeatherListItem(): base("Weather: ")
         {
 
@@ -28,11 +28,6 @@ namespace GtaVModPeDistance.Menus.Impl
             World.TransitionToWeather(GetCurrentListItem(), 0f);
         }
 
-        public override void OnListChanged()
-        {
-            throw new NotImplementedException();
-        }
-
-
+        public override void OnListChanged(UIMenuListItem sender, int newIndex){}
     }
 }

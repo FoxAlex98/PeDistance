@@ -1,8 +1,8 @@
 ﻿namespace GtaVModPeDistance.Menus
 {
-    public abstract class MenuSettingItem
+    public interface MenuSettingItem
     {
-        protected Settings.SettingToSave settingToSave = Settings.SettingToSave.NONE;
-        public abstract void Save();
+        void Load();
+        void Save();
     }
 }

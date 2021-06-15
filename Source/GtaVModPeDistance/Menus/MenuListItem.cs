@@ -10,6 +10,7 @@ namespace GtaVModPeDistance.Menus
         public MenuListItem(string name, int index = 1)
         {
             Item = new UIMenuListItem(name, GetList(), index);
+            ((UIMenuListItem) Item).OnListChanged += OnListChanged;
             action = () => OnClick();
         }
 
@@ -27,7 +28,7 @@ namespace GtaVModPeDistance.Menus
 
         protected abstract List<dynamic> InitList();
 
-        public abstract void OnListChanged();
+        public abstract void OnListChanged(UIMenuListItem sender, int newIndex);
 
         public abstract void OnClick();
     }
