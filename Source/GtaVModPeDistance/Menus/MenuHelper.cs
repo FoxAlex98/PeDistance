@@ -12,8 +12,6 @@ namespace GtaVModPeDistance.Menus
     class MenuHelper
     {
         // Utils
-        UIMenuListItem planeList, helicopterList, motorbikeList, boatList;
-        List<dynamic> listOfPlanes, listOfHelicopter, listOfMotorbike, listOfBoat;
         public UIMenuCheckboxItem DebugMode;
 
         // Config
@@ -41,29 +39,6 @@ namespace GtaVModPeDistance.Menus
             //utils menu
             List<MenuItem> utilsList = new List<MenuItem>();
 
-            VehicleHash[] allVehiclesHash = (VehicleHash[])Enum.GetValues(typeof(VehicleHash));
-
-            listOfPlanes = new List<dynamic>();
-            listOfHelicopter = new List<dynamic>();
-            listOfMotorbike = new List<dynamic>();
-            listOfBoat = new List<dynamic>();
-
-            for (int i = 0; i < allVehiclesHash.Length; i++)
-            {
-                Model tempModel = new Model(allVehiclesHash[i]);
-
-                if (tempModel.IsPlane) listOfPlanes.Add(allVehiclesHash[i]);
-                else if (tempModel.IsHelicopter) listOfHelicopter.Add(allVehiclesHash[i]);
-                else if (tempModel.IsBike) listOfMotorbike.Add(allVehiclesHash[i]);
-                else if (tempModel.IsBoat) listOfBoat.Add(allVehiclesHash[i]);
-            }
-
-            //TODO: find index problem
-            planeList = new UIMenuListItem("Planes: ", listOfPlanes, 1);
-            helicopterList = new UIMenuListItem("Helicopters: ", listOfHelicopter, 1);
-            motorbikeList = new UIMenuListItem("Motorbikes: ", listOfMotorbike, 1);
-            boatList = new UIMenuListItem("Boats: ", listOfBoat, 1);
-
             DebugMode.CheckboxEvent += UtilsFunctions.ToggleDebugMode;
             utilsList.Add(new MenuItem(DebugMode));
             if (DebugMode.Checked)
@@ -76,10 +51,13 @@ namespace GtaVModPeDistance.Menus
             utilsList.Add(new MenuItem("Set Time Midnight", () => UtilsFunctions.SetTime(0, 0, 0)));
             utilsList.Add(new MenuItem("Set Time Afternoon", () => UtilsFunctions.SetTime(17, 0, 0)));
             utilsList.Add(new MenuItem("Spawn Random Point", UtilsFunctions.SpawnAtRandomSavedLocation));
-            utilsList.Add(new MenuItem(planeList, () => { UtilsFunctions.SpawnVehicle(planeList, listOfPlanes); }));
-            utilsList.Add(new MenuItem(helicopterList, () => { UtilsFunctions.SpawnVehicle(helicopterList, listOfHelicopter); }));
-            utilsList.Add(new MenuItem(motorbikeList, () => { UtilsFunctions.SpawnVehicle(motorbikeList, listOfMotorbike); }));
-            utilsList.Add(new MenuItem(boatList, () => { UtilsFunctions.SpawnVehicle(boatList, listOfBoat); }));
+            
+            utilsList.Add(new VehicleListItem("Car", Globals.VehicleType.CARS));
+            utilsList.Add(new VehicleListItem("Motorbike", Globals.VehicleType.MOTORBIKES));
+            utilsList.Add(new VehicleListItem("Helicopter", Globals.VehicleType.HELICOPTERS));
+            utilsList.Add(new VehicleListItem("Plane", Globals.VehicleType.PLANES));
+            utilsList.Add(new VehicleListItem("Boat", Globals.VehicleType.BOATS));
+            
             utilsList.Add(new WeatherListItem());
 
             return utilsList;

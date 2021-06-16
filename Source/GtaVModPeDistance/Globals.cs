@@ -16,5 +16,15 @@ namespace GtaVModPeDistance
         {
             Function.Call(Hash.DISPLAY_RADAR, false);
         }
+
+        public enum VehicleType
+        {
+            CARS,
+            BOATS,
+            MOTORBIKES,
+            HELICOPTERS,
+            PLANES,
+        }
+
     }
 }

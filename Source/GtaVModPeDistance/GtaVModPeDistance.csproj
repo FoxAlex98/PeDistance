@@ -86,6 +86,7 @@
     <Compile Include="Menus\Impl\ImageFormatListItem.cs" />
     <Compile Include="Menus\Impl\MaxCollectedDataListItem.cs" />
     <Compile Include="Menus\Impl\CameraFovListItem.cs" />
+    <Compile Include="Menus\Impl\VehicleListItem.cs" />
     <Compile Include="Menus\Impl\WeatherListItem.cs" />
     <Compile Include="Menus\MenuListItem.cs" />
     <Compile Include="Menus\MenuSettingItem.cs" />

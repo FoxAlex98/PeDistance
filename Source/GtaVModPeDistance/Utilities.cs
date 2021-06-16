@@ -159,5 +159,19 @@ namespace GtaVModPeDistance
             ped.Heading = Function.Call<float>(Hash.GET_HEADING_FROM_VECTOR_2D, pos.X - ped.Position.X, pos.Y - ped.Position.Y); 
         }
 
+        public static bool IsVehicleType(this VehicleHash vehicleHash, Globals.VehicleType vehicleType)
+        {
+            Model model = new Model(vehicleHash);
+            switch (vehicleType)
+            {
+                case Globals.VehicleType.CARS: return model.IsCar ? true : false;
+                case Globals.VehicleType.BOATS: return model.IsBoat ? true : false;
+                case Globals.VehicleType.MOTORBIKES: return model.IsBike ? true : false;
+                case Globals.VehicleType.HELICOPTERS: return model.IsHelicopter ? true : false;
+                case Globals.VehicleType.PLANES: return model.IsPlane ? true : false;
+            }
+            return false;
+        }
+
     }
 }

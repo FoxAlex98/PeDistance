@@ -14,6 +14,11 @@ namespace GtaVModPeDistance.Menus
             action = () => OnClick();
         }
 
+        public MenuListItem()
+        {
+
+        }
+
         public List<dynamic> GetList()
         {
             if (list == null)

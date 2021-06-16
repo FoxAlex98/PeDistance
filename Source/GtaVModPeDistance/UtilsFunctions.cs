@@ -30,29 +30,6 @@ namespace GtaVModPeDistance
 
         #region Utils
 
-        //public static void DrawLine(Ped ped)
-        //{
-        //    Vector3 startLine = ped.Position;
-        //    Vector3 endLine = new Vector3(ped.Position.X + 10, ped.Position.Y, ped.Position.Z);
-        //    World.DrawLine(startLine, endLine, Color.Green);
-        //    DrawBox(ped);
-        //}
-
-        //public static void DrawBox(Ped ped)
-        //{
-        //    if (ped == null) return;
-
-        //    Ped2DBoundingBox ped2DBoundingBox = CoordinatesUtils.GetPedBoundingBoxInScreen(ped);
-        //    Vector3 start = new Vector3(ped2DBoundingBox.PedTopLeftX, ped.Position.Y ,ped2DBoundingBox.PedTopLeftY);
-        //    Vector3 end = new Vector3(ped2DBoundingBox.PedBottomRightX, ped.Position.Y ,ped2DBoundingBox.PedBottomRightY);
-        //    DrawBox(start, end, Color.Green);
-        //}
-
-        private static void DrawBox(Vector3 start, Vector3 end, Color color)
-        {            
-            Function.Call(Hash.DRAW_BOX, start.X, start.Y, start.Z, end.X, end.Y, end.Z, color.R, color.G, color.B, color.A);
-        }
-
         public static void SpawnOnePed()
         {
             float y = Utilities.GetYByFov();           
@@ -78,12 +55,10 @@ namespace GtaVModPeDistance
             pedMax.FacePosition(Game.Player.Character.Position);
         }
 
-        public static void SpawnVehicle(UIMenuListItem vehicleTypeList, List<dynamic> typeList)
+        public static void SpawnVehicle(VehicleHash vehicleHash)
         {
-
             if (Globals.Vehicle != null) Globals.Vehicle.Delete();
             Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 10, 0));
-            VehicleHash vehicleHash = typeList[vehicleTypeList.Index];
             Globals.Vehicle = World.CreateVehicle(new Model(vehicleHash), pos);
             Globals.Vehicle.PlaceOnGround();
             Globals.Vehicle.IsInvincible = true;
