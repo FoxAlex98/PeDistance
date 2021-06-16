@@ -1,9 +1,7 @@
 ﻿using GTA;
-using GTA.Math;
 using GTA.UI;
-using NativeUI;
-using System;
 using GtaVModPeDistance.Menus.Impl;
+using NativeUI;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -29,6 +27,7 @@ namespace GtaVModPeDistance.Menus
         CollectingDataDelayListItem collectingDataDelayListItem = new CollectingDataDelayListItem();
         ClearCollectingDataDelayListItem clearCollectingDataDelayListItem = new ClearCollectingDataDelayListItem();
 
+
         public MenuHelper()
         {
             DebugMode = new UIMenuCheckboxItem("Debug Mode", false);
@@ -47,10 +46,8 @@ namespace GtaVModPeDistance.Menus
             utilsList.Add(new MenuItem("Delete All Near Vehicle", UtilsFunctions.DeleteAllNearVehicles));
             utilsList.Add(new MenuItem("Ignored by everyone", () => { Game.Player.IgnoredByEveryone = true; }));
             utilsList.Add(new MenuItem("Reset Wanted Level", UtilsFunctions.ResetWantedLevel));
-            utilsList.Add(new MenuItem("Set Time Midday", () => UtilsFunctions.SetTime(12, 0, 0)));
-            utilsList.Add(new MenuItem("Set Time Midnight", () => UtilsFunctions.SetTime(0, 0, 0)));
-            utilsList.Add(new MenuItem("Set Time Afternoon", () => UtilsFunctions.SetTime(17, 0, 0)));
             utilsList.Add(new MenuItem("Spawn Random Point", UtilsFunctions.SpawnAtRandomSavedLocation));
+            utilsList.Add(new DayTimeListItem());
             
             utilsList.Add(new VehicleListItem("Car", Globals.VehicleType.CARS));
             utilsList.Add(new VehicleListItem("Motorbike", Globals.VehicleType.MOTORBIKES));
@@ -92,8 +89,7 @@ namespace GtaVModPeDistance.Menus
             configList.Add(collectingDataDelayListItem);
             configList.Add(clearCollectingDataDelayListItem);
 
-            //Checkbox
-            configList.Add(new MenuItem(saveScreenShotLocally));
+            configList.Add(new MenuItem(saveScreenShotLocally));//Checkbox
             configList.Add(new MenuItem(printBox));
 
             return configList;

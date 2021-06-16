@@ -9,8 +9,13 @@ namespace GtaVModPeDistance.Menus
 
         public MenuListItem(string name, int index = 1)
         {
+            InitMenuListItem(name, index);
+        }
+
+        protected void InitMenuListItem(string name, int index)
+        {
             Item = new UIMenuListItem(name, GetList(), index);
-            ((UIMenuListItem) Item).OnListChanged += OnListChanged;
+            ((UIMenuListItem)Item).OnListChanged += OnListChanged;
             action = () => OnClick();
         }
 

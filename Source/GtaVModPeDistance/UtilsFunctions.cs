@@ -73,7 +73,7 @@ namespace GtaVModPeDistance
             locationManager.SaveCoordinates(new SpawnPoint(pos.X, pos.Y, pos.Z, rot.X, rot.Y, rot.Z, streetName, zoneLocalizedName));
         }
 
-        public static void SetTime(int h, int m, int s)
+        public static void SetTime(int h, int m = 0, int s = 0)
         {
             World.CurrentTimeOfDay = new TimeSpan(h, m, s);
             Notification.Show("Time set to: " + h + ":" + m + ":" + s);

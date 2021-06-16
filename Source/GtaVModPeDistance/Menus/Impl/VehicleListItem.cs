@@ -11,9 +11,7 @@ namespace GtaVModPeDistance.Menus.Impl
         public VehicleListItem(string name, Globals.VehicleType vehicleType)
         {
             VehicleType = vehicleType;
-            Item = new UIMenuListItem(name, GetList(), 1);
-            ((UIMenuListItem)Item).OnListChanged += OnListChanged;
-            action = () => OnClick();
+            InitMenuListItem(name, 1);
         }
 
         protected override List<dynamic> InitList()
@@ -31,8 +29,7 @@ namespace GtaVModPeDistance.Menus.Impl
 
         public override void OnClick()
         {
-            int index = ((UIMenuListItem)Item).Index;
-            int hash = (Model)GetList()[index];
+            int hash = (Model) GetCurrentListItem();
             VehicleHash vehicleHash = (VehicleHash) hash;
             UtilsFunctions.SpawnVehicle(vehicleHash);
         }
