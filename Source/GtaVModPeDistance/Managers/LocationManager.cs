@@ -19,6 +19,7 @@ namespace GtaVModPeDistance.File
         public List<SpawnPoint> allSpawnPoints;
         public List<SpawnPoint> saveSpawnPoints;
         CsvConfiguration config;
+        int index = -1;
 
         private static LocationManager _instance;
         public static LocationManager GetInstance() {
@@ -110,6 +111,20 @@ namespace GtaVModPeDistance.File
             return allSpawnPoints[randomIndex];
         }
 
+        public SpawnPoint GetNextPoint()
+        {
+            index++;
+            Notification.Show((index % allSpawnPoints.Count).ToString());
+            return allSpawnPoints[index % allSpawnPoints.Count];
+        }
+        public SpawnPoint GetPrevPoint()
+        {
+            index--;
+            if (index < 0) index = allSpawnPoints.Count - 1;
+            Notification.Show((index % allSpawnPoints.Count).ToString());
+            return allSpawnPoints[index % allSpawnPoints.Count];
+        }
+        
         public void CleanFile(bool createNew = false)
         {
             FileInfo file = new FileInfo(filePath);

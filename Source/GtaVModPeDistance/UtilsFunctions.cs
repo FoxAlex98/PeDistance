@@ -142,6 +142,18 @@ namespace GtaVModPeDistance
             SetCameraPosition(spawnPoint);
         }
 
+        public static void SpawnNextSavedLocation()
+        {
+            SpawnPoint spawnPoint = locationManager.GetNextPoint();
+            SetCameraPosition(spawnPoint);
+        }
+
+        public static void SpawnPrevSavedLocation()
+        {
+            SpawnPoint spawnPoint = locationManager.GetPrevPoint();
+            SetCameraPosition(spawnPoint);
+        }
+
         public static void ToggleNearbyEntityBoundingBox() => ActiveNearbyEntitiesBoundingBox = !ActiveNearbyEntitiesBoundingBox;
         #endregion
 
