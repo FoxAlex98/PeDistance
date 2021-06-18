@@ -1,6 +1,5 @@
 ﻿using GTA;
 using GTA.Math;
-using GTA.Native;
 using GTA.UI;
 using GtaVModPeDistance.CollectingSteps;
 using GtaVModPeDistance.CollectingSteps.ConcreteSteps;
@@ -9,7 +8,6 @@ using GtaVModPeDistance.Models;
 using NativeUI;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace GtaVModPeDistance
 {
@@ -27,6 +25,8 @@ namespace GtaVModPeDistance
         public static bool MeterMode = false;
 
         public static bool SetupMenu = false;
+
+        static Random rand = new Random();
 
         #region Utils
 
@@ -73,10 +73,29 @@ namespace GtaVModPeDistance
             locationManager.SaveCoordinates(new SpawnPoint(pos.X, pos.Y, pos.Z, rot.X, rot.Y, rot.Z, streetName, zoneLocalizedName));
         }
 
-        public static void SetTime(int h, int m = 0, int s = 0)
+        public static void SetRandomWeather(bool notify = false)
+        {
+            Weather[] allWeather = (Weather[])Enum.GetValues(typeof(Weather));
+            int index = rand.Next(0,allWeather.Length);
+            World.TransitionToWeather(allWeather[index], 0f);
+            if (notify)
+                Notification.Show(allWeather[index].ToString());
+        }
+
+        public static void SetRandomTime(bool notify = false)
+        {
+            int h = rand.Next(0, 24);
+            int m = rand.Next(0, 60);
+            SetTime(h, m, 0, false);
+            if (notify)
+                Notification.Show(h + " " + m);
+        }
+
+        public static void SetTime(int h, int m = 0, int s = 0, bool notify = true)
         {
             World.CurrentTimeOfDay = new TimeSpan(h, m, s);
-            Notification.Show("Time set to: " + h + ":" + m + ":" + s);
+            if(notify)
+                Notification.Show("Time set to: " + h + ":" + m + ":" + s);
         }
 
         public static void TeleportToWaypoint()

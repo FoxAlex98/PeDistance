@@ -13,7 +13,7 @@ namespace GtaVModPeDistance.Menus
         public UIMenuCheckboxItem DebugMode;
 
         // Config
-        UIMenuCheckboxItem saveScreenShotLocally, printBox;
+        UIMenuCheckboxItem saveScreenShotLocally, printBox, randomWeather, randomTime;
 
         //Impl
         CameraFixedHeightListItem cameraFixedHeightListItem = new CameraFixedHeightListItem();
@@ -74,11 +74,13 @@ namespace GtaVModPeDistance.Menus
         public List<MenuItem> GetConfigMenu()
         {
             // Config menu
-            saveScreenShotLocally = new UIMenuCheckboxItem("Save ScreenShot Locally", true);
-            printBox = new UIMenuCheckboxItem("Print Box", true);
+            saveScreenShotLocally = new UIMenuCheckboxItem("Save ScreenShot Locally", Settings.SaveScreenShotLocally);
+            printBox = new UIMenuCheckboxItem("Print Box", Settings.PrintBox);
+            randomWeather = new UIMenuCheckboxItem("Randomize Time", Settings.RandomWeather);
+            randomTime = new UIMenuCheckboxItem("Randomize Weather", Settings.RandomTime);
 
             List<MenuItem> configList = new List<MenuItem>();
-            configList.Add(cameraFovListItem);
+            configList.Add(cameraFovListItem);//MenuListItem
             configList.Add(cameraAngleListItem);
             configList.Add(cameraFixedHeightListItem);
             configList.Add(imageFormatListItem);
@@ -88,9 +90,10 @@ namespace GtaVModPeDistance.Menus
             configList.Add(pedSpawningDelayListItem);
             configList.Add(collectingDataDelayListItem);
             configList.Add(clearCollectingDataDelayListItem);
-
-            configList.Add(new MenuItem(saveScreenShotLocally));//Checkbox
+            configList.Add(new MenuItem(saveScreenShotLocally));//CheckBox
             configList.Add(new MenuItem(printBox));
+            configList.Add(new MenuItem(randomWeather));
+            configList.Add(new MenuItem(randomTime));
 
             return configList;
         }
@@ -110,6 +113,8 @@ namespace GtaVModPeDistance.Menus
 
             Settings.SaveScreenShotLocally = saveScreenShotLocally.Checked;
             Settings.PrintBox = printBox.Checked;
+            Settings.RandomWeather = randomWeather.Checked;
+            Settings.RandomTime = randomTime.Checked;
             Settings.SaveSettings();
             Notification.Show("Settings saved");
         }
