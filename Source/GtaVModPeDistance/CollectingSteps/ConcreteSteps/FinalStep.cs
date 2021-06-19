@@ -11,6 +11,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
                 CollectingUtils.EndingCollectingData();
             if (CollectingState.WannaStop)
                 CollectingUtils.ForceWritingData();
+            UtilsFunctions.SetupMenu = true;
         }
 
         public override int GetDelay()

@@ -24,6 +24,7 @@ namespace GtaVModPeDistance.CollectingSteps
             CollectingState.ActualStep = GetFirstStep();
             Notification.Show("Starting collecting data... Remove menu using ESC");
             CollectingState.StartCollectingData = true;
+            UtilsFunctions.SetupMenu = true;
         }
         public static void EndingCollectingData()
         {
@@ -38,8 +39,6 @@ namespace GtaVModPeDistance.CollectingSteps
 
         public static void WannaStopCollectingData()
         {
-            if (!CollectingState.StartCollectingData) return;
-
             Notification.Show("Stop collecting data...");
             CollectingState.WannaStop = true;
         }
