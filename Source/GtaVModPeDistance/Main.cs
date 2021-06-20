@@ -83,9 +83,6 @@ namespace GtaVModPeDistance
                 mainMenuItem.Add(new MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
                 mainMenuItem.Add(new MenuItem("Reset", UtilsFunctions.Reset));
                 mainMenuItem.Add(new MenuItem("Clear Data", CollectingUtils.ClearCollectedData));
-                mainMenuItem.Add(new MenuItem("Get Next Location", UtilsFunctions.SpawnNextSavedLocation));
-                mainMenuItem.Add(new MenuItem("Get Prev Location", UtilsFunctions.SpawnPrevSavedLocation));
-
             }
             else
             {

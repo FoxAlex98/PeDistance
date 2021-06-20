@@ -66,6 +66,8 @@ namespace GtaVModPeDistance.Menus
             utilsList.Add(new MenuItem(new UIMenuColoredItem("Clear between 2 point", Color.Green, Color.White), () => UtilsFunctions.DistancePoints.Clear()));
             utilsList.Add(new MenuItem(new UIMenuColoredItem("Meter Mode", Color.Green, Color.White), () => UtilsFunctions.ToggleMeterMode()));
             utilsList.Add(new MenuItem(new UIMenuColoredItem("Spawn Ped", Color.Green, Color.White), UtilsFunctions.SpawnOnePed));
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Get Next Location", Color.Green, Color.White), UtilsFunctions.SpawnNextSavedLocation));
+            utilsList.Add(new MenuItem(new UIMenuColoredItem("Get Prev Location", Color.Green, Color.White), UtilsFunctions.SpawnPrevSavedLocation));
             utilsList.Add(new MenuItem(new UIMenuColoredItem("Teleport To Waypoint", Color.Green, Color.White), UtilsFunctions.TeleportToWaypoint));
             utilsList.Add(new MenuItem(new UIMenuColoredItem("Toggle nearby entity box", Color.Green, Color.White), UtilsFunctions.ToggleNearbyEntityBoundingBox));
             utilsList.Add(new MenuItem(new UIMenuColoredItem("Save Point Coordinates", Color.Green, Color.White), UtilsFunctions.SaveCoordinates));
@@ -80,20 +82,20 @@ namespace GtaVModPeDistance.Menus
             randomTime = new UIMenuCheckboxItem("Randomize Weather", Settings.RandomTime);
 
             List<MenuItem> configList = new List<MenuItem>();
-            configList.Add(cameraFovListItem);//MenuListItem
+            configList.Add(maxCollectedDataListItem);//MenuListItem
+            configList.Add(cameraFovListItem);
             configList.Add(cameraAngleListItem);
             configList.Add(cameraFixedHeightListItem);
             configList.Add(imageFormatListItem);
-            configList.Add(maxCollectedDataListItem);
+            configList.Add(new MenuItem(saveScreenShotLocally));//CheckBox
+            configList.Add(new MenuItem(printBox));
+            configList.Add(new MenuItem(randomWeather));
+            configList.Add(new MenuItem(randomTime));
             configList.Add(teleportingDelayListItem);
             configList.Add(renderingDelayListItem);
             configList.Add(pedSpawningDelayListItem);
             configList.Add(collectingDataDelayListItem);
             configList.Add(clearCollectingDataDelayListItem);
-            configList.Add(new MenuItem(saveScreenShotLocally));//CheckBox
-            configList.Add(new MenuItem(printBox));
-            configList.Add(new MenuItem(randomWeather));
-            configList.Add(new MenuItem(randomTime));
 
             return configList;
         }
