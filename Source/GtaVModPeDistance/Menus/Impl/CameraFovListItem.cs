@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using NativeUI;
 using System.Collections.Generic;
 
@@ -27,7 +27,7 @@ namespace GtaVModPeDistance.Menus.Impl
         public override void OnListChanged(UIMenuListItem sender, int newIndex)
         {
             World.RenderingCamera.FieldOfView = (int) sender.Items[newIndex];
-            UtilsFunctions.SpawnSettingPeds();
+            //UtilsFunctions.SpawnSettingPeds(); //TODO: fix
         }
 
         public void Save()
