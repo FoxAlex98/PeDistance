@@ -15,6 +15,7 @@ namespace GtaVModPeDistance.File
         private CsvWriter csvWriter = null;
         private CsvConfiguration config;
         private string filePath;
+        private FileInfo file;
 
         private static DataMananger _instance;
         public static DataMananger GetInstance()
@@ -29,11 +30,17 @@ namespace GtaVModPeDistance.File
             string mainFolder = Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "scripts", Settings.DirectoryName, "data");
             if (!Directory.Exists(mainFolder)) Directory.CreateDirectory(mainFolder);
             filePath = Path.Combine(mainFolder, "Dataset.csv");
+            file = new FileInfo(filePath);
+            SetFileConfig(!file.Exists);
+            InitWriter();
+        }
+
+        private void SetFileConfig(bool hasRecord)
+        {
             config = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
-                HasHeaderRecord = false,
+                HasHeaderRecord = hasRecord,
             };
-            InitWriter();
         }
 
         public void InitWriter()
@@ -72,9 +79,9 @@ namespace GtaVModPeDistance.File
             if(csvWriter != null)
             {
                 FreeResource();
-                FileInfo file = new FileInfo(filePath);
                 if (file.Exists) file.Delete();                
             }
+            SetFileConfig(true);
             InitWriter();
         }
 

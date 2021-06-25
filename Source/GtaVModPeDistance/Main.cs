@@ -77,21 +77,31 @@ namespace GtaVModPeDistance
 
             // Main menu
             List<MenuItem> mainMenuItem = new List<MenuItem>();
-            mainMenuItem.Add(new Menus.MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
-            mainMenuItem.Add(new MenuItem("Stop Collecting Data", CollectingUtils.WannaStopCollectingData));
-            mainMenuItem.Add(new MenuItem("Clear Data", CollectingUtils.ClearCollectedData));
-            mainMenuItem.Add(new MenuItem("Reset", UtilsFunctions.Reset));
+            
+            if (!CollectingState.StartCollectingData)
+            {
+                mainMenuItem.Add(new MenuItem("Start Collecting Data", CollectingUtils.StartCollectingData));
+                mainMenuItem.Add(new MenuItem("Reset", UtilsFunctions.Reset));
+                mainMenuItem.Add(new MenuItem("Clear Data", CollectingUtils.ClearCollectedData));
+            }
+            else
+            {
+                mainMenuItem.Add(new MenuItem("Stop Collecting Data", CollectingUtils.WannaStopCollectingData));
+            }
 
             mainMenu = new Menu("PeDistance Menu", "SELECT AN OPTION", mainMenuItem);
             modMenuPool.Add(mainMenu.ModMenu);
 
-            UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Utils Menu");
-            new Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
+            if (!CollectingState.StartCollectingData)
+            {
+                UIMenu uiUtilsMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Utils Menu");
+                new Menu(uiUtilsMenu, menuHelper.GetUtilsMenu());
 
-            UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Settings Menu", "Show up a menu to let you set your own preferred settings.");
-            new Menu(uiMlMenu, menuHelper.GetConfigMenu());
-            uiMlMenu.OnMenuOpen += OnSettingsMenuOpen;
-            uiMlMenu.OnMenuClose += OnSettingsMenuClose;
+                UIMenu uiMlMenu = modMenuPool.AddSubMenu(mainMenu.ModMenu, "> Settings Menu", "Show up a menu to let you set your own preferred settings.");
+                new Menu(uiMlMenu, menuHelper.GetConfigMenu());
+                uiMlMenu.OnMenuOpen += OnSettingsMenuOpen;
+                uiMlMenu.OnMenuClose += OnSettingsMenuClose;
+            }
         }
 
         private void OnSettingsMenuClose(UIMenu sender)

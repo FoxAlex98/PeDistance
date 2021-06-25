@@ -17,10 +17,12 @@ namespace GtaVModPeDistance
         public static int PedSpawningDelay { get; set; }
         public static int CollectingDataDelay { get; set; }
         public static int ClearCollectingDataDelay { get; set; }
-        public static bool SaveScreenShotLocally { get; set; }
-        public static bool PrintBox { get; set; }
         public static string ImageFormat { get; set; }
         public static string DirectoryName { get; set; }
+        public static bool SaveScreenShotLocally { get; set; }
+        public static bool PrintBox { get; set; }
+        public static bool RandomWeather { get; set; }
+        public static bool RandomTime { get; set; }
 
         public static void LoadSettings()
         {
@@ -59,6 +61,8 @@ CollectingDataDelay=3
 ClearCollectingDataDelay=1
 SaveScreenShotLocally=True
 PrintBox=True
+RandomTime=False
+RandomWeather=False
 ImageFormat=Jpeg
 DirectoryName=MachineLearningProject";
         }
@@ -84,6 +88,8 @@ DirectoryName=MachineLearningProject";
                     else if (key.Equals("ClearCollectingDataDelay")) ClearCollectingDataDelay = int.Parse(value);
                     else if (key.Equals("SaveScreenShotLocally")) SaveScreenShotLocally = bool.Parse(value);
                     else if (key.Equals("PrintBox")) PrintBox = bool.Parse(value);
+                    else if (key.Equals("RandomTime")) RandomTime = bool.Parse(value);
+                    else if (key.Equals("RandomWeather")) RandomWeather = bool.Parse(value);
                     else if (key.Equals("ImageFormat")) ImageFormat = value;
                     else if (key.Equals("DirectoryName")) DirectoryName = value;
                 }                
@@ -106,6 +112,8 @@ DirectoryName=MachineLearningProject";
                 "ClearCollectingDataDelay=" + ClearCollectingDataDelay.ToString().Trim(),
                 "SaveScreenShotLocally=" + SaveScreenShotLocally.ToString().Trim(),
                 "PrintBox=" + PrintBox.ToString().Trim(),
+                "RandomTime=" + RandomTime.ToString().Trim(),
+                "RandomWeather=" + RandomWeather.ToString().Trim(),
                 "ImageFormat=" + ImageFormat.ToString().Trim(),
                 "DirectoryName=" + DirectoryName.ToString().Trim()
             };

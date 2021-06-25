@@ -10,6 +10,11 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
         {
             CollectingState.SpawnPoint = locationManager.GetRandomPoint();
             UtilsFunctions.SetCameraPosition(CollectingState.SpawnPoint);
+            if (Settings.RandomWeather)
+                UtilsFunctions.SetRandomWeather();
+            if (Settings.RandomTime)
+                UtilsFunctions.SetRandomTime();
+
             // Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
         }
 

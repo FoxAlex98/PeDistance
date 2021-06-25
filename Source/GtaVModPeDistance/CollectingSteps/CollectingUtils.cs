@@ -22,8 +22,11 @@ namespace GtaVModPeDistance.CollectingSteps
             CollectingState.CollectedDataCounter = 0;
             CollectingState.Ped = null;
             CollectingState.ActualStep = GetFirstStep();
-            Notification.Show("Starting collecting data... Remove menu using ESC");
+            Notification.Show("Starting collecting data...");
             CollectingState.StartCollectingData = true;
+            if (Settings.RandomTime) CollectingState.InitialTime = World.CurrentTimeOfDay;
+            if (Settings.RandomWeather) CollectingState.InitialWeather = World.Weather;
+            UtilsFunctions.SetupMenu = true;
         }
         public static void EndingCollectingData()
         {
@@ -33,13 +36,13 @@ namespace GtaVModPeDistance.CollectingSteps
             Globals.ShowHud(); //TODO: check bug hud
             World.RenderingCamera = null;
             CollectingState.Ped = null;
+            if (Settings.RandomTime) World.CurrentTimeOfDay = CollectingState.InitialTime;
+            if (Settings.RandomWeather) World.Weather = CollectingState.InitialWeather;
             CollectingState.StartCollectingData = false;
         }
 
         public static void WannaStopCollectingData()
         {
-            if (!CollectingState.StartCollectingData) return;
-
             Notification.Show("Stop collecting data...");
             CollectingState.WannaStop = true;
         }
