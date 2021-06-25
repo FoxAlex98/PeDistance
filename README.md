@@ -1,12 +1,13 @@
 # PeDistance
 
-PeDistance is an automatic dataset generator useful to training Machine Learning or Computer Vision algoritms 
-
+PeDistance is an automatic dataset generator which can be used to train Machine Learning or Computer Vision algoritms 
 
 # Requirement
 
 * PC with Windows Installed and minimum requirement
 * Grand Theft Auto V (Epic or Steam Version)
+
+# How to install
 
 # How to Start
 
@@ -51,9 +52,9 @@ you can set
 <summary>
 Extra Note 
 </summary>
-Relative to your PC Specific, you should set various delays in the settings menu to manage the tenderization of the environment and all other stuff.
-if your pc performances are low you should increment delays 
-if your pc performances are high you should decrement delays 
+Relative to your PC Specific, you should set various delays in the settings menu to manage the renderization of the environment and all other stuff.
+If your pc performances are low you should increment delays 
+On the other hand you should decrement delays 
 </details> 
 
 
@@ -72,6 +73,6 @@ About Developers
 </details>
 
 # Reference
-* ScriptHookV
-* Yolo
+* ScriptHookVDotNet
+* YOLOv5
 * CsvHelper

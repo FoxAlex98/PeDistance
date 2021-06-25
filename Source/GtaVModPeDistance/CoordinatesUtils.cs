@@ -37,12 +37,10 @@ namespace GtaVModPeDistance
             int yMax = 0;
             getBoundingBoxPoints(vertices, ref xMin, ref yMin, ref xMax, ref yMax);
 
-            Vector2 BoundingBoxTopLeft = new Vector2(xMin, yMin);
             Vector2 BoundingBoxTopRight = new Vector2(xMax, yMin);
             Vector2 BoundingBoxBottomLeft = new Vector2(xMin, yMax);
-            Vector2 BoundingBoxBottomRight = new Vector2(xMax, yMax);
 
-            return new Ped2DBoundingBox(BoundingBoxTopLeft, BoundingBoxTopRight, BoundingBoxBottomLeft, BoundingBoxBottomRight);
+            return new Ped2DBoundingBox(BoundingBoxBottomLeft, BoundingBoxTopRight);
         }
 
         private static void getBoundingBoxPoints(Vector2[] vertices, ref int xMin, ref int yMin, ref int xMax, ref int yMax)
@@ -75,7 +73,7 @@ namespace GtaVModPeDistance
             foreach (PedBone pedBone in ped.Bones)
                 max = pedBone.Position.Z > max ? pedBone.Position.Z : max;
             return max - World.GetGroundHeight(ped.Position);*/
-            return 1.80f;
+            return 1.80f; //TODO: fix?
         }
     }
 }
