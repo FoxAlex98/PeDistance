@@ -21,7 +21,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             ScreenShot image = screenShotManager.SaveScreenShot();
 
             Data data = new Data(
-                    World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position),
+                    Math.Round(World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position), 3),
                     box,
                     image.Name,
                     image.b64String,

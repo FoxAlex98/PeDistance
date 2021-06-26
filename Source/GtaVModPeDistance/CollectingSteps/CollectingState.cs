@@ -8,6 +8,7 @@ namespace GtaVModPeDistance.CollectingSteps
     class CollectingState
     {
         public static int CollectedDataCounter { get; set; }
+        public static float PeDistance { get; set; } = default;
         public static Ped Ped { get; set; }
         public static SpawnPoint SpawnPoint { get; set; }
         public static bool StartCollectingData { get; set; } = false;
