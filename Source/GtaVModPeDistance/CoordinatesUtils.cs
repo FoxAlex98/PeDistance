@@ -65,15 +65,5 @@ namespace GtaVModPeDistance
             if (yMin < 0)
                 yMin = 0;
         }
-
-
-        public static float GetPedHeight(Ped ped)
-        {
-            /*float max = ped.Bones[0].Position.Z;
-            foreach (PedBone pedBone in ped.Bones)
-                max = pedBone.Position.Z > max ? pedBone.Position.Z : max;
-            return max - World.GetGroundHeight(ped.Position);*/
-            return 1.80f; //TODO: fix?
-        }
     }
 }
