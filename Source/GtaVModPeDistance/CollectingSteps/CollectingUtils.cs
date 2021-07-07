@@ -36,7 +36,7 @@ namespace GtaVModPeDistance.CollectingSteps
             Notification.Show("Stop collecting data...");
             Game.Player.Character.IsVisible = true;
             Game.Player.Character.Position = CollectingState.InitialPosition;
-            Globals.ShowHud(); //TODO: check bug hud
+            Globals.ShowHud();
             World.RenderingCamera = null;
             CollectingState.Ped = null;
             if (Settings.RandomTime) World.CurrentTimeOfDay = CollectingState.InitialTime;
