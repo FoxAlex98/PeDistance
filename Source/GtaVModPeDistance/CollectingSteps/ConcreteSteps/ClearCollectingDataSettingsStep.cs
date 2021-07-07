@@ -6,7 +6,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
     {
         public override void ExecuteStep()
         {
-            World.RenderingCamera.Delete();
+            UtilsFunctions.SetTime(UtilsFunctions.GetClosestTimeInRange(), 0, 0, false);
             UtilsFunctions.DeleteAllNearPed();
         }
 

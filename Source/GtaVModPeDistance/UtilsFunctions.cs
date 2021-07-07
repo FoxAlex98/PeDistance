@@ -201,5 +201,17 @@ namespace GtaVModPeDistance
             Notification.Show("F5 to open menu");
         }
 
+
+        public static int GetClosestTimeInRange()
+        {
+            int currenTime = World.CurrentTimeOfDay.Hours;
+            if (currenTime > 6 && currenTime < 10) return 8;
+            if (currenTime > 10 && currenTime < 14) return 12;
+            if (currenTime > 14 && currenTime < 18) return 16;
+            if (currenTime > 18 && currenTime < 22) return 20;
+            if (currenTime > 20 && currenTime < 2) return 0;
+            else return 4;
+        }
+
     }
 }
