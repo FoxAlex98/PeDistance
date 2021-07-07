@@ -21,20 +21,15 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             ScreenShot image = screenShotManager.SaveScreenShot();
 
             Data data = new Data(
-                    World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position),
+                    Math.Round(World.GetDistance(CollectingState.Ped.Position, World.RenderingCamera.Position), 3),
                     box,
                     image.Name,
                     image.b64String,
                     World.CurrentTimeOfDay.ToString(),
                     CollectingState.Ped.Rotation.Z,
-                    World.RenderingCamera.Position.Z - World.GetGroundHeight(Game.Player.Character.Position),                    
-                    CoordinatesUtils.GetPedHeight(CollectingState.Ped)
+                    World.RenderingCamera.Position.Z - World.GetGroundHeight(Game.Player.Character.Position)                  
                 );
             dataManager.AddElement(data);
-        }
-        private double GetDistance(Vector3 pedPosition, Vector3 cameraPosition)
-        {
-            return Math.Sqrt(Math.Pow(pedPosition.X - cameraPosition.X, 2) + Math.Pow(pedPosition.Y - cameraPosition.Y, 2) + Math.Pow(pedPosition.Z - cameraPosition.Z, 2));
         }
 
         public override int GetDelay()

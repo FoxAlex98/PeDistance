@@ -1,4 +1,5 @@
 using GTA;
+using GtaVModPeDistance.CollectingSteps;
 using NativeUI;
 using System.Collections.Generic;
 
@@ -33,7 +34,11 @@ namespace GtaVModPeDistance.Menus.Impl
         public void Save()
         {
             int index = ((UIMenuListItem) Item).Index;
-            Settings.CameraFov = (int) GetList()[index];
+            if(Settings.CameraFov != (int)GetList()[index])
+            {
+                Settings.CameraFov = (int) GetList()[index];
+                CollectingState.PeDistance = Utilities.GetYMinByFov();
+            }
         }
 
         public void Load()

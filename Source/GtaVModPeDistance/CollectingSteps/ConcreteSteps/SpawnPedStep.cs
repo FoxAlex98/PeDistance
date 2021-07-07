@@ -7,7 +7,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
     {
         public override void ExecuteStep()
         {
-            float y = Utilities.GetYByFov();
+            float y = GetNextYPosition();
             float x = Utilities.GetPosXByPosY(y);
             CollectingState.Ped = World.CreateRandomPed(World.RenderingCamera.GetOffsetPosition(new Vector3(x, y, 0)));
             CollectingState.Ped.Heading += GetRotationUsingCameraAxis();
@@ -38,6 +38,15 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
         private int GetRandomHeadingAngle()
         {
            return (int) Utilities.NextFloat(0, 359);
+        }
+
+        private float GetNextYPosition()
+        {
+            float yPos = CollectingState.PeDistance;
+            if (yPos > 30f)
+                return CollectingState.PeDistance = Utilities.GetYMinByFov();
+            CollectingState.PeDistance += 0.1f;
+            return yPos;
         }
     }
 }

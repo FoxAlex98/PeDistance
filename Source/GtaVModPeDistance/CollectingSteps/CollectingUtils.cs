@@ -13,10 +13,13 @@ namespace GtaVModPeDistance.CollectingSteps
         public static void StartCollectingData()
         {
             if (CollectingState.StartCollectingData) return;
+
+            if(CollectingState.PeDistance == default)
+                CollectingState.PeDistance = Utilities.GetYMinByFov();
             
             CollectingState.InitialPosition = Game.Player.Character.Position;
             Game.Player.Character.IsVisible = false;
-            UtilsFunctions.ResetWantedLevel();//sembra che non funzioni
+            UtilsFunctions.ResetWantedLevel();
             Globals.HideHud();
             CollectingState.WannaStop = false;
             CollectingState.CollectedDataCounter = 0;

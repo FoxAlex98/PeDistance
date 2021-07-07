@@ -35,6 +35,11 @@ namespace GtaVModPeDistance
             return NextFloat(yMin, yMax);
         }
 
+        public static float GetYMinByFov()
+        {
+            return 10f - Settings.CameraFov / 10f;
+        }
+
         public static float NextFloat(float min, float max)
         {
             return (float)(random.NextDouble() * (max - min) + min);
