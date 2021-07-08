@@ -37,6 +37,7 @@ namespace GtaVModPeDistance.CollectingSteps
             Game.Player.Character.IsVisible = true;
             Game.Player.Character.Position = CollectingState.InitialPosition;
             Globals.ShowHud();
+            World.RenderingCamera.Delete();
             World.RenderingCamera = null;
             CollectingState.Ped = null;
             if (Settings.RandomTime) World.CurrentTimeOfDay = CollectingState.InitialTime;

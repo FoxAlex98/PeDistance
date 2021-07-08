@@ -1,4 +1,6 @@
-﻿namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
+﻿using GTA.UI;
+
+namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
     class ClearNearEntitiesStep : CollectingStep
     {
@@ -6,6 +8,7 @@
         {
             UtilsFunctions.DeleteAllNearPed();
             UtilsFunctions.DeleteAllNearVehicles();
+            Notification.Hide(CollectingState.NotificationId);
         }
 
         public override int GetDelay()

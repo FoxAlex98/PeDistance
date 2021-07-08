@@ -17,6 +17,6 @@ namespace GtaVModPeDistance.CollectingSteps
         public static TimeSpan InitialTime { get; set; }
         public static Weather InitialWeather { get; set; }
         public static CollectingStep ActualStep { get; set; }
-
+        public static int NotificationId { get; set; }
     }
 }
