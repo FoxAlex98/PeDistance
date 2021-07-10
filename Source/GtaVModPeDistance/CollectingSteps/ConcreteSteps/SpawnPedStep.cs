@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using GTA.Math;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
@@ -27,12 +27,6 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
         private int GetRotationUsingCameraAxis()
         {
             return (int) World.RenderingCamera.Rotation.Z + 180 + GetRandomHeadingAngle();
-        }
-
-        private int GetRotationUsingCameraPosition()
-        {
-            CollectingState.Ped.FacePosition(World.RenderingCamera.Position);
-            return GetRandomHeadingAngle();
         }
 
         private int GetRandomHeadingAngle()

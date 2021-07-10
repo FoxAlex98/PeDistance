@@ -1,6 +1,4 @@
-﻿using GTA;
-
-namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
+﻿namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
     class ClearCollectingDataSettingsStep : CollectingStep
     {

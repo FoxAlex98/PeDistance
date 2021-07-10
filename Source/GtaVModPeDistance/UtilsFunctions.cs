@@ -1,4 +1,4 @@
-﻿using GTA;
+using GTA;
 using GTA.Math;
 using GTA.UI;
 using GtaVModPeDistance.CollectingSteps;
@@ -57,11 +57,17 @@ namespace GtaVModPeDistance
 
         public static void SpawnVehicle(VehicleHash vehicleHash)
         {
-            if (Globals.Vehicle != null) Globals.Vehicle.Delete();
-            Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 10, 0));
-            Globals.Vehicle = World.CreateVehicle(new Model(vehicleHash), pos);
-            Globals.Vehicle.PlaceOnGround();
-            Globals.Vehicle.IsInvincible = true;
+            try
+            {
+                if (Globals.Vehicle != null) Globals.Vehicle.Delete();
+                Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 10, 0));
+                Globals.Vehicle = World.CreateVehicle(new Model(vehicleHash), pos);
+                Globals.Vehicle.PlaceOnGround();
+                Globals.Vehicle.IsInvincible = true;
+            }catch(Exception e)
+            {
+                Notification.Show("Can't spawn this Vehicle Now");
+            }
         }
 
         public static void SaveCoordinates()
