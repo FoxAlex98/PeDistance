@@ -1,4 +1,4 @@
-using GTA;
+﻿using GTA;
 using GTA.Math;
 using GTA.UI;
 using GtaVModPeDistance.CollectingSteps;
@@ -159,6 +159,7 @@ namespace GtaVModPeDistance
             CollectingState.ActualStep = new TeleportToRandomSavedLocationStep();
             CollectingState.CollectedDataCounter = 0;
             CollectingState.Ped = null;
+            World.DestroyAllCameras();
         }
 
         public static void SpawnAtRandomSavedLocation()
