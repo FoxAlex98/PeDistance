@@ -27,7 +27,7 @@ namespace GtaVModPeDistance.Menus.Impl
         public override void OnClick(){}
         public override void OnListChanged(UIMenuListItem sender, int newIndex)
         {
-            float Z = (Game.Player.Character.Position.Z - 1) + (float) sender.Items[newIndex];
+            float Z = World.GetGroundHeight(Game.Player.Character.Position) + (float) sender.Items[newIndex];
             Vector3 cameraPos = World.RenderingCamera.Position;
             World.RenderingCamera.Position = new Vector3(cameraPos.X, cameraPos.Y, Z);
         }

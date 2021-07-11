@@ -1,4 +1,5 @@
-﻿using GTA.UI;
+﻿using GTA;
+using GTA.UI;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
@@ -8,11 +9,15 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
         {
             CollectingState.NotificationId = Notification.Show("Counter: " + (++CollectingState.CollectedDataCounter) + "/" + Settings.MaxCollectedData);
             Globals.HideHud();
+            if (CollectingState.WannaStop)
+            {
+                CollectingUtils.ForceWritingData();
+                UtilsFunctions.SetupMenu = true;
+            }
+            if(CollectingState.CollectedDataCounter % 5 == 0)
+                World.DestroyAllCameras();
             if (CollectingState.CollectedDataCounter >= Settings.MaxCollectedData || CollectingState.WannaStop)
                 CollectingUtils.EndingCollectingData();
-            if (CollectingState.WannaStop)
-                CollectingUtils.ForceWritingData();
-            UtilsFunctions.SetupMenu = true;
         }
 
         public override int GetDelay()

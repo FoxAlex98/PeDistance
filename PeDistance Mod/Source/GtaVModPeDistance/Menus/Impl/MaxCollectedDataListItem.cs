@@ -1,5 +1,4 @@
 ﻿using NativeUI;
-using System;
 using System.Collections.Generic;
 
 namespace GtaVModPeDistance.Menus.Impl
@@ -14,7 +13,7 @@ namespace GtaVModPeDistance.Menus.Impl
 
         protected override List<dynamic> InitList()
         {
-            List<dynamic> listOfMaxCollectedData = new List<dynamic>{ 5 };
+            List<dynamic> listOfMaxCollectedData = new List<dynamic>{ 5 , 10 };
             for (int i = 30; i <= Settings.MaxCollectedSelectionable; i += 30)
             {
                 listOfMaxCollectedData.Add(i);
