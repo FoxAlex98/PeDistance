@@ -45,7 +45,7 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             float yPos = CollectingState.PeDistance;
             if (yPos > 30f)
                 return CollectingState.PeDistance = Utilities.GetYMinByFov();
-            CollectingState.PeDistance += 0.1f;
+            CollectingState.PeDistance += Settings.DistanceStep;
             return yPos;
         }
     }
