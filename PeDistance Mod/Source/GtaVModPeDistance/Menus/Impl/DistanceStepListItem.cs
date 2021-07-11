@@ -29,7 +29,7 @@ namespace GtaVModPeDistance.Menus.Impl
         public void Save()
         {
             int index = ((UIMenuListItem)Item).Index;
-            if (Settings.DistanceStep == (float)GetList()[index])
+            if (Settings.DistanceStep != (float)GetList()[index])
             {
                 Settings.DistanceStep = (float)GetList()[index];
                 CollectingState.PeDistance = Utilities.GetYMinByFov();

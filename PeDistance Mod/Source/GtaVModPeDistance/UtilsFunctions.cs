@@ -57,11 +57,18 @@ namespace GtaVModPeDistance
 
         public static void SpawnVehicle(VehicleHash vehicleHash)
         {
-            if (Globals.Vehicle != null) Globals.Vehicle.Delete();
-            Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 10, 0));
-            Globals.Vehicle = World.CreateVehicle(new Model(vehicleHash), pos);
-            Globals.Vehicle.PlaceOnGround();
-            Globals.Vehicle.IsInvincible = true;
+            try
+            {
+                if (Globals.Vehicle != null) Globals.Vehicle.Delete();
+                Vector3 pos = Game.Player.Character.GetOffsetPosition(new Vector3(0, 10, 0));
+                Globals.Vehicle = World.CreateVehicle(new Model(vehicleHash), pos);
+                Globals.Vehicle.PlaceOnGround();
+                Globals.Vehicle.IsInvincible = true;
+            }
+            catch (Exception e)
+            {
+                Notification.Show("Can't spawn this Vehicle Now");
+            }
         }
 
         public static void SaveCoordinates()
@@ -139,7 +146,7 @@ namespace GtaVModPeDistance
             Game.Player.Character.Rotation = rotation;
             Vector3 camRotation = new Vector3(Settings.CameraAngle, rotation.Y, rotation.Z);
             //Game.Player.Character.Heading = 0f;
-            float Z = (Game.Player.Character.Position.Z - 1) + Settings.CameraFixedHeight;
+            float Z = position.Z - 1 + Settings.CameraFixedHeight;
             Camera camera = World.CreateCamera(new Vector3(position.X, position.Y, Z), camRotation, Settings.CameraFov);
             World.RenderingCamera = camera;
         }
@@ -153,6 +160,8 @@ namespace GtaVModPeDistance
             CollectingState.ActualStep = new TeleportToRandomSavedLocationStep();
             CollectingState.CollectedDataCounter = 0;
             CollectingState.Ped = null;
+            World.DestroyAllCameras();
+            Notification.Show("Reset");
         }
 
         public static void SpawnAtRandomSavedLocation()
@@ -199,18 +208,6 @@ namespace GtaVModPeDistance
             SetupMenu = true;
             Notification.Show("Advanced Mode " + (debugMode.Checked ? "activated" : "deactivated"));
             Notification.Show("F5 to open menu");
-        }
-
-
-        public static int GetClosestTimeInRange()
-        {
-            int currenTime = World.CurrentTimeOfDay.Hours;
-            if (currenTime > 6 && currenTime < 10) return 8;
-            if (currenTime > 10 && currenTime < 14) return 12;
-            if (currenTime > 14 && currenTime < 18) return 16;
-            if (currenTime > 18 && currenTime < 22) return 20;
-            if (currenTime > 20 && currenTime < 2) return 0;
-            else return 4;
         }
 
     }

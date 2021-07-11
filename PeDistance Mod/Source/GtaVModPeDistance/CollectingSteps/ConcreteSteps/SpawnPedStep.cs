@@ -29,12 +29,6 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             return (int) World.RenderingCamera.Rotation.Z + 180 + GetRandomHeadingAngle();
         }
 
-        private int GetRotationUsingCameraPosition()
-        {
-            CollectingState.Ped.FacePosition(World.RenderingCamera.Position);
-            return GetRandomHeadingAngle();
-        }
-
         private int GetRandomHeadingAngle()
         {
            return (int) Utilities.NextFloat(0, 359);
