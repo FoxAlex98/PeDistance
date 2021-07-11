@@ -1,9 +1,10 @@
 # PeDistance Mod
-
+It uses GTA V mod to teleport the player into random controlled location, spawns a pedestrian, gets the distance between the camera point and the pedestrian, saves it into a csv file and loops until it gets to set sample number.
 # Requirement
 
-* PC with Windows Installed and minimum requirement
 * Grand Theft Auto V (Epic or Steam Version)
+* PC with Windows Installed and minimum GTA V requirement
+
 
 # How to install
 
@@ -56,19 +57,9 @@ On the other hand you should decrement delays
 </details> 
 
 
-once you finish collecting data you can find it in Folder MachineLearningProject 
+Once you finish collecting data you can find it in Folder MachineLearningProject 
 
 <img src="data/Assets/GTAmod_high.gif">
-
-<details>
-<summary>
-About Developers
-</summary>
-
-* FoxAlex98
-* WarCreed
-* Wornairz
-</details>
 
 # Reference
 * ScriptHookVDotNet
