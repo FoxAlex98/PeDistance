@@ -29,10 +29,13 @@ It uses GTA V mod to teleport the player into random controlled location, spawns
 - Images
 	- It will contains all screenshot (only if you checked ```Save Screenshot Locally``` in Settings Menu)
 
-## Main menu
+# Main menu
 
 <img src="data/Assets/MainMenu.png" width="50%">
 
+- Use ```Start Collecting Data``` to begin collecting
+- Whenever you are in trouble, use ```Reset``` menu voice to get out of it
+- Use ```Clear Data``` to clean dataset and images folder data. **NB:** be carefull when you use it, you will lose all your collected data.
 # Settings
 
 In the settings menu you can manage:
@@ -48,17 +51,17 @@ In the settings menu you can manage:
 - Randomize Weather
 - Various Delay: change delay based on your platform performance. Lower you can get, more data you can collect in a time period.
 
-<br>
-<img src="data/Assets/SettingsMenu.png">
-
-### Extra Note 
 Relative to your PC Specific, you should set various delays in the settings menu to manage the renderization of the environment and all other stuff.
 If your pc performances are low you should increment delays. 
 On the other hand you should decrement delays.
 
+<img src="data/Assets/SettingsMenu.png">
+
 <img src="data/Assets/GTAmod_high.gif">
 
-## Utils Menu
+# Utils Menu
 In this regard, there is an additional menu called "Utils Menu" that allows you to perform actions that can help the user to make measurements, move easily and quickly in the game map. It is also possible to save your own spawn zones that will be added to the locations dataset.
 
 **NB:** It is advisable to press the save button only after making sure that the new position fits the purpose of the pedestrian spawning.
+
+
