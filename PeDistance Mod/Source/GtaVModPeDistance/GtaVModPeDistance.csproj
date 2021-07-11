@@ -79,6 +79,7 @@
     <Compile Include="Menus\Impl\CameraFixedHeightListItem.cs" />
     <Compile Include="Menus\Impl\CameraAngleListItem.cs" />
     <Compile Include="Menus\Impl\ClearCollectingDataDelayListItem.cs" />
+    <Compile Include="Menus\Impl\DistanceStepListItem.cs" />
     <Compile Include="Menus\Impl\RenderingDelayListItem.cs" />
     <Compile Include="Menus\Impl\CollectingDataDelayListItem.cs" />
     <Compile Include="Menus\Impl\PedSpawningDelayListItem.cs" />

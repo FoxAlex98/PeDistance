@@ -17,6 +17,7 @@ namespace GtaVModPeDistance.Menus
 
         //Impl
         CameraFixedHeightListItem cameraFixedHeightListItem = new CameraFixedHeightListItem();
+        DistanceStepListItem distanceStepListItem = new DistanceStepListItem();
         CameraFovListItem cameraFovListItem = new CameraFovListItem();
         ImageFormatListItem imageFormatListItem = new ImageFormatListItem();
         MaxCollectedDataListItem maxCollectedDataListItem = new MaxCollectedDataListItem();
@@ -48,14 +49,13 @@ namespace GtaVModPeDistance.Menus
             utilsList.Add(new MenuItem("Reset Wanted Level", UtilsFunctions.ResetWantedLevel));
             utilsList.Add(new MenuItem("Spawn Random Point", UtilsFunctions.SpawnAtRandomSavedLocation));
             utilsList.Add(new DayTimeListItem());
+            utilsList.Add(new WeatherListItem());
             
             utilsList.Add(new VehicleListItem("Car", Globals.VehicleType.CARS));
             utilsList.Add(new VehicleListItem("Motorbike", Globals.VehicleType.MOTORBIKES));
             utilsList.Add(new VehicleListItem("Helicopter", Globals.VehicleType.HELICOPTERS));
             utilsList.Add(new VehicleListItem("Plane", Globals.VehicleType.PLANES));
             utilsList.Add(new VehicleListItem("Boat", Globals.VehicleType.BOATS));
-            
-            utilsList.Add(new WeatherListItem());
 
             return utilsList;
         }
@@ -86,6 +86,7 @@ namespace GtaVModPeDistance.Menus
             configList.Add(cameraFovListItem);
             configList.Add(cameraAngleListItem);
             configList.Add(cameraFixedHeightListItem);
+            configList.Add(distanceStepListItem);
             configList.Add(imageFormatListItem);
             configList.Add(new MenuItem(saveScreenShotLocally));//CheckBox
             configList.Add(new MenuItem(printBox));
@@ -105,6 +106,7 @@ namespace GtaVModPeDistance.Menus
             maxCollectedDataListItem.Save();
             cameraFovListItem.Save();
             cameraFixedHeightListItem.Save();
+            distanceStepListItem.Save();
             imageFormatListItem.Save();
             cameraAngleListItem.Save();
             teleportingDelayListItem.Save();

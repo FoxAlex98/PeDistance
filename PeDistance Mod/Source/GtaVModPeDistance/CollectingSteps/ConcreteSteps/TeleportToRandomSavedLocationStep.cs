@@ -1,4 +1,5 @@
-﻿using GtaVModPeDistance.File;
+﻿using GTA;
+using GtaVModPeDistance.File;
 
 namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
 {
@@ -12,8 +13,11 @@ namespace GtaVModPeDistance.CollectingSteps.ConcreteSteps
             UtilsFunctions.SetCameraPosition(CollectingState.SpawnPoint);
             if (Settings.RandomWeather)
                 UtilsFunctions.SetRandomWeather();
+
             if (Settings.RandomTime)
                 UtilsFunctions.SetRandomTime();
+            else
+                UtilsFunctions.SetTime(World.CurrentTimeOfDay.Hours, 0, 0, false);
 
             // Notification.Show("Camera has been ~b~generated to ~o~" + spawnPoint.StreetName.ToString() + ", " + spawnPoint.ZoneLocalizedName.ToString());
         }

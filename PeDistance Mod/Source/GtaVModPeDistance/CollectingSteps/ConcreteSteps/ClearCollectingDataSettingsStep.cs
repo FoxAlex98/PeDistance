@@ -4,7 +4,6 @@
     {
         public override void ExecuteStep()
         {
-            UtilsFunctions.SetTime(UtilsFunctions.GetClosestTimeInRange(), 0, 0, false);
             UtilsFunctions.DeleteAllNearPed();
         }
 
