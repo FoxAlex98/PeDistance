@@ -351,5 +351,5 @@ MigrationBackup/
 
 # Custom
 Datasets/
-*.csv
+Pylinomial Regression Demo/*.csv
 */.ipynb_checkpoints/*
