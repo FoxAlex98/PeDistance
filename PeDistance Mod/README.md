@@ -22,7 +22,7 @@ It uses GTA V mod to teleport the player into random controlled location, spawns
 * Press F5 to Open Menu
 * Open settings menu and chose your favorite setting to collect data or leave default values
 * Come back to main menu and press ```Start Collecting Data``` to begin collecting data
-* Leave mod woring until it finishes to collect data (it can take a while)
+* Leave mod working until it finishes to collect data (it can take a while)
 * You will find collected data in  ```scripts/MachineLearningProject/data/Dataset.csv```
 
 ### Structure MachineLearningProject Folder
